@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "research_tasks": [
+    {"id": "R01", "query": "LangGraph RAG MCP Agent 工程实践", "answerable": true, "min_evidence": 3},
+    {"id": "R02", "query": "LangGraph 如何组织多智能体工作流", "answerable": true, "min_evidence": 2},
+    {"id": "R03", "query": "RAG 如何保存来源并避免无依据回答", "answerable": true, "min_evidence": 2},
+    {"id": "R04", "query": "MCP 工具调用前需要做哪些校验", "answerable": true, "min_evidence": 2},
+    {"id": "R05", "query": "MCP 服务的权限与脱敏怎么设计", "answerable": true, "min_evidence": 1},
+    {"id": "R06", "query": "多智能体 Planner Researcher Writer 如何分工", "answerable": true, "min_evidence": 1},
+    {"id": "R07", "query": "Agent 评测关注哪些指标", "answerable": true, "min_evidence": 2},
+    {"id": "R08", "query": "LangGraph 任务中断后如何断点恢复", "answerable": true, "min_evidence": 2},
+    {"id": "R09", "query": "企业 Agent 项目的安全控制与回归测试", "answerable": true, "min_evidence": 2},
+    {"id": "R10", "query": "RAG 与 MCP 在企业 Agent 中如何协作", "answerable": true, "min_evidence": 3},
+    {"id": "R11", "query": "共享状态如何在 Agent 节点之间传递证据", "answerable": true, "min_evidence": 1},
+    {"id": "R12", "query": "工具调用的参数和超时如何验证", "answerable": true, "min_evidence": 1},
+    {"id": "R13", "query": "今年大豆期货价格走势", "answerable": false},
+    {"id": "R14", "query": "北京明天的天气", "answerable": false},
+    {"id": "R15", "query": "足球比赛比分预测", "answerable": false}
+  ],
+  "harness_scenarios": [
+    {"id": "H01", "kind": "budget", "expect": "预算为 2 时只执行 2 次工具调用，并记录 budget_exhausted"},
+    {"id": "H02", "kind": "loop", "expect": "规划出重复子问题时，第二次同工具同参数调用被 loop_blocked，不消耗预算"},
+    {"id": "H03", "kind": "timeout", "expect": "工具超时后重试一次，最终状态 timeout，不生成报告"},
+    {"id": "H04", "kind": "transient_retry", "expect": "临时错误重试后成功，attempts=2"},
+    {"id": "H05", "kind": "permanent_error", "expect": "永久错误不重试，attempts=1"},
+    {"id": "H06", "kind": "mcp_not_configured", "expect": "未配置 MCP 记为 not_configured，不计入调用成功率"},
+    {"id": "H07", "kind": "no_evidence", "expect": "没有证据时停止生成，输出资料不足"},
+    {"id": "H08", "kind": "resume", "expect": "中断后按 run_id 恢复，已完成的调用不重复执行"}
+  ]
+}

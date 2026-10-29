@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-import asyncio
+import hashlib
+import json
 import os
 import re
 from dataclasses import dataclass
@@ -10,21 +11,25 @@ from typing import Callable, Protocol
 
 import requests
 
-from mcp_client import MCPClient
-from models import Evidence
+from .mcp_client import MCPClient
+from .models import Evidence, ToolError, TransientToolError
 
 
 class ResearchTool(Protocol):
     name: str
+    available: bool
 
     def search(self, query: str, limit: int = 3) -> list[Evidence]:
         ...
 
 
-def _tokens(text: str) -> set[str]:
-    return set(
-        re.findall(r"[\u4e00-\u9fff]{2,}|[a-zA-Z][a-zA-Z0-9_-]+", text.lower())
-    )
+def tokens(text: str) -> set[str]:
+    """English words plus Chinese character bigrams, so partial Chinese phrases still match."""
+    lowered = text.lower()
+    words = set(re.findall(r"[a-z][a-z0-9_-]+", lowered))
+    for run in re.findall(r"[一-鿿]+", lowered):
+        words.update(run[i:i + 2] for i in range(len(run) - 1))
+    return words
 
 
 DEFAULT_KNOWLEDGE = [
@@ -57,16 +62,16 @@ DEFAULT_KNOWLEDGE = [
 
 class LocalRAGTool:
     name = "local_rag"
+    available = True
 
     def __init__(self, documents: list[dict[str, str]] | None = None) -> None:
         self.documents = documents or DEFAULT_KNOWLEDGE
 
     def search(self, query: str, limit: int = 3) -> list[Evidence]:
-        query_tokens = _tokens(query)
+        query_tokens = tokens(query)
         ranked: list[Evidence] = []
         for document in self.documents:
-            haystack = f"{document['title']} {document['content']}"
-            overlap = len(query_tokens & _tokens(haystack))
+            overlap = len(query_tokens & tokens(f"{document['title']} {document['content']}"))
             if overlap == 0:
                 continue
             ranked.append(
@@ -85,6 +90,7 @@ class WebSearchTool:
     """Tavily-backed web search with an explicit offline demo fallback."""
 
     name = "web_search"
+    available = True
 
     def __init__(self, api_key: str | None = None) -> None:
         self.api_key = api_key or os.getenv("TAVILY_API_KEY")
@@ -112,26 +118,26 @@ class WebSearchTool:
     def search(self, query: str, limit: int = 3) -> list[Evidence]:
         if not self.api_key:
             return [
-                Evidence(
-                    **{
-                        **item.to_dict(),
-                        "tool": self.name,
-                    }
-                )
+                Evidence(**{**item.to_dict(), "tool": self.name})
                 for item in self.offline.search(query, limit)
             ]
-
-        response = requests.post(
-            "https://api.tavily.com/search",
-            json={
-                "api_key": self.api_key,
-                "query": query,
-                "max_results": limit,
-                "search_depth": "basic",
-            },
-            timeout=10,
-        )
-        response.raise_for_status()
+        try:
+            response = requests.post(
+                "https://api.tavily.com/search",
+                json={
+                    "api_key": self.api_key,
+                    "query": query,
+                    "max_results": limit,
+                    "search_depth": "basic",
+                },
+                timeout=10,
+            )
+        except (requests.Timeout, requests.ConnectionError) as exc:
+            raise TransientToolError(f"网页搜索暂时不可用：{exc}") from exc
+        if response.status_code == 429 or response.status_code >= 500:
+            raise TransientToolError(f"网页搜索返回 {response.status_code}")
+        if response.status_code >= 400:
+            raise ToolError(f"网页搜索请求被拒绝：{response.status_code}")
         return [
             Evidence(
                 title=item.get("title", "网页资料"),
@@ -146,6 +152,8 @@ class WebSearchTool:
 
 
 class MCPResearchTool:
+    """Calls one tool on an MCP server; without a client it reports itself as not configured."""
+
     name = "mcp"
 
     def __init__(
@@ -160,23 +168,46 @@ class MCPResearchTool:
             lambda query, limit: {"query": query, "limit": limit}
         )
 
+    @property
+    def available(self) -> bool:
+        return self.client is not None
+
     def search(self, query: str, limit: int = 3) -> list[Evidence]:
         if self.client is None:
-            return []
-        contents = asyncio.run(
-            self.client.call_tool(
-                self.tool_name, self.argument_builder(query, limit)
-            )
+            raise ToolError("MCP 服务未配置")
+        contents = self.client.call_tool_sync(
+            self.tool_name, self.argument_builder(query, limit)
         )
-        return [
-            Evidence(
-                title=f"MCP result {index}",
-                content=content,
-                source=f"mcp://{self.tool_name}/{index}",
+        items: list = []
+        for content in contents:
+            try:
+                parsed = json.loads(content)
+            except (TypeError, ValueError):
+                parsed = content
+            items.extend(parsed if isinstance(parsed, list) else [parsed])
+        return [self._to_evidence(item) for item in items[:limit]]
+
+    def _to_evidence(self, item) -> Evidence:
+        # Servers that return {"title", "source", "content"} keep their own source;
+        # plain text gets a stable source from its content so duplicates collapse.
+        if isinstance(item, dict) and item.get("content"):
+            return Evidence(
+                title=str(item.get("title") or "MCP 结果"),
+                content=str(item["content"]),
+                source=str(item.get("source") or self._content_source(item["content"])),
                 tool=self.name,
             )
-            for index, content in enumerate(contents[:limit], start=1)
-        ]
+        content = item if isinstance(item, str) else json.dumps(item, ensure_ascii=False)
+        return Evidence(
+            title="MCP 结果",
+            content=content,
+            source=self._content_source(content),
+            tool=self.name,
+        )
+
+    def _content_source(self, content: str) -> str:
+        digest = hashlib.sha256(content.encode("utf-8")).hexdigest()[:12]
+        return f"mcp://{self.tool_name}/{digest}"
 
 
 @dataclass
@@ -184,6 +215,5 @@ class ResearchToolbox:
     tools: list[ResearchTool]
 
     @classmethod
-    def default(cls) -> "ResearchToolbox":
-        return cls([WebSearchTool(), LocalRAGTool(), MCPResearchTool()])
-
+    def default(cls, mcp_client: MCPClient | None = None) -> "ResearchToolbox":
+        return cls([WebSearchTool(), LocalRAGTool(), MCPResearchTool(client=mcp_client)])
