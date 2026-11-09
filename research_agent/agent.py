@@ -12,7 +12,7 @@ from langgraph.graph import END, START, StateGraph
 
 from .checkpoint import SQLiteCheckpointStore
 from .evaluation import evaluate_run
-from .llm import DemoResearchModel
+from .llm import INSUFFICIENT_PREFIX, DemoResearchModel
 from .models import ToolCallRecord, ToolError, TransientToolError
 from .tools import ResearchToolbox
 
@@ -196,10 +196,12 @@ class ResearchAgent:
         return [], last_status, self.max_retries + 1, last_error
 
     def _writer(self, state: ResearchState) -> ResearchState:
-        update = {
-            "report": self.model.write_report(state["query"], state.get("evidence", [])),
-            "status": "completed",
-        }
+        report = self.model.write_report(state["query"], state.get("evidence", []))
+        if report.startswith(INSUFFICIENT_PREFIX):
+            # Real search almost always returns something; the writer decides it does not answer the question.
+            update = {"report": report, "status": "insufficient_evidence", "stopped_reason": "evidence_not_relevant"}
+        else:
+            update = {"report": report, "status": "completed"}
         self._save_partial(state, update)
         return update
 

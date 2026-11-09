@@ -1,0 +1,1850 @@
+{
+ "3:PostgreSQL 的 MVCC 是如何实现的？": [
+  {
+   "title": "深入理解 PostgreSQL 中的 MVCC（多版本并发控制）机制",
+   "content": "Apr 8, 2024 · 深入解析PostgreSQL中的MVCC机制，其通过多版本管理提升并发性能，避免传统锁定的性能瓶颈。 MVCC利用事务ID、版本链等核心组件，实现高效并发控制，确保数据一致性与隔离性，是优化数据库性能的关键。",
+   "source": "https://cloud.tencent.com/developer/article/2405841",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "面试官：PostgreSQL的MVCC是怎样实现的？ - CSDN博客",
+   "content": "Oct 10, 2026 · 本文深入解析PostgreSQL多版本并发控制（MVCC）的底层实现机制，重点介绍其基于堆表的版本存储结构、t_xmin/t_xmax等系统字段的作用、更新与删除操作中tuple版本链的生成过程，以及Read Committed和Repeatable Read隔离级别下的可见性判断规则。",
+   "source": "https://blog.csdn.net/cxytony/article/details/167222544",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "面试官：PostgreSQL的MVCC是怎样实现的？ - 知乎",
+   "content": "在多数数据库中，我们可以使用四个标准 事务隔离级别 中的任何一个。 但其实 PostgreSQL 内部只实现了三个不同的隔离级别，PostgreSQL 的 Read Uncommitted 级别跟 Read Committed 类似。 这是将标准隔离级别映射到 PostgreSQL 的 MVCC 架构的唯一合理方法。 如下表格：",
+   "source": "https://zhuanlan.zhihu.com/p/78990428554",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:PostgreSQL MVCC 实现原理": [
+  {
+   "title": "深入理解 PostgreSQL 中的 MVCC（多版本并发控制）机制",
+   "content": "Apr 8, 2024 · 深入解析PostgreSQL中的MVCC机制，其通过多版本管理提升并发性能，避免传统锁定的性能瓶颈。 MVCC利用事务ID、版本链等核心组件，实现高效并发控制，确保数据一致性与隔离性，是优化数据库性能的关键。",
+   "source": "https://cloud.tencent.com/developer/article/2405841",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "深入理解 PostgreSQL 数据库的 MVCC：原理、优势与实践_postgresql mv...",
+   "content": "Oct 14, 2025 · 本文深入解析PostgreSQL的MVCC机制，涵盖其实现原理如事务ID、隐藏列和快照可见性判断，阐述其在高并发下读写不互斥的优势，并讨论数据膨胀、事务ID回卷等潜在问题及应对策略，最后提供自动清理、隔离级别设置等关键参数调优建议。",
+   "source": "https://blog.csdn.net/CharlesYuangc/article/details/153275076",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "PostgreSQL 架构原理第三期：事务与并发控制 —— MVCC、快照与锁机制 -...",
+   "content": "Apr 24, 2026 · PostgreSQL 凭借其实现精巧的多版本并发控制（MVCC），能够在不使用传统读锁的情况下提供高并发读写的隔离性，同时避免了“读-写”阻塞问题。 本文将系统讲解： 事务 ID 与元组头中的版本信息 事务状态与 Commit Log（clog） 快照（Snapshot）的构成与可见性判断规则",
+   "source": "https://www.cnblogs.com/kingster/p/19921127",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:PostgreSQL 多版本并发控制机制": [
+  {
+   "title": "深入理解 PostgreSQL 中的 MVCC（多版本并发控制）机制",
+   "content": "Apr 8, 2024 · 深入解析PostgreSQL中的MVCC机制，其通过多版本管理提升并发性能，避免传统锁定的性能瓶颈。 MVCC利用事务ID、版本链等核心组件，实现高效并发控制，确保数据一致性与隔离性，是优化数据库性能的关键。",
+   "source": "https://cloud.tencent.com/developer/article/2405841",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "PostgreSQL中的多版本并发控制（MVCC）深入解析_pgsql mvcc-CSDN博客",
+   "content": "Sep 15, 2024 · 本文深入解析PostgreSQL中的多版本并发控制（MVCC）机制。 介绍了MVCC基本概念和优势，阐述其工作原理，包括版本控制、事务ID和可见性规则等。 列举了MVCC在交易型网站等场景的应用，并给出SQL示例。 还分析了实现细节，对比了与MySQL中MVCC的差异。",
+   "source": "https://blog.csdn.net/qq_40921573/article/details/142023539",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "【PostgreSQL从零到精通】第22篇：MVCC多版本并发控制——PostgreSQL并...",
+   "content": "May 10, 2026 · 本文深入解析PostgreSQL的MVCC（多版本并发控制）机制，涵盖其如何实现读写不互斥、事务快照与可见性判断、隐藏字段与版本链结构；详细说明READ COMMITTED、REPEATABLE READ和SERIALIZABLE隔离级别的行为差异；剖析事务ID（XID）回卷风险及FREEZE机制；阐述死元组产生原理 ...",
+   "source": "https://blog.csdn.net/xyghehehehe/article/details/160781084",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:Redis 的 RDB 和 AOF 持久化有什么区别？": [
+  {
+   "title": "Devs worldwide build on Redis - Cut latency with Redis caching",
+   "content": "Cache, vector search, NoSQL. All on Redis. Fully managed on any cloud. Book a demo. Build production-ready AI apps on Redis without touching your stack. Book a demo. Types: Vector Database, In-Memory Cache, NoSQL Database, Full-Text Search",
+   "source": "https://www.bing.com/aclick?ld=e8P9U8FI1FC5hzYmqE24HbXDVUCUwa51H7V3nVbqTzztfbYW11RdTW-VghEC2mANE2OCsI91UPw41y4mieHR7bnW-RK4R93cbQVQSdIPXZDERa9KZjTI05v4KSNXtAaP2MsvvQONqImywkVILSSDqmdroY9JDv4tRXop4a9AlBdjqJqUiNCgyji3KaSMsyvbn1W0lBBQ&u=aHR0cHMlM2ElMmYlMmZyZWRpcy5pbyUyZm1lZXRpbmclMmYlM2Z1dG1fY2FtcGFpZ24lM2RnZy1zX2RnX2FtZXJfc2VhcmNoX2JvZnVfZnJlZS10cmlhbC1ib29rLWEtbWVldGluZyUyNnV0bV9zb3VyY2UlM2RiaW5nJTI2dXRtX21lZGl1bSUzZGNwYyUyNnV0bV9jb250ZW50JTNkYW1lcl9yZWRpc19jYWNoZSUyNnV0bV90ZXJtJTNkJTI2ZGV2aWNlJTNkYyUyNm1hdGNodHlwZSUzZHAlMjZoc3RrX2NyZWF0aXZlJTNkJTI2aHN0a19jYW1wYWlnbiUzZDU4MTYyMTU3MSUyNmhzdGtfbmV0d29yayUzZGdvb2dsZUFkcyUyNm1zY2xraWQlM2Q0NmIxZGNjZTFkYzAxMWQ1ZDEyYWI2M2ZkM2M1NDFjMQ&rlid=46b1dcce1dc011d5d12ab63fd3c541c1",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "Redis持久化机制：RDB与AOF深度解析与优化实践-CSDN博客",
+   "content": "5 days ago · Redis提供了两种互补的持久化方案：RDB（Redis Database）和AOF（Append Only File）。前者通过生成数据快照实现持久化，后者则记录所有写操作命令。这两种方案并非互斥，实际部署中往往需要根据业务特点进行组合配置。接下来我将结合实战案例，详细解析它们的实现原理与适用场景。",
+   "source": "https://blog.csdn.net/weixin_29587015/article/details/170119137",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "Redis RDB 和 AOF 持久化的区别，如何选择？_redis rdb与aof对比-CSDN...",
+   "content": "Jun 19, 2024 · 文章浏览阅读1.3k次，点赞13次，收藏7次。 本文对比了Redis的RDB和AOF两种持久化方式的特点。 RDB适用于需要快速恢复大量数据的场景，而AOF则更适合对数据安全性要求较高的情况。 实际应用中，可根据业务需求选择合适的持久化方案。",
+   "source": "https://blog.csdn.net/m0_56653160/article/details/139754865",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:Redis RDB 持久化机制原理": [
+  {
+   "title": "See Redis in action - The real-time data platform",
+   "content": "Sub-millisecond performance at any scale, with fast setup and fast support built in. Redis has helped more than 10,000 companies build, scale, and deploy fast apps, fast. Service Categories, Custom Configurations, Vector Databases, NoSQL Databases and more",
+   "source": "https://www.bing.com/aclick?ld=e82ICbs0zyGgmmXMPk3SnUWDVUCUxLctazA6orSDMwUZUgozAV0MoiBllZd_NLGXBXAgsLY4Ws82dmr1rO-DFXxWL_4_vIXwbZWoZ1uvkx5WI-KB2KlkdiYWdEkG60NaSqQNmMg6Of1Xmloh54VOL7nOEZDqWX5ka317xWjcqJ11TmHIxJdaCM3By-EvadYCiT1vzJRqwm0onHtTAHVeTsFVA6Cc4&u=aHR0cHMlM2ElMmYlMmZyZWRpcy5pbyUyZmxwJTJmZ2V0LXN0YXJ0ZWQzJTJmJTNmdXRtX2NhbXBhaWduJTNkZ2ctc19kZ19hbWVyX3NlYXJjaF9ib2Z1X2ZyZWV0cmlhbCUyNnV0bV9zb3VyY2UlM2RiaW5nJTI2dXRtX21lZGl1bSUzZGNwYyUyNnV0bV9jb250ZW50JTNkYW1lcl9yZWRpc19jYWNoZSUyNnV0bV90ZXJtJTNkJTI2ZGV2aWNlJTNkYyUyNm1hdGNodHlwZSUzZHAlMjZoc3RrX2NyZWF0aXZlJTNkJTI2aHN0a19jYW1wYWlnbiUzZDU4MTYyMTU3MCUyNmhzdGtfbmV0d29yayUzZGdvb2dsZUFkcyUyNm1zY2xraWQlM2Q3NDdiZmZmMTFhN2MxNjAzZWRhMjk1MDBkNDc0ZTIyNg&rlid=747bfff11a7c1603eda29500d474e226",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "Redis 持久化机制深度解析：RDB 与 AOF 原理、配置及生产环境选择",
+   "content": "Redis 提供两种核心持久化方案：RDB（Redis Database）和 AOF（Append-Only File）。 RDB 通过定时快照保存数据状态，恢复速度快但可能丢失最近一次快照后的数据；AOF 通过记录写操作日志实现近乎实时的持久化，数据安全性更高但文件体积较大。",
+   "source": "https://redis.com.cn/articles/redis-persistence-rdb-aof-production-guide.html",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "Redis 持久化机制：RDB 与 AOF 的实现原理与实践_redis rdb原理-CSDN...",
+   "content": "RDB 通过定期生成内存数据的二进制快照，保存为压缩文件（dump.rdb）。 2.2.2 工作原理 触发快照： 手动： SAVE （阻塞）或 BGSAVE （后台）。 自动：根据配置（如 save 900 1）。 生成快照： Fork 子进程，复制父进程内存。 子进程将数据写入临时文件。 替换旧 RDB 文件 ...",
+   "source": "https://blog.csdn.net/lssffy/article/details/148856273",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:Redis AOF 持久化机制对比": [
+  {
+   "title": "Cut latency with Redis caching - In-memory DB for devs",
+   "content": "Build production-ready AI apps on Redis without touching your stack. Book a demo. Cache, vector search, NoSQL. All on Redis. Fully managed on any cloud. Book a demo.",
+   "source": "https://www.bing.com/aclick?ld=e80DHW0e4-V-plwVkenhsguzVUCUytiAZdhi6r2E0GdITJHNJMGy7ReW2hBkNa-nslQ2oKirhd_xRtIymzYPbBBqX4wnIlXANi1uheUJJvIkNKCWlq7aCaYebXQZ9cMtwqIXw3E0-ApISDHK5xR9KFafE3nDIAb4vcc8Dx9R4n6ySMD4yHpgBhNXuMpf7soiQ4T2vDBgAqBbbzZm5sD-J0qNXnr4E&u=aHR0cHMlM2ElMmYlMmZyZWRpcy5pbyUyZm1lZXRpbmclMmYlM2Z1dG1fY2FtcGFpZ24lM2RnZy1zX2RnX2FtZXJfc2VhcmNoX2JvZnVfZnJlZS10cmlhbC1ib29rLWEtbWVldGluZyUyNnV0bV9zb3VyY2UlM2RiaW5nJTI2dXRtX21lZGl1bSUzZGNwYyUyNnV0bV9jb250ZW50JTNkYW1lcl9yZWRpc19jYWNoZSUyNnV0bV90ZXJtJTNkJTI2ZGV2aWNlJTNkYyUyNm1hdGNodHlwZSUzZHAlMjZoc3RrX2NyZWF0aXZlJTNkJTI2aHN0a19jYW1wYWlnbiUzZDU4MTYyMTU3MSUyNmhzdGtfbmV0d29yayUzZGdvb2dsZUFkcyUyNm1zY2xraWQlM2QyZDY4ZjQ3OTEyMGUxNjk2OTYzMzllODhkYzFmYzM2NQ&rlid=2d68f479120e169696339e88dc1fc365",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "Redis持久化终极指南：RDB、AOF与混合模式全解析-CSDN博客",
+   "content": "本文系统解析Redis三大持久化机制：RDB快照（基于fork与写时复制，恢复快但可能丢数据）、AOF追加日志（记录写命令，数据安全但恢复慢，需重写压缩）以及Redis 4.0引入的混合持久化（RDB快照+增量AOF，兼顾速度与完整性）。重点涵盖原理、配置参数（如save、appendfsync、aof-rewrite）、优缺点对比及生产 ...",
+   "source": "https://blog.csdn.net/2501_93705143/article/details/170246047",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "Redis 持久化深度解析：RDB、AOF 与混合持久化原理及踩坑实录",
+   "content": "Mar 9, 2026 · 文章浏览阅读709次，点赞17次，收藏17次。本文深入剖析Redis三大持久化机制：RDB快照、AOF日志及4.0+混合持久化。重点阐释fork+COW实现原理、AOF重写机制、fsync策略选择，以及RDB与AOF共存时的恢复优先级。结合真实踩坑案例，涵盖fork阻塞超时、AOF文件损坏修复、大内存下页表复制开销等关键技术风险点 ...",
+   "source": "https://blog.csdn.net/shengdanxue/article/details/158849469",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:Kafka 如何保证消息的顺序？": [
+  {
+   "title": "阿里二面：Kafka中如何保证消息的顺序性？这周被问到两次了 - 码农Aca...",
+   "content": "Mar 20, 2024 · 本文介绍了Apache Kafka如何通过分区、键控路由策略和消费者组机制保证消息顺序消费，展示了自定义分区器实现及利用内存队列进行异步处理以兼顾顺序性和效率的优化实践，强调在实际应用中需综合考量系统性能、可用性和消息顺序性。",
+   "source": "https://www.cnblogs.com/coderacademy/p/18082553",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "面试官：如何保证 Kafka 消息的顺序消费？（4 种方案，从青铜到王者）...",
+   "content": "Oct 4, 2025 · 本文详细解析了Kafka的消息顺序性保证及乱序原因，提出了四种确保消息顺序消费的解决方案。 包括利用Key保持分区有序、设置单分区实现全局有序、消费者端内存队列优化并发处理，以及通过外部协调实现全局有序。 适用于不同业务场景下的顺序需求。",
+   "source": "https://blog.csdn.net/dandandeshangni/article/details/152464763",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "Kafka如何保证消息的消费顺序【全局有序、局部有序】、Kafka如何保证...Kafka 怎么保证消息的顺序性Kafka 怎么保证消息的顺序性 很多人在用 K...kafka顺序消费，重复消费，保证消息不丢失问题Kafka 消息队列的面试讲...深入解析：Kafka 如何保证顺序消费 - ljbguanli - 博客园Kafka消息是否有序？怎样保证有序？ - 知乎",
+   "content": "生产者生产的所有数据都会发送到此Topic对应的Partition下，从而保证消息的生产顺序。 一个Topic对应多个Partition partition在写入的时候可以指定需要写入的partition，如果有指定，则写入对应的partition。 没有指明 partition 值但有 key 的情况下，将 key 的 hash 值与 topic 的 partition数进行取余得到 partition 值；在Producer往Kafka插入数据时，控制同一Key分发到同一Partition。 既没有 partition 值又没有 key 值的情况下，第一次调用时随机生成一个整数（后 面每次调用在这个整数上自增），将这个值与 topic 可用的 partition 总数取余得到 partition值，也就是常说的 round-robin 算法。 See full list on blog.csdn.net 一个Topic下的所有消息都需要按照生产顺序消费。 一个Topic下的消息，只需要满足同一业务字段的要按照生产顺序消费。例如：Topic消息是订单的流水表，包含订单orderId，业务要求同一个orderId的消息需要按照生产顺序进行消费。 全局有序需要保证一个Topic下的所有消息都需要按照生产顺序消费。此时设置 一个Topic下只对应一个Partition即可。而且对应的consumer也要使用单线程或者保证消费顺序的线程模型。 要满足局部有序，只需要 在发消息的时候指定Partition Key，Kafka对其进行Hash计算，根据计算结果决定放入哪个Partition。这样Partition Key相同的消息会放在同一个Partition。此时，Partition的数量仍然可以设置多个，提升Topic的整体吞吐量。并且为了达到严格的顺序消费还需要max.in.flight.requests.per.connection = 1。 直接指定Partition，将所有消息指定到一个Partition中，此时相当于全局有序，此Topic下的其他Partition无用，浪费资源。 See full list on blog.csdn.net 顺序写磁盘，充分利用磁盘特性： 利用磁盘的顺序访问速度可以接近内存，kafka的消息都是append操作，partition是有序的，节省了磁盘的寻道时间，同时通过批量操作、节省写入次数，partition物理上分为多个segment存储，方便删除； Producer 生产的数据持久化到 broker，采用 mmap 文件映射，实现顺序的快速写入。 mmap ()系统调用函数会直接把内核缓冲区里的数据「映射」到用户空间，这样，操作系统内核与用户空间就不需要再进行任何的数据拷贝操作； Customer 从 broker 读取数据，采用 sendfile，将磁盘文件读到 OS 内核缓冲区后，转到 NIO buffer进行网络发送，减少 CPU 消耗。 读取磁盘文件数据到内核缓冲区； See full list on blog.csdn.net Mar 31, 2026 · 九、最后总结 Kafka 对顺序性的保证，本质上只有一句话： 只能保证分区内有序，不能保证多分区全局有序。 要真正把顺序性做对，至少要控制三层： 生产端：同一业务键进入同一分区 Broker 层：依赖 Kafka 的分区顺序追加机制 消费端：避免并发处理打乱顺序 Dec 20, 2024 · 常见的确认模式有： acks=0：生产者发送消息后不等待确认，性能最高，但存在数据丢失的风险。 acks=1：至少等待主节点确认，数据丢失风险较低，但性能有所下降。 acks=-1 或 acks=all：等待所有副本确认才认为消息发送成功，这是最安全的方式，但性能最差。 Jun 25, 2025 · 在消息队列的应用场景中，保证消息的顺序消费对于一些业务至关重要，例如金融交易中的订单处理、电商系统的库存变更等。 Kafka 作为高性能的分布式消息队列系统，通过巧妙的设计和配置，能够实现消息的顺序消费。 Kafka消息顺序性深度解析一、Kafka消息顺序性基础1. Kafka消息顺序性层级2. 顺序性关键点二、保证消息顺序性的核心方案1. 生产者端保证 (1) 单分区写入// 指定消息Key，相同Key的消息进入同一分区 ProducerRecord&l…",
+   "source": "https://blog.csdn.net/weixin_45863010/article/details/136294454",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:Kafka 分区内消息顺序保证机制": [
+  {
+   "title": "阿里二面：Kafka中如何保证消息的顺序性？这周被问到两次了 - 码农Aca...",
+   "content": "Mar 20, 2024 · 本文介绍了Apache Kafka如何通过分区、键控路由策略和消费者组机制保证消息顺序消费，展示了自定义分区器实现及利用内存队列进行异步处理以兼顾顺序性和效率的优化实践，强调在实际应用中需综合考量系统性能、可用性和消息顺序性。",
+   "source": "https://www.cnblogs.com/coderacademy/p/18082553",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "Kafka消息顺序性保证机制与最佳实践 - CSDN博客",
+   "content": "Kafka的顺序性保证分为两个层次：分区内有序（Partition Order）和全局有序（Total Order）。 前者是Kafka的默认保证，后者则需要付出显著代价。 这种设计源于分布式系统CAP定理的约束——在保证分区可扩展性的同时，不可能完美实现跨分区的强一致性。",
+   "source": "https://blog.csdn.net/weixin_31062533/article/details/164957042",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "Kafka 顺序性保证深度解析：局部有序的艺术与全局有序的代价-CSDN博客",
+   "content": "Kafka通过分区（Partition）实现分区内严格有序，保障同一Key消息的顺序性；依赖幂等性生产者、合理设置max.in.flight.requests.per.connection、Key哈希分区及单线程消费来维持顺序。 全局顺序需权衡吞吐损失，常见于订单状态机、CDC、库存扣减、金融交易等强一致性场景。",
+   "source": "https://blog.csdn.net/qq_41840843/article/details/158541998",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:什么是 MCP（Model Context Protocol）？": [
+  {
+   "title": "模型上下文协议 - 维基百科，自由的百科全书",
+   "content": "模型上下文协议 ... 模型上下文协议 （英語： Model Context Protocol，缩写：MCP）是 Anthropic 所推动的一项 开放标准 [1]，目的是为 大型语言模型 应用提供一个标准化接口，使其能够连接外部数据源和工具，并与其交互 [2]。",
+   "source": "https://zh.wikipedia.org/wiki/模型上下文协议",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "Model Context Protocol - Route MCP Protocol Traffic",
+   "content": "Manage and secure MCP servers, proxies, and API endpoints centrally with Gravitee. Easily route, secure, and govern MCP client interactions and server tools safely at scale. Full Lifecycle APIM · 350,000 Monthly Downloads · Open Source · On Prem & SaaS Deployment Free Edition - $1.00/month - View more items",
+   "source": "https://www.bing.com/aclick?ld=e8esuN0OVsAkOhMvSGn4YWUjVUCUx2rUQeP0vGyhrB2oL3ASIVYjMV7hflEHYQ89aHT-oAnEtVm8JUo9ae0g6532e9RTUjsrEOr1y5Yj-VzAYEKI8O1atrxCPKsI7cmbPkI6pYrVl56pPNTQImDowYCtxQ-pqzxS5fHWQiPQxndwqyT4FkM5oH65-Kv0EYXMlnTOPZDZZlD0nCEH92u08wcOd70uw&u=aHR0cHMlM2ElMmYlMmZ3d3cuZ3Jhdml0ZWUuaW8lMmZwbGF0Zm9ybSUyZmFpLWFnZW50LW1hbmFnZW1lbnQlM2Z2ZWN0b3JfaWQlM2Q1NzA4OTM5MTYlMjZ2ZWN0b3Jfc291cmNlJTNkQklORyUyNnZlY3Rvcl9jYW1wYWlnbiUzZCUyNmhzdGtfY3JlYXRpdmUlM2QlMjZoc3RrX2NhbXBhaWduJTNkNTcwODkzOTE2JTI2aHN0a19uZXR3b3JrJTNkZ29vZ2xlQWRzJTI2dXRtX3Rlcm0lM2RtY3AlMjUyMHByb3RvY29sJTI2dXRtX2NhbXBhaWduJTNkJTI2dXRtX3NvdXJjZSUzZGJpbmclMjZ1dG1fbWVkaXVtJTNkcHBjJTI2dXRtX2lkJTNkNTcwODkzOTE2JTI2aHNhX2FjYyUzZDQwMDYyODQ3OTQlMjZoc2FfY2FtJTNkNTcwODkzOTE2JTI2aHNhX2dycCUzZDExODA4Nzc1OTYyMjMwMzIlMjZoc2FfYWQlM2QlMjZoc2Ffc3JjJTNkbyUyNmhzYV90Z3QlM2Rrd2QtNzM4MDUzOTA4MjA5MzklM2Fsb2MtMTY0JTI2aHNhX2t3JTNkbWNwJTI1MjBwcm90b2NvbCUyNmhzYV9tdCUzZGUlMjZoc2FfbmV0JTNkYWR3b3JkcyUyNmhzYV92ZXIlM2QzJTI2bXNjbGtpZCUzZDQ3ZjExMmY2NTBlYzFiOWFkYjY2NzgwNzllZDU0ZjgwJTI2dXRtX2NvbnRlbnQlM2RNQ1A&rlid=47f112f650ec1b9adb6678079ed54f80",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "What is the Model Context Protocol (MCP)?",
+   "content": "Jul 28, 2026 · MCP is an open protocol supported across a wide range of clients and servers. AI assistants like Claude and ChatGPT, development tools like Visual Studio Code, Cursor, MCPJam, and many others all support MCP — making it easy to build once and integrate everywhere.",
+   "source": "https://modelcontextprotocol.io/docs/2026-07-28/getting-started/intro",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:MCP 协议定义与架构": [
+  {
+   "title": "Inside MCP Security Guide - MCP Security Guide",
+   "content": "Actionable advice for early adopters: avoid exploits & strengthen MCP security. Understand how to secure AI workflows with MCP—download the free report.",
+   "source": "https://www.bing.com/aclick?ld=e8OT2GEYS83Z7GySUNja0TwzVUCUyRYiElvKJy5Fjue37rlmJqvhFEuOFUIdsEmQEBD7qRP639pirTMS6l1UiMGEyBiWC_eSSUYOH3n_vNsF5ib-e4WmbBhebI_CexWsKb8fZCUuOHXMYAwbNtrsqytwmdrspmWPryFGPze_jxjyRYCQYOHXFHdTDqYy90FVxsZrEc8jkH_NtMnAA1I5dXNwbqdWs&u=aHR0cHMlM2ElMmYlMmZ3d3cud2l6LmlvJTJmbHAlMmZpbnNpZGUtbWNwLXNlY3VyaXR5LWEtcmVzZWFyY2gtZ3VpZGUtb24tZW1lcmdpbmctcmlza3MlM2Z1dG1fc291cmNlJTNkYmluZyUyNnV0bV9tZWRpdW0lM2RwcGMlMjZ1dG1fY2FtcGFpZ24lM2Rub24tYnJhbmQtY29tbWVyY2lhbC1jb250ZW50LXNlYXJjaC1hcGFjJTI2dXRtX3Rlcm0lM2RNQ1AlMjUyMGZyYW1ld29yayUyNnV0bV9hZGdyb3VwbmFtZSUzZCU3Yk1DUCU3ZCUyNnV0bV9kZXZpY2UlM2RjJTI2bXNjbGtpZCUzZDMwMjVkMTEwMmZiMjE0Yjg4NWE4YmJlMWUxODlkN2Y0&rlid=3025d1102fb214b885a8bbe1e189d7f4",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "2.1 MCP架构深度解析 | MCP 中文教程 · 遇码",
+   "content": "Jul 28, 2026 · 2.1 MCP架构深度解析 🎯 学习目标：深入理解MCP的技术架构设计原理和实现细节 ⏱️ 预计时间：40分钟 📊 难度等级：⭐⭐⭐ 🏗️ 架构设计哲学 MCP的架构设计遵循几个核心设计原则，这些原则确保了协议的可扩展性、安全性和易用性。 🎯 设计原则",
+   "source": "https://mcp.meetcoding.cn/02-core-concepts/architecture-overview.html",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "MCP (Model Context Protocol)，一篇就够了。 - 知乎",
+   "content": "本篇旨在回答以下三个问题： 什么是 MCP？ 为什么需要 MCP？ 作为用户，我们如何 使用 /开发 MCP？ 当然，一篇文章远远不足以讲透 MCP 的所有概念，只能尽力萃取最重要的内容供大家阅读，欢迎讨论。 Update 2025/04/11 Appendix.B 附上了 MCP Chatbot DEMO 代码以供学习。",
+   "source": "https://zhuanlan.zhihu.com/p/29001189476",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:MCP 在 AI 开发中的应用": [
+  {
+   "title": "一文读懂 MCP——从起源到应用，解锁 AI 的“万能接口”",
+   "content": "它被誉为 AI 世界的“USB-C 接口”，为 大型语言模型 （LLM）与外部工具、数据源的交互提供了一种统一、高效的方式。 本文将以通俗易懂的语言，带你梳理 MCP 的来龙去脉、核心价值、应用场景以及它解决的问题，帮你快速掌握这项技术的前世今生。",
+   "source": "https://zhuanlan.zhihu.com/p/1905272000181678702",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "MCP (Model Context Protocol)，一篇就够了。 - 知乎",
+   "content": "这使得开发者能够 以一致的方式将各种 数据源 、工具和功能连接到 AI 模型 （一个中间协议层），就像 USB-C 让不同设备能够通过相同的接口连接一样。 MCP 的目标是创建一个通用标准，使 AI 应用程序的开发和集成变得更加简单和统一。",
+   "source": "https://zhuanlan.zhihu.com/p/29001189476",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": ".NET AI 和 MCP 入门 - .NET | Microsoft Learn",
+   "content": "模型上下文协议（MCP）是一种开放协议，旨在标准化 AI 应用与外部工具和数据源之间的集成。 通过使用 MCP，开发人员可以增强 AI 模型的功能，使他们能够生成更准确、更相关和上下文感知的响应。 例如，使用 MCP 可将 LLM 连接到资源，例如：",
+   "source": "https://learn.microsoft.com/zh-cn/dotnet/ai/get-started-mcp",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:LangGraph 的 checkpointer 有什么作用？": [
+  {
+   "title": "LangGraph之CheckpointLangGraph Checkpoint 完整深度解析（原理、核...",
+   "content": "Jul 17, 2026 · 一、基础概念定位 1. 核心定义 Checkpoint（检查点）是 LangGraph Pregel 图执行引擎 内置的 会话级状态快照持久化体系，俗称「AI 工作流存档系统」。 核心载体： BaseCheckpointSaver 统一抽象接口，实现图运行时完整状态的保存、读取、回溯、恢复；",
+   "source": "https://juejin.cn/post/7663042240814235688",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "LangGraph 如何通过 Checkpoint 实现持久化LangGraph 的持久化通过 ch...",
+   "content": "Nov 18, 2025 · LangGraph 提供了内置的持久化层，通过“检查点 (checkpointer)”机制，在执行图 (graph) 的每一步 (super-step) 保存状态，从而支持 记忆 (memory)、容错 (fault-tolerance)、时间旅行 (time travel)、人机协作 (human-in-the-loop) 等能力。",
+   "source": "https://juejin.cn/post/7573597479981121572",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "【LangGraph】什么是检查点（Checkpointer） - CSDN博客",
+   "content": "May 18, 2025 · Checkpointer 是 LangGraph 中的核心组件，用于实现状态的持久化，确保状态图在多次交互中能够保存和加载状态，从而支持会话记忆、错误恢复和人工干预等功能。",
+   "source": "https://blog.csdn.net/u013172930/article/details/148036704",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:BM25 算法的核心思想是什么？": [
+  {
+   "title": "BM25 算法详解：从原理到代码实现，掌握搜索与 RAG 的核心检索技术-CS...",
+   "content": "Jun 6, 2026 · 本文介绍BM25算法的基本原理，并通过一个可运行的例子来说明如何使用 BM25算法。 BM25（Best Match 25）是一种用于信息 检索的概率模型，常用于 搜索引擎和问答系统中。 在 RAG（Retrieval-Augmented Generation）框架中， BM25用于从大规模文档库中 检索与查询最相关的文档。",
+   "source": "https://blog.csdn.net/weixin_69500620/article/details/161751314",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "BM25算法的概念、定性理解+公式定量理解、举例说明、一文详解。 - Alp...",
+   "content": "Jan 4, 2026 · BM25算法的概念、定性理解+公式定量理解、举例说明、一文详解。 “BM25 是检索系统的根基算法”，而不是简单的 API 细节问题。 下面我会 从零假设你“完全不理解 BM25”，一步一步把它讲透，并且 所有概念都会和你实际写 ES / RAG / 搜索代码的场景强绑定**。",
+   "source": "https://www.cnblogs.com/geekbruce/articles/19438527",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "RAG提效利器——BM25检索算法原理和Python实现BM25 算法详解：从原理到代码实现，掌握搜索与 RAG 的核心检索技术_ra...RAG 混合检索深度解析：BM25 + 向量检索 + RRF 算法，让 AI 真正\"找到...【算法科普】BM25：搜索引擎的核心排序算法详解 - 搜索客，搜索人自己...BM25算法详解与实践总结BM25（Best Matching 25）是一种用于信息检索...",
+   "content": "随着基于检索增强的生成（Retrieval-Augmented Generation—RAG）逐渐成为当前大模型落地方案的主流选择，搜索技术在这一过程中扮演着至关重要的角色。然而，仅依赖向量相似性检索往往无法达到理想的效果。因此，为了进一步提升搜索性能，我们需要将基于字面相似的传统搜索算法与向量相似性检索相结合，实现混合搜索。今天，我将为大家详细介绍一种非常流行的信息检索算法——BM25。 RAG See full list on zhuanlan.zhihu.com BM25（Best Matching 25）是一种经典的信息检索算法，是基于Okapi TF-IDF算法的改进版本，旨在解决Okapi TF-IDF算法的一些不足之处。其被广泛应用于信息检索领域的排名函数，用于估计文档D与用户查询Q之间的相关性。它是一种基于概率检索框架的改进，特别是在处理长文档和短查询时表现出色。BM25的核心思想是基于词频(TF)和逆文档频率(IDF)来,同时还引入了文档的长度信息来计算文档D和查询Q之间的相关性。目前被广泛运用的搜索引擎ES就内置了BM25算法进行全文检索。 BM25算法的基本公式如下： BM25 其中： •Score(D,Q) 是文档 D 与查询 Q 的相关性得分。 •qi 是查询中的第 i 个词。 See full list on zhuanlan.zhihu.com 下方是Python实现一个简单的BM25算法。 在这个例子中，我们使用了四个文档和一个查询来计算相关性得分。查询是 [\"quick\", \"brown\"]。得分如下： •文档 1 (\"the quick brown fox\"): 得分约为 1.02 •文档 2 (\"the lazy dog\"): 得分为 0.0（因为它不包含查询中的任何单词） •文档 3 (\"the quick dog\"): 得分约为 0.39 •文档 4 (\"the quick brown brown fox\"): 得分约为 1.20 See full list on zhuanlan.zhihu.com 其实从结果来看，这个匹配算法确实能将最匹配的D找出来。Best Matching 25 其中25的含义是此算法经过 25 次迭代调整之后得到的，这也是这个匹配算法经久不衰的原因。 See full list on zhuanlan.zhihu.com See full list on zhuanlan.zhihu.com Aug 24, 2026 · 本文系统讲解BM25算法的核心原理，包括词频非线性饱和、逆文档频率（IDF）平滑计算和文档长度归一化机制；对比TF-IDF的局限性，阐明BM25如何提升关键词相关性排序质量；涵盖完整数学公式、k1与b参数作用及调优策略；提供基础与进阶代码实现，并重点分析其 ... 本文深入解析 RAG 系统中混合检索（Hybrid Retrieval）的核心原理，详细讲解 BM25 关键词检索与向量语义检索的优劣互补，以及 RRF（倒数排名融合）算法的工作机制，并通过 Spring Boot + LangChain4j 提供完整可运行的 Java 代码示例，帮助开发者搭建高召回率的生产级 RAG ... Mar 11, 2026 · 大家好，我是 @algo_explainer，今天带大家深入理解搜索引擎中最经典的排序算法 —— BM25。 什么是 BM25？ BM25（Best Match 25）是一种基于概率检索框架的排序算法，由 Stephen Robertson 于 1994 年提出。 它是现代搜索引擎（包括 Elasticsearch、Lucene）的默认排序算法。 参考 ... Jun 9, 2025 · BM25（Best Matching 25）是一种用于信息检索（Information Retrieval）和文本挖掘的算法，它被广泛应用于搜索引擎和相关领域。 BM25 基于 TF-IDF（Term Frequency-Inverse Document Frequency）的思想，但对其进行了改进以考虑文档的长度等因素。",
+   "source": "https://zhuanlan.zhihu.com/p/670322092",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:BM25 算法原理详解": [
+  {
+   "title": "BM25 算法详解：从原理到代码实现，掌握搜索与 RAG 的核心检索技术-CS...",
+   "content": "Jun 6, 2026 · BM25算法基本使用以及在RAG中的应用 BM25算法被多种RAG开源框架和向量库的向量查询中提到或使用到。 本文介绍BM25算法的基本原理，并通过一个可运行的例子来说明如何使用 BM25算法。",
+   "source": "https://blog.csdn.net/weixin_69500620/article/details/161751314",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "BM25算法的概念、定性理解+公式定量理解、举例说明、一文详解。 - Alp...",
+   "content": "Jan 4, 2026 · BM25算法的概念、定性理解+公式定量理解、举例说明、一文详解。 “BM25 是检索系统的根基算法”，而不是简单的 API 细节问题。 下面我会 从零假设你“完全不理解 BM25”，一步一步把它讲透，并且 所有概念都会和你实际写 ES / RAG / 搜索代码的场景强绑定**。",
+   "source": "https://www.cnblogs.com/geekbruce/articles/19438527",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "BM25 算法详解：从原理到代码实现，掌握搜索与 RAG 的核心检索技术_ra...",
+   "content": "Aug 24, 2026 · 本文系统讲解BM25算法的核心原理，包括词频非线性饱和、逆文档频率（IDF）平滑计算和文档长度归一化机制；对比TF-IDF的局限性，阐明BM25如何提升关键词相关性排序质量；涵盖完整数学公式、k1与b参数作用及调优策略；提供基础与进阶代码实现，并重点分析其 ...",
+   "source": "https://blog.csdn.net/zzzzz77777aaaaaa/article/details/164003831",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:BM25 模型核心机制": [
+  {
+   "title": "BM25 算法详解：从原理到代码实现，掌握搜索与 RAG 的核心检索技术-CS...",
+   "content": "Jun 6, 2026 · 文章浏览阅读3.1k次，点赞26次，收藏26次。 本文将从最基础的概念出发，逐步深入 BM25 的核心思想、数学原理、代码实现和实际应用，帮助你彻底理解这一算法，并能够将其应用到自己的项目中。 _bm25",
+   "source": "https://blog.csdn.net/weixin_69500620/article/details/161751314",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "大模型面试高频题：请详细讲解检索中的BM25算法-CSDN博客",
+   "content": "Apr 9, 2026 · 这是面试基础题，先明确核心定义，再点出其核心价值，避免只说“是关键词检索算法”的表层回答。 BM25全称为Best Matching 25，是由Stephen E. Robertson和Karen Spärck Jones在1970年代基于概率检索模型开发的关键词检索相关性评分算法，隶属于BM系列算法，因是该系列第 ...",
+   "source": "https://blog.csdn.net/qq_38646027/article/details/159752817",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "BM25算法的概念、定性理解+公式定量理解、举例说明、一文详解。 - Alp...",
+   "content": "Jan 4, 2026 · 六、BM25 的本质总结（非常重要） BM25 本质不是“相似度” 而是“相关性打分规则” 它的判断逻辑是： 词是否匹配（Boolean 检索） 再按“信息量”给权重 再按“文本结构”做修正",
+   "source": "https://www.cnblogs.com/geekbruce/articles/19438527",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:HNSW 向量索引的原理是什么？": [
+  {
+   "title": "HNSW 原理详解：高维向量检索的图索引方法 - 千问AI平台",
+   "content": "AI 学习频道 HNSW 原理详解：高维向量检索的图索引方法 HNSW 是一种基于图的向量索引算法。 通过多层图结构与分层跳跃搜索加速高维向量检索，帮助读者理解原理、优势、适用场景和内存取舍。",
+   "source": "https://www.qianwenai.com/discover/what-is-hnsw",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "【向量检索与RAG全流程解析】HNSW原理、实践及阿里云灵积DashScope嵌...",
+   "content": "Nov 24, 2025 · 一、HNSW算法：向量检索的“性能标杆” HNSW是由Yury Malkov团队于2016年提出的近似最近邻（Approximate Nearest Neighbor, ANN）检索算法，核心思想是通过“层次化图结构”模拟“小世界网络”（Small World Network）特性，在保证高召回率的同时，实现毫秒级的高维向量检索。",
+   "source": "https://www.cnblogs.com/gccbuaa/p/19265831",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "【干货】HNSW算法详解：从基础到进阶，掌握大模型向量搜索核心技术！-...",
+   "content": "Nov 8, 2025 · 通过比较HNSW与NSW的搜索效率，展示了HNSW在减少跳数和提高搜索准确性方面的优势，为在大模型应用中实现高效的向量相似性搜索提供了技术基础。 HNSW（Hierarchical Navigable Small World）可能是专为高维空间中的最近邻搜索而设计的最有效、最高效的索引方法之一。",
+   "source": "https://blog.csdn.net/2401_85375151/article/details/154571998",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:向量索引构建与搜索策略": [
+  {
+   "title": "万物皆可Embedding，深入理解向量索引的构建和检索-CSDN博客",
+   "content": "Jul 11, 2024 · 本文详细介绍了向量索引构建与检索的技术流程，包括词句向量生成方法、向量聚类算法、向量检索优化算法以及aitheta源码解析等内容，重点讲解了word2vec和BERT算法，并探讨了K-means、DBSCAN等聚类算法的应用。 01 总体流程简介",
+   "source": "https://blog.csdn.net/python123456_/article/details/140348248",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "向量索引向量索引技术总结笔记 1. 向量索引基础概念 向量索引是一种特...",
+   "content": "Jun 20, 2025 · 向量索引技术总结笔记 1. 向量索引基础概念 向量索引是一种特殊的数据结构，用于高效地存储、检索和比较高维向量数据，主要应用于相似性搜索场景。 向量索引配置示例 关键参数解释 dims: 向量维度 c",
+   "source": "https://juejin.cn/post/7517602418487263247",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "【向量检索索引优化终极指南】：揭秘HNSW与IVF如何提升查询效率90%-CS...",
+   "content": "Dec 6, 2025 · 所有向量之间的距离趋于接近，使得最近邻搜索变得低效且不准确。 这种现象严重削弱了索引结构的筛选能力。 索引构建与查询效率的权衡 为了加速检索，常用近似最近邻（ANN）算法如HNSW、IVF或LSH来构建索引。 然而，这些方法需在精度与速度之间做出权衡。",
+   "source": "https://blog.csdn.net/ByteChat/article/details/155631038",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:Transformer 中自注意力的计算复杂度是多少，为什么？": [
+  {
+   "title": "Transformer 101 (一): 参数量和时间空间复杂度",
+   "content": "Jul 7, 2024 · 先看下 Positional Encoding 和 Embedding，由于前者使用的是 三角函数 直接计算得到的，参数量为 0，后者出现在 Transformer 中的 3 个位置（Input Embedding、Output Embedding、Pre-softmax），但是参数共享，所以只有一份参数，也就是 V\\times D。",
+   "source": "https://zhuanlan.zhihu.com/p/661804092",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "从零吃透Transformer：Self-Attention机制与架构深度剖析",
+   "content": "3 days ago · 本文系统剖析Transformer核心架构与Self-Attention机制，涵盖编码器-解码器结构、QKV计算原理、缩放点积注意力、多头注意力设计及位置编码实现；深入分析计算复杂度与训练难点，并提供PyTorch手写简化版Transformer的完整实现与调试指南，聚焦深度学习中注意力机制的关键技术细节。",
+   "source": "https://blog.csdn.net/weixin_29048309/article/details/170215834",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "为什么transformer的时间复杂度是N的平方，具体是里面的哪一个计算流...",
+   "content": "Nov 22, 2024 · Transformer的时间复杂度为 O (N2)，其中 NN 是输入序列的长度。 这一复杂度主要来源于自注意力机制（self-attention mechanism）的计算过程。 在Transformer模型中，自注意力机制的 核心步骤是计算查询（Query）、键（Key） 和值（Value）矩阵之间的点积。",
+   "source": "https://blog.csdn.net/qq_39970492/article/details/143980109",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:自注意力机制时间复杂度推导原因": [
+  {
+   "title": "Transformer 自注意力复杂度 O(n²d) 详解：从矩阵乘法到 PyTorch 源码...",
+   "content": "Jul 7, 2026 · 本文深入剖析Transformer自注意力机制的计算复杂度O (n²d)，从标准公式分解、矩阵维度推导出发，结合PyTorch源码验证QK^T和AV矩阵乘法的主导性开销；对比CNN与RNN的复杂度差异，分析内存占用瓶颈；并系统梳理Flash Attention、线性注意力等优化技术及其硬件适配原理 ...",
+   "source": "https://blog.csdn.net/weixin_31715171/article/details/162677156",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "从数学原理到代码实现：手把手推导Transformer时间复杂度公式（附PyTo...",
+   "content": "Apr 1, 2026 · 这背后的核心原因就是Transformer模型中自注意力机制的时间复杂度。 本文将带您从数学公式推导开始，逐步拆解计算过程，最终通过PyTorch代码验证理论分析。 1. 自注意力机制的时间复杂度分析 自注意力机制是Transformer架构的核心创新，也是计算复杂度最高的部分。",
+   "source": "https://blog.csdn.net/weixin_29251131/article/details/159714156",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "Transformer 101 (一): 参数量和时间空间复杂度 - 知乎【强烈建议收藏】从小白到大神：Self-Attention自注意力机制完全指南 ...图解Transformer系列二：Self-Attention（自注意力机制）Transformer模型为什么这么慢？深入解析自注意力机制的时间复杂度 - C...自注意力 (Self-Attention)机制的学习与理解 - Heng-Mei Blog",
+   "content": "在上一篇笔记中我们复盘了 Transformer 模型，今天我们好好分析下： •Transformer 模型的参数量 •Self-Attention 的时间复杂度 •Self-Attention 的空间复杂度 •Transformer 训练时的计算量 •Transformer 推理时的计算量 See full list on zhuanlan.zhihu.com 我们来分析下 Transformer 模型的参数量，先假设序列中每个token 的向量维度d_{model}=D，词表大小是V，multi-head 个数是H，每个 head 中向量维度d_q=d_k=d_v=\\frac{D}{H}。 softmax前的 Linear 层不属于 Encoder 和 Decoder，它的参数量和层数、维度相关，并且线性层的参数量很容易计算，这里就忽略掉。我们重点看 Encoder 和 Decoder 的参数量。 先看下 Positional Encoding 和 Embedding，由于前者使用的是三角函数直接计算得到的，参数量为 0，后者出现在 Transformer 中的 3 个位置（Input Embedding、Output Embedding、Pre-softmax），但是参数共享，所以只有一份参数，也就是V\\times D。 Transformer 中有三处地方用到了 self-attention: Encoder 中的Multi-Head Attention、Decoder 中的Masked Multi-Head Attention、Decoder 中的Multi-Head Attention(Cross-Attention)。其实三者的模型结构完全相同，差别仅在于Q(queries), K(keys), V(values)是来自同一个序列还是两个序列，是否用 mask。因此参数量计算方法相同，并且向量维度都是d_{model}，三者的参数量也相同。 同样的，Encoder 和 Decoder 中的FFNN 结构相同，参数量也相同。 ok，下面我们就分别看下 self-attention 和 FFNN 的参数量，先来看 self-attention，假设序列X\\in R^{L\\times d_{model}}，其中L是序列长度，Q=K=V=X，回顾下scaled dot-product attention公式： See full list on zhuanlan.zhihu.com 阅读 Transformer 相关的论文，在讨论 self-attention 的时间和空间复杂度时，都会提到是O(N^2)，其中N是序列长度。 关于时间复杂度(time complexity)或空间复杂度O(\\cdot)，首先要知道这只是一种定性分析，而不是精确的定量分析。 我们来看下 scaled dot-product attention的时间和空间复杂度： Attention(Q,K,V)=softmax(\\frac{QK^T}{\\sqrt d})V \\\\ 为了分析时间和时间复杂度，我们把上面的计算过程拆分：S=QK^T, S=\\frac{S}{\\sqrt d}, S=softmax(S), SV。 只要我们分析出每个计算的复杂度，就可以得到整体计算的复杂度。 See full list on zhuanlan.zhihu.com •Attention is all you need https://arxiv.org/abs/1706.03762 •[重读经典，常读常新][38] Transformer: Attention Is All You Need https://zhuanlan.zhihu.com/p/661228490 See full list on zhuanlan.zhihu.com 本文详细介绍了Self-Attention自注意力机制，这是Transformer架构的核心和所有主流大语言模型的基础。 文章解释了Self-Attention如何解决传统RNN的长距离依赖、无法并行计算和训练效率低下等问题；深入剖析了Q、K、… Jun 7, 2023 · 作为最近热门的生成式大模型的基石，Transformer自2017年诞生以来，就成为nlp研究者必须掌握的基本模型。 本系列将通过图解方式，全方面展示Transformer的细节。 Apr 8, 2026 · ### 1.2 复杂度主导因素 从上述分解可以看出，自注意力机制的总时间复杂度为O (n²·d + n·d²)。 但在实际应用中，序列长度n通常远大于嵌入维度d（例如，n=512而d=64），因此n²·d项成为主导因素。 Dec 20, 2025 · 通过对 Query / Key / Value 线性映射、相关性计算与 Softmax 归一化过程的逐步推导，阐明了注意力权重的来源及其线性代数本质。 最终从整体流程与直观含义两个层面总结了自注意力在并行性、动态建模能力与全局上下文融合方面的核心优势。",
+   "source": "https://zhuanlan.zhihu.com/p/661804092",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:RAG 在人工智能中的应用场景": [
+  {
+   "title": "《RAG应用场景实战：7大真实案例带你落地RAG技术》",
+   "content": "1.1 什么是RAG应用场景 RAG（检索增强生成）的核心思想很简单： 给LLM加上外挂知识库，让AI能够基于你的私有数据回答问题。 这意味着： 任何需要基于大量文档、知识库来回答问题的场景，都适合用RAG。 1.2 七大典型应用场景 ... 二、场景选择评估框架",
+   "source": "https://zhuanlan.zhihu.com/p/1994348312162215096",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "一文讲透RAG在垂直领域大模型的应用-CSDN博客",
+   "content": "Feb 18, 2024 · 本文介绍了RAG（Retrieval-AugmentedGeneration）技术，通过结合大模型和外部知识库，提升模型的问答能力。文章详细解释了RAG的工作原理、功能定义、适用场景，以及在LangChain中的实现，并讨论了RAG的优化方向和相关研究中的创新点。,",
+   "source": "https://blog.csdn.net/TonyChacha635401873/article/details/136155013",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "小白到进阶：RAG、AI智能体与Agentic RAG详解（附实战应用）-CSDN博客",
+   "content": "Feb 2, 2026 · 重点剖析RAG三代演进（朴素/高级/模块化）、AI智能体四大类型（反射/基于模型/基于目标/基于效用）及其控制器架构，并深入解读Agentic RAG的多轮迭代闭环、检索器优化（ANN/Faiss/HNSW）、生成器选型与不确定性处理机制。",
+   "source": "https://blog.csdn.net/qq_46094651/article/details/157653535",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:Docker 容器和虚拟机有什么区别？": [
+  {
+   "title": "Docker vs 虚拟机：别再搞混了！一张表看懂容器和虚拟机的本质区别_do...",
+   "content": "Apr 1, 2026 · 文章浏览阅读1.2k次，点赞14次，收藏3次。 本文深入剖析Docker容器与传统虚拟机的核心差异：Docker仅虚拟应用层，复用宿主机Linux内核，因此镜像小、启动快；虚拟机则完整虚拟包括内核在内的整个操作系统，资源开销大、启动慢。",
+   "source": "https://blog.csdn.net/KevinHuang2088/article/details/159616291",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "容器、Docker、虚拟机，别再傻傻分不清 - 知乎Docker容器与虚拟机的区别 - CSDN博客docker容器与虚拟机有什么区别？ - 知乎docker和虚拟机有什么区别-腾讯云开发者社区-腾讯云【Docker】Docker容器与虚拟机的对比、三要素、架构和镜像加速器的详...虚拟机与容器的区别：核心概念与应用场景详解 - Docker 入门教程 | 现...",
+   "content": "容器技术起源于Linux，是一种内核虚拟化技术，提供轻量级的虚拟化，以便隔离进程和资源。尽管容器技术已经出现很久，却是随着Docker的出现而变得广为人知。Docker是第一个使容器能在不同机器之间移植的系统。它不仅简化了打包应用的流程，也简化了打包应用的库和依赖，甚至整个操作系统的文件系统能被打包成一个简单的可移植的包，这个包可以被用来在任何其他运行Docker的机器上使用。 容器和虚拟机具有相似的资源隔离和分配方式，容器虚拟化了操作系统而不是硬件，更加便携和高效。 图1 容器 vs 虚拟机 相比于使用虚拟机，容器有如下优点： •更高效的利用系统资源 由于容器不需要进行硬件虚拟以及运行完整操作系统等额外开销，容器对系统资源的利用率更高。无论是应用执行速度、内存损耗或者文件存储速度，都要比传统虚拟机技术更高效。因此，相比虚拟机技术，一个相同配置的主机，往往可以运行更多数量的应用。 See full list on zhuanlan.zhihu.com Docker容器有如下三个主要概念： •镜像：Docker镜像里包含了已打包的应用程序及其所依赖的环境。它包含应用程序可用的文件系统和其他元数据，如镜像运行时的可执行文件路径。 •镜像仓库：Docker镜像仓库用于存放Docker镜像，以及促进不同人和不同电脑之间共享这些镜像。当编译镜像时，要么可以在编译它的电脑上运行，要么可以先上传镜像到一个镜像仓库，然后下载到另外一台电脑上并运行它。某些仓库是公开的，允许所有人从中拉取镜像，同时也有一些是私有的，仅部分人和机器可接入。 •容器：Docker容器通常是一个Linux容器，它基于Docker镜像被创建。一个运行中的容器是一个运行在Docker主机上的进程，但它和主机，以及所有运行在主机上的其他进程都是隔离的。这个进程也是资源受限的，意味着它只能访问和使用分配给它的资源（CPU、内存等）。 典型的使用流程如图2所示： 图2 Docker容器典型使用流程 See full list on zhuanlan.zhihu.com 下面使用Docker将基于Nginx镜像打包一个容器镜像，并基于容器镜像运行应用，然后推送到容器镜像仓库。 安装Docker Docker几乎支持在所有操作系统上安装，用户可以根据需要选择要安装的Docker版本。 在Linux操作系统下，可以使用如下命令快速安装Docker。 说明： CentOS 8.0操作系统使用上述脚本安装Docker会出现问题，建议使用如下命令安装较低版本Docker。 See full list on zhuanlan.zhihu.com May 23, 2024 · 总结 Docker与虚拟机各有优缺点，适用于不同的场景。 Docker容器以其轻量级、高效性和快速部署的特点，特别适合现代微服务架构和DevOps实践；而虚拟机则以其高隔离性和多操作系统支持的特性，适合传统应用和高安全性需求的场景。 那 虚拟机 与 Docker 究竟有何不同呢? 首先，大家需要明确一点， Docker容器 不是 虚拟机。 2014年，当我第一次接触Docker的时候，我把它比做一种轻量级的虚拟机。 这样做无可厚非，因为Docker最初的成功秘诀，正是它比虚拟机更节省内存，启动更快。 Docker容器与虚拟机深度对比：Docker采用操作系统层虚拟化，共享宿主机内核，启动快、资源占用低；虚拟机通过硬件虚拟化提供强隔离但资源消耗大。 本文从架构原理、性能表现、安全隔离等维度全面解析两者差异，帮助开发者在云原生时代做出最优技术选型。 Aug 23, 2023 · 总结起来，Docker的架构由Docker Daemon、Docker Client、Docker Registry、Graph、Driver、libcontainer和Docker container等多个组件组成。 Docker Daemon作为主体部分，接受Docker Client的请求并通过Docker Engine执行各种工作。 Mar 31, 2026 · 深入解析虚拟机 (VM)与容器 (Container)两种虚拟化技术的核心架构、资源消耗及适用场景。 对比Hypervisor与容器引擎的工作原理，剖析强隔离性与轻量化特性的优劣势，辅助开发者在微服务架构、CI/CD流水线及传统应用部署中做出最佳技术选型。",
+   "source": "https://zhuanlan.zhihu.com/p/271846374",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "Docker容器与虚拟机的区别 - CSDN博客",
+   "content": "May 23, 2024 · 总结 Docker与虚拟机各有优缺点，适用于不同的场景。 Docker容器以其轻量级、高效性和快速部署的特点，特别适合现代微服务架构和DevOps实践；而虚拟机则以其高隔离性和多操作系统支持的特性，适合传统应用和高安全性需求的场景。",
+   "source": "https://blog.csdn.net/m0_74091159/article/details/139157060",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:Docker 容器与虚拟机核心差异": [
+  {
+   "title": "Docker vs 虚拟机：别再搞混了！一张表看懂容器和虚拟机的本质区别_do...",
+   "content": "Apr 1, 2026 · 文章浏览阅读1.2k次，点赞14次，收藏3次。 本文深入剖析Docker容器与传统虚拟机的核心差异：Docker仅虚拟应用层，复用宿主机Linux内核，因此镜像小、启动快；虚拟机则完整虚拟包括内核在内的整个操作系统，资源开销大、启动慢。",
+   "source": "https://blog.csdn.net/KevinHuang2088/article/details/159616291",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "Docker容器与VMware虚拟机：核心差异与应用场景解析-CSDN博客",
+   "content": "Oct 29, 2026 · 本文深入剖析Docker容器（操作系统级虚拟化）与VMware虚拟机（硬件级虚拟化）的本质差异，涵盖性能实测（启动时间、内存/CPU/磁盘开销）、网络与安全模型（bridge/NAT隔离机制、内核级vs硬件级隔离）、存储架构（分层镜像vs厚/精简置备）、典型应用场景（微 ...",
+   "source": "https://blog.csdn.net/weixin_33883104/article/details/169479279",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "虚拟化（VMware）vs 容器化（Docker）核心区别 - 知乎",
+   "content": "VMware Workstation 各版本下载 【K8s】Kubernetes 词汇表 以下是关于虚拟化（以 VMware 为代表）和容器化（以 Docker 为代表）核心区别的对比总结，结合技术特性与应用场景，帮助理解两者的差异： 一、技术架构对…",
+   "source": "https://zhuanlan.zhihu.com/p/1911095227638317933",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:虚拟机与容器技术对比分析": [
+  {
+   "title": "深入理解虚拟机与容器：原理、对比与应用场景分析_虚拟机 容器-CSDN博...",
+   "content": "May 1, 2025 · 本文深入剖析了虚拟机与容器技术。 虚拟机通过硬件层虚拟化，隔离性强但启动慢、资源占用大；容器采用操作系统层虚拟化，轻量高效但隔离性弱。 对比了两者在架构、启动速度、安全性等方面的差异，并分析了各自适用场景，还提及了两者的融合趋势。",
+   "source": "https://blog.csdn.net/cooldream2009/article/details/147654561",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "虚拟机与容器技术详解：VM、LXC、LXD与Docker-CSDN博客",
+   "content": "Jul 5, 2025 · 本文详细解析了虚拟机、LXC、LXD和Docker的技术原理、差异及2025年最新发展动态。 虚拟机模拟完整硬件环境，容器共享主机操作系统内核。 文中分析了各技术的优缺点，并给出选型建议，指出它们是互补关系，应按需选择以提升IT效率和可靠性。",
+   "source": "https://blog.csdn.net/qq_37592750/article/details/149142743",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "容器 vs 虚拟机：深入对比 | DataCamp",
+   "content": "Oct 6, 2026 · 在这篇博文中，我们将深入解析虚拟机与容器，并根据您的使用场景，帮助您选择实现虚拟化的最佳技术。 简短结论：容器 vs 虚拟机 容器和虚拟机（VM）都能在一台服务器上提供多个环境。 容器更轻量，共享宿主操作系统，适合快速部署。",
+   "source": "https://www.datacamp.com/zh/blog/containers-vs-virtual-machines",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:HTTP/2 协议核心特性与优势": [
+  {
+   "title": "HTTP/2协议核心特性与Web性能优化实践 - CSDN博客",
+   "content": "Oct 13, 2026 · 文章浏览阅读9次。 HTTP协议作为Web应用的基础通信协议，其性能直接影响用户体验。 从HTTP/1.1到HTTP/2的演进解决了传统协议中的队头阻塞问题，通过二进制分帧、多路复用和头部压缩等核心技术大幅提升传输效率。",
+   "source": "https://blog.csdn.net/weixin_33552698/article/details/167866130",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "HTTP/2协议核心特性与性能优化实践 - CSDN博客",
+   "content": "Oct 13, 2026 · HTTP协议作为Web应用的基础通信协议，其演进直接影响着网络性能优化。 从HTTP/1.1到HTTP/2的升级解决了队头阻塞、头部冗余等核心问题。 通过二进制分帧实现多路复用，配合HPACK头部压缩算法显著减少传输开销。",
+   "source": "https://blog.csdn.net/weixin_29611239/article/details/167866123",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "HTTP/2：让网络飞起来本文详解了HTTP/2协议，它改善了HTTP/1.1的性能...",
+   "content": "Aug 6, 2024 · 本文详解了HTTP/2协议，它改善了HTTP/1.1的性能问题，引入了新特性如二进制帧、多路复用等，提高了网络性能。 现代浏览器和服务器都支持HTTP/2，且部署简单。",
+   "source": "https://juejin.cn/post/7399674749729570842",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:HTTP/1.1 性能瓶颈与升级对比": [
+  {
+   "title": "HTTP/1.1、HTTP/2、HTTP/3 技术详解、差异对比与通用升级指南",
+   "content": "May 26, 2026 · 后端领域 Nginx 与 HTTP_2 协议的性能对比 本文旨在系统分析Nginx服务器在HTTP/1.1和HTTP/2协议下的性能表现差异，帮助开发者理解协议升级带来的性能改进，并提供实际的配置和优化建议。 研究范围涵盖协议原理、Nginx实现、性能测试方法和实际应用场景。",
+   "source": "https://blog.csdn.net/qq_44695874/article/details/161423605",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "HTTP/1.1性能瓶颈分析与优化实践 - CSDN博客",
+   "content": "Sep 16, 2026 · 文章浏览阅读45次。 HTTP协议作为Web应用的基础通信协议，其性能直接影响用户体验。 HTTP/1.1虽然支持连接复用，但仍存在队头阻塞、头部冗余等固有缺陷。 通过TCP连接优化、头部压缩、资源合并等技术手段，可以显著提升页面加载速度。",
+   "source": "https://blog.csdn.net/weixin_33883104/article/details/165684284",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "HTTP/1.1 与 Web 性能｜持久连接、缓存控制、流水线与演进要点 - Lvwa...",
+   "content": "Apr 11, 2025 · HTTP/1.1 与站点性能：说明持久连接、分块编码、管线化、Range 与缓存控制等机制如何影响吞吐与延迟，为何多数站点仍建议尽快升级到 HTTP/1.1，并结合 HPBN 系列笔记理解协议层优化抓手。",
+   "source": "https://lvwapro.github.io/2025/04/11/http1x/",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:什么是 CAP 定理？": [
+  {
+   "title": "什么是 CAP 定理？| IBM",
+   "content": "由于所有云应用程序都是分布式系统，因此在设计云应用程序时了解 CAP 定理至关重要，以便您可以选择能够提供应用程序最需要的特征的数据管理系统。 CAP 定理也称为 Brewer 定理，因为这是由 Eric A. Brewer 教授 2000 年在一次关于分布式计算的演讲中首次提出的。",
+   "source": "https://www.ibm.com/cn-zh/think/topics/cap-theorem",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "分布式系统的CAP定理详解 - 知乎什么是CAP 定理，为什么CAP不能同时被满足？ - 知乎CAP 定理与 BASE 理论详解：一致性、可用性、分区容错与最终一致性 | ...什么是 CAP 定理？为什么 CAP 原则不能同时被满足，只能满足其中的两...CAP定理一文带你速解（通俗易懂，图文并茂）-CSDN博客一文看懂｜分布式系统之CAP理论-腾讯云开发者社区-腾讯云",
+   "content": "CAP定理是分布式系统中的重要理论，在一个分布式系统中最多只能同时满足一致性（Consistency）、可用性（Availability）和分区容错性（Partition tolerance）这三项中的两项，不能同时满足这三项。 •C：Consistency（一致性） •A：Availability（可用性） •P：Partition tolerance（分区容错性） See full list on zhuanlan.zhihu.com 一致性（Consistency） 一致性指\"all nodes see the same data at the same time\"，即更新操作成功后，所有节点在同一时间的数据完全一致。对于一致性的理解，可以从客户端和服务端两个不同的视角来分析。 •从客户端来看，一致性主要指的是多并发请求时更新过的数据如何获取的问题？如果更新过的数据需要立刻被后续的请求获取到就是强一致性，如果能容忍后续的请求部分或者全部访问不到则是弱一致性，如果经过一段时间后要求能访问到更新后的数据则是最终一致性。 •从服务端来看，一致性则是数据更新后如何同步到整个分布式系统，以保证数据最终一致性。 可用性（Availability） 可用性指\"reads and writes always succeed\"，即服务一直可用且能够正常响应（不保证返回的是最新写入的数据）。 对于一个讲究可用性的分布式系统，每一个非故障的节点必须对每一个请求作出响应，因此我们在衡量一个系统可用性的时候，都是通过停机时间来计算的。通过描述一个系统的可用性时，比如某某系统可用性可以达到5个9，意思就是说该系统的可用水平是99.999%，即全年停机时间不超过(1-0.99999)*365*24*60 = 5.256min，这是一个极高的要求。 好的可用性主要是指系统能够很好的为用户提供服务，不出现操作失败或者访问超时等用户体验不好的情况。一个分布式系统设计会涉及很多子系统，例如负载均衡器、Web服务器、应用代码、缓存系统、数据库服务器等，任何一个节点的不稳定都可以会影响整个系统的可用性。 分区容错性（Partition tolerance） 分区容错性指\"the system continues to operate despite arbitrary message loss or failure of part of the system\"，即分布式系统在遇到某节点或网络分区故障的时候，仍然能够对外提供满足一致性和可用性的服务。 See full list on zhuanlan.zhihu.com 如上图，在一个分布式系统中有两个节点N1和N2，他们之间可以通过网络互相连通。N1中有一个应用程序A和一个数据库V，N2中有一个应用程序B和一个数据库V，A和B是分布式系统的两个部分，V是分布式系统数据存储的两个子数据库。 •在满足一致性的时候，N1和N2中的数据是一样的（V0=V0）。 •在满足可用性的时候，用户无论请求N1还是N2，都会立即得到响应。 •在满足分区容错性的情况下，N1和N2有任何一方宕机或者网络不通的时候，都不会影响N1或N2正常运行。 如上图，是分布式系统数据正常运转流程： 1.用户向N1机器请求数据更新，程序A更新数据库V0为V1； See full list on zhuanlan.zhihu.com CA舍弃P 这种情况在分布式系统中是不存在的，在分布式系统下，网络分区是一个基本要求。如果要舍弃P就意味着舍弃分布式系统，那也就没有必要讨论CAP定理了，这也是为什么在前面的CAP证明中，我们以系统满足P为前提论述了无法同时满足C和A。因此对于一个分布式系统来说，P是一个基本要求，CAP三者中只能在CA两者之间做权衡，并且要想尽办法提升P。 CP舍弃A 如果一个分布式系统不要求强的可用性，即允许系统停机或者长时间无响应的话，就可以在CAP三者中保障CP而舍弃A。这样的分布式系统一旦发生网络故障或者消息丢失等情况，就要牺牲用户体验，等数据一致后再让用户访问系统。 设计成CP的系统比较典型的就是分布式数据库，在发生极端情况时，优先保证数据的强一致性，代价就是舍弃系统的可用性。如Redis、HBase这种分布式存储系统，如ZooKeeper这种分布式协调系统，数据的一致性是最基本的要求。 AP舍弃C 保证高可用和分区容错性的同时，需要放弃一致性，为了保证高可用，用户请求时需要马上返回，每个节点只能用本地数据提供服务，这样会导致全局数据的不一致性。确切的说是放弃了数据强一致性，退而求其次保证数据最终一致性。这种舍弃强一致性而保证系统的分区容错性和可用性的场景非常多，比如电商网站的秒杀活动或者12306购票，在高并发情况下可能需要一些排队机制，这就是在可用性和分区容错性方面保证了系统正常服务，然后在数据的一致性方面做了一些让步，会影响一些用户体验，但也不会造成用户流程的严重阻塞，这种机制虽然在瞬间可能存在数据不一致的情况，但过了一段时间还是要保证最终一致性的。 CAP如何权衡和取舍没有好坏之分，需要根据不同的业务场景进行选择，适合的才是最好的。对于涉及到钱这种不能有任何差错的场景，数据强一致性是必须要保证的。对于其他场景，比较普遍的做法是选择可用性和分区容错性，舍弃强一致性，退而求其次使用最终一致性来保证数据的安全。 See full list on zhuanlan.zhihu.com 基本可用（Basically Available） 基本可用是指分布式系统在出现故障时，允许损失部分可用性，即保证核心可用。如电商大促时，为了应对访问量激增，部分用户可能会被引导到降级页面，服务层也可能只提供降级服务，这就是损失部分可用性的体现。 软状态（Soft State） 软状态是指允许系统存在中间状态，而该中间状态不会影响系统整体可用性。分布式存储中一般一份数据会有多个副本，允许不同节点间副本同步的延时就是软状态的体现（如MySQL的复制）。 最终一致性（Eventual Consistency） 最终一致性是指系统中的所有数据副本经过一定时间后，最终能够达到一致的状态。 See full list on zhuanlan.zhihu.com 目录：什么是 CAP 定理为什么只能 3 选 2能不能解决 3 选 2 的问题引用1. 什么是 CAP 定理2000 年的时候，Eric Brewer 教授提出了 CAP 猜想，2年后，被 Seth Gilbert 和 Nancy Lynch 从理论上证明了猜想的可能性，… Jun 25, 2026 · CAP 定理与 BASE 理论详解，讲解 Consistency、Availability、Partition Tolerance 的取舍关系，以及 Basically Available、Soft State、Eventually Consistent 在分布式系统中的应用。 重点围绕 CAP 理论、BASE 理论等。 Sep 7, 2025 · 什么是 CAP 定理？ CAP 定理是分布式系统设计中的核心理论，由 Eric Brewer 提出，它指出一个分布式系统无法同时满足 一致性（Consistency） 、 可用性（Availability） 和 分区容错性（Partition Tolerance） 这三个特性，最多只能同时满足其中两个。 cap原理图 Nov 7, 2023 · 本文介绍了CAP定理，阐述了一致性、可用性和分区容错性在分布式系统中的权衡关系，并通过实例说明了在保证P的情况下无法同时满足AC。 强调了在实际应用中，如Redis和Eureka等系统的选择通常倾向于AP原则，而金融产品可能更倾向CP. Aug 11, 2021 · CAP理论指出分布式系统最多只能同时满足一致性、可用性和分区容错性中的两项。 本文深入解析CAP本质，澄清常见误解，探讨其在分布式系统设计中的应用与局限，并延伸介绍BASE理论，帮助读者透彻理解这一分布式设计基石理论。",
+   "source": "https://zhuanlan.zhihu.com/p/335617791",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "什么是CAP 定理，为什么CAP不能同时被满足？ - 知乎",
+   "content": "目录：什么是 CAP 定理为什么只能 3 选 2能不能解决 3 选 2 的问题引用1. 什么是 CAP 定理2000 年的时候，Eric Brewer 教授提出了 CAP 猜想，2年后，被 Seth Gilbert 和 Nancy Lynch 从理论上证明了猜想的可能性，…",
+   "source": "https://zhuanlan.zhihu.com/p/396110426",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:分布式系统一致性可用性权衡": [
+  {
+   "title": "分布式系统设计：一致性与可用性的权衡 - baihu100 - 博客园",
+   "content": "Mar 31, 2026 · 设计分布式系统时，工程师往往面临一个关键挑战：如何在数据一致性和系统可用性之间做出权衡。 CAP定理指出，在网络分区（Partition）发生时，系统无法同时保证一致性（Consistency）和可用性（Availability），必须做出选",
+   "source": "https://www.cnblogs.com/reaon493/p/19798865",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "分布式系统的CAP定理实践：7月案例中的一致性与可用性权衡-CSDN博客",
+   "content": "Jul 29, 2026 · 文章浏览阅读2.6k次，点赞6次，收藏137次。 本文深入解析分布式系统CAP定理的工程实践，强调P（分区容错性）为必选项，实际需在C（一致性）与A（可用性）间动态权衡。",
+   "source": "https://blog.csdn.net/jiang_style/article/details/163305303",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "分布式系统设计：从 CAP 定理到工程实践，一致性权衡的决策框架-CSDN...",
+   "content": "关键在于：将一致性决策从架构师的直觉判断转化为可量化、可追溯的决策框架，确保每个权衡都有明确的业务依据和可接受的代价评估。 分布式系统的设计不是追求完美的一致性，而是在业务可接受的范围内找到一致性与可用性的最优平衡点。",
+   "source": "https://blog.csdn.net/qq_35160742/article/details/162045837",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:为什么数据库索引常用 B+ 树？": [
+  {
+   "title": "MySQL 索引：索引为什么使用 B+树？（详解B树、B+树）_索引 b+树-CSDN...",
+   "content": "Aug 12, 2025 · 本文详细探讨了MySQL索引中B+树相较于其他数据结构（如BST、AVL树、红黑树）的优势。 介绍了B树的结构特点及其在磁盘存储中的应用，解释了B+树如何通过非叶子节点仅作为索引、叶子节点存储数据并形成链表来提高数据库索引的效率。",
+   "source": "https://blog.csdn.net/qq_44631615/article/details/150229782",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "为什么B+树是数据库索引的首选？一个全面的解读_b+树为什么适合数据库...",
+   "content": "Apr 28, 2024 · 本文全面解读了B树和B+树，介绍其特征、优点和使用场景。 对比了B树、B+树与AVL树、红黑树、Redis跳表的差异，阐述了它们迎合磁盘的原理。 还说明了使用B树和B+树的原因，以及B+树层数的计算方法，并举例估算800W数据所需的B+树层数。",
+   "source": "https://blog.csdn.net/qq_44591181/article/details/138248433",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "数据库索引：B树、B-树、B+树、B*树详解 - 知乎为什么 MySQL 采用 B+ 树作为索引？ | 小林coding深入理解mysql索引底层数据结构B+树索引 B树是一种多路搜索树，在数据...这篇 MySQL 索引和 B+Tree 讲得太通俗易懂 - 知乎B树与数据库索引理论（为什么DB选择B-Tree？）",
+   "content": "索引的数据机构 面试时常问到这个问题：数据库索引的存储结构一般是B+树，为什么不使用红黑树等普通的二叉树？ 根据问题得到如下几个情况： 1. 数据库文件是放在硬盘上，每次读取数据库都需要在磁盘上搜索，因此需要考虑磁盘寻道时间，我们都知道磁盘寻道开销是非常大的。同时，索引一般也是非常大的，内存不能放下，因此也会放在磁盘上。（另外，还与局部性原理与磁盘预读有关系）。 2.B+树所有的关键字都出现在叶子节点的链表（稠密索引）中，且链表中的关键字是有序的。非叶子节点只起索引作用（稀疏索引）。 叶子节点相当于存储了关键字的数据层。 See full list on zhuanlan.zhihu.com 平衡二叉树 查询原理 假设查询10 （需要经历4次IO操作） 1次 从硬盘中读取4 （内存），判断下10>4，取右指针 2次 从硬盘中读取8 （内存），判断下10>8，取右指针 3次 从硬盘中读取9 （内存），判断下10>，取右指针 4次 从硬盘中读取10 （内存），判断下10=10，定位到数据 See full list on zhuanlan.zhihu.com 如何去减少查询IO次数？ B树在平衡二叉树中，减少树的高度 结论：B树比平衡二叉树减少了一次IO操作 B树查询效率比平衡二叉树效率要高，因为B树的节点中可以有多个元素，从而减少树的高度，减少IO操作，从而提高查询效率，缺点：范围查询效率还是比较低。 See full list on zhuanlan.zhihu.com B+树 解决范围查询问题、减少IO查询的操作。 B+树算法：通过继承了B树的特征，通过非叶子节点查询叶子节点获取对应的value，所有相邻的叶子节点包含非叶子节点，使用链表进行结合，有一定顺序排序，从而范围查询效率非常高。 See full list on zhuanlan.zhihu.com Sep 20, 2026 · B+ 树的非叶子节点不存放实际的记录数据，仅存放索引，因此数据量相同的情况下，相比存储即存索引又存记录的 B 树，B+树的非叶子节点可以存放更多的索引，因此 B+ 树可以比 B 树更「矮胖」，查询底层节点的磁盘 I/O次数会更少。 May 15, 2025 · 下面是它的主要特点： B 树的核心特点（以阶为 m 的 B 树为例） 特点 说明 多叉结 B+树索引 B树是一种多路搜索树，在数据库、文件系统中常用于索引结构，它是 B+ 树的“祖先”，但现在用得更少。 下面 B树 确实已经很好的解决了问题，我先这里先继续看一下 B+Tree 结构，再来讨论BTree和B+Tree的区别。 先看看B+Tree是怎样的，B+Tree是B Tree的一个变种，在B+Tree中，B树的路数和关键字的个数的关系不再成立了， 数据检索 规则采用的是左闭合区间，路数和关键个数关系 ... Sep 21, 2026 · 深入探讨作为数据库索引根基的B树（B-Tree）与B+树（B+Tree）的理论、数据结构、与磁盘I/O的关系，以及为什么RDBMS持续采用B树作为索引标准，结合数学分析与代码实现进行解析。",
+   "source": "https://zhuanlan.zhihu.com/p/134056266",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:B+ 树结构原理与优势": [
+  {
+   "title": "B树与B+树详解：原理、操作与应用-CSDN博客",
+   "content": "Dec 10, 2021 · B树在多叉平衡查找树基础上确保每个结点至少有⌈m/2⌉-1个关键字，而B+树通过将数据记录放在叶子结点，优化了查找效率，特别适合大规模数据存储。 B+树的优势在于层级更少、查找速度更稳定、支持顺序查找和全节点遍历，广泛应用于数据库系统。",
+   "source": "https://blog.csdn.net/qq_33905217/article/details/121827393",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "经典树结构——B+树的原理及实现-CSDN博客",
+   "content": "Dec 21, 2022 · 文章浏览阅读5.7w次，点赞46次，收藏175次。 本文深入讲解B+树的概念、特点及其在数据库中的应用优势。 详细介绍了B+树的查询、插入与删除操作的具体实现，包括代码示例。",
+   "source": "https://blog.csdn.net/c630843901/article/details/121423196",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "B+树看这一篇就够了（B+树查找、插入、删除全上）",
+   "content": "B+树通过仅在树的叶子结点中存储数据指针而消除了上述缺陷。 因此， B+树 的 叶结点 的结构与 B-树的内部结点的结构完全不同。 在这里应该注意，由于数据指针仅存在于叶子结点中，因此叶子结点必须将所有键值及其对应的数据指针存储到磁盘文件块以便访问。",
+   "source": "https://zhuanlan.zhihu.com/p/149287061",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:数据库为何选择 B+ 树作为索引": [
+  {
+   "title": "为什么 MySQL 采用 B+ 树作为索引？ | 小林coding这篇 MySQL 索引和 B+Tree 讲得太通俗易懂 - 知乎MySQL 为什么使用 B+ 树作为索引结构？-阿里云开发者社区MySQL索引原理：B+树为什么是数据库的首选-阿里云开发者社区数据库索引：B树、B-树、B+树、B*树详解 - 知乎",
+   "content": "MySQL 的数据是持久化的，意味着数据（索引+记录）是保存到磁盘上的，因为这样即使设备断电了，数据也不会丢失。 磁盘是一个慢的离谱的存储设备，有多离谱呢？ 人家内存的访问速度是纳秒级别的，而磁盘访问的速度是毫秒级别的，也就是说读取同样大小的数据，磁盘中读取的速度比从内存中读取的速度要慢上万倍，甚至几十万倍。 磁盘读写的最小单位是扇区，扇区的大小只有 512B 大小，操作系统一次会读写多个扇区，所以操作系统的最小读写单位是块（Block）。Linux 中的块大小为 4KB，也就是一次磁盘 I/O 操作会直接读写 8 个扇区。 由于数据库的索引是保存到磁盘上的，因此当我们通过索引查找某行数据的时候，就需要先从磁盘读取索引到内存，再通过索引从磁盘中找到某行数据，然后读入到内存，也就是说查询过程中... See full list on xiaolincoding.com 索引数据最好能按顺序排列，这样可以使用「二分查找法」高效定位数据。 假设我们现在用数组来存储索引，比如下面有一个排序的数组，如果要从中找出数字 3，最简单办法就是从头依次遍历查询，这种方法的时间复杂度是 O(n)，查询效率并不高。因为该数组是有序的，所以我们可以采用二分查找法，比如下面这张采用二分法的查询过程图： 可以看到，二分查找法每次都把查询的范围减半，这样时间复杂度就降到了 O(logn)，但是每次查找都需要不断计算中间位置。 See full list on xiaolincoding.com 用数组来实现线性排序的数据虽然简单好用，但是插入新元素的时候性能太低。 因为插入一个元素，需要将这个元素之后的所有元素后移一位，如果这个操作发生在磁盘中呢？这必然是灾难性的。因为磁盘的速度比内存慢几十万倍，所以我们不能用一种线性结构将磁盘排序。 其次，有序的数组在使用二分查找的时候，每次查找都要不断计算中间的位置。 那我们能不能设计一个非线形且天然适合二分查找的数据结构呢？ 有的，请看下图这个神奇的操作，找到所有二分查找中用到的所有中间节点，把他们用指针连起来，并将最中间的节点作为根节点。 怎么样？是不是变成了二叉树，不过它不是普通的二叉树，它是一个二叉查找树。 二叉查找树的特点是一个节点的左子树的所有节点都小于这个节点，右子树的所有节点都大于这个节点，这样我们在查询数据时，不需要计算中间节... See full list on xiaolincoding.com 为了解决二叉查找树会在极端情况下退化成链表的问题，后面就有人提出平衡二叉查找树（AVL 树）。 主要是在二叉查找树的基础上增加了一些条件约束：每个节点的左子树和右子树的高度差不能超过 1。也就是说节点的左子树和右子树仍然为平衡二叉树，这样查询操作的时间复杂度就会一直维持在 O(logn) 。 下图是每次插入的元素都是平衡二叉查找树中最大的元素，可以看到，它会维持自平衡： 除了平衡二叉查找树，还有很多自平衡的二叉树，比如红黑树，它也是通过一些约束条件来达到自平衡，不过红黑树的约束条件比较复杂，不是本篇的重点重点，大家可以看《数据结构》相关的书籍来了解红黑树的约束条件。 下面是红黑树插入节点的过程，这左旋右旋的操作，就是为了自平衡。 不管平衡二叉查找树还是红黑树，都会随着插入的元素增多，而导致树... See full list on xiaolincoding.com 自平衡二叉树虽然能保持查询操作的时间复杂度在O(logn)，但是因为它本质上是一个二叉树，每个节点只能有 2 个子节点，那么当节点个数越多的时候，树的高度也会相应变高，这样就会增加磁盘的 I/O 次数，从而影响数据查询的效率。 为了解决降低树的高度的问题，后面就出来了 B 树，它不再限制一个节点就只能有 2 个子节点，而是允许 M 个子节点 (M>2)，从而降低树的高度。 B 树的每一个节点最多可以包括 M 个子节点，M 称为 B 树的阶，所以 B 树就是一个多叉树。 假设 M = 3，那么就是一棵 3 阶的 B 树，特点就是每个节点最多有 2 个（M-1个）数据和最多有 3 个（M个）子节点，超过这些要求的话，就会分裂节点，比如下面的的动图： 我们来看看一棵 3 阶的 B 树的查询过程是怎... See full list on xiaolincoding.com B+ 树就是对 B 树做了一个升级，MySQL 中索引的数据结构就是采用了 B+ 树，B+ 树结构如下图： B+ 树与 B 树差异的点，主要是以下这几点： 1. 叶子节点（最底部的节点）才会存放实际数据（索引+记录），非叶子节点只会存放索引； 2. 所有索引都会在叶子节点出现，叶子节点之间构成一个有序链表； 3. 非叶子节点的索引也会同时存在在子节点中，并且是在子节点中所有索引的最大（或最小）。 4. 非叶子节点中有多少个子节点，就有多少个索引； 下面通过三个方面，比较下 B+ 和 B 树的性能区别。 See full list on xiaolincoding.com MySQL 是会将数据持久化在硬盘，而存储功能是由 MySQL 存储引擎实现的，所以讨论 MySQL 使用哪种数据结构作为索引，实际上是在讨论存储引使用哪种数据结构作为索引，InnoDB 是 MySQL 默认的存储引擎，它就是采用了 B+ 树作为索引的数据结构。 要设计一个 MySQL 的索引数据结构，不仅仅考虑数据结构增删改的时间复杂度，更重要的是要考虑磁盘 I/0 的操作次数。因为索引和记录都是存放在硬盘，硬盘是一个非常慢的存储设备，我们在查询数据的时候，最好能在尽可能少的磁盘 I/0 的操作次数内完成。 二分查找树虽然是一个天然的二分结构，能很好的利用二分查找快速定位数据，但是它存在一种极端的情况，每当插入的元素都是树内最大的元素，就会导致二分查找树退化成一个链表，此时查询复杂度就会从... See full list on xiaolincoding.com B树 确实已经很好的解决了问题，我先这里先继续看一下 B+Tree 结构，再来讨论BTree和B+Tree的区别。 先看看B+Tree是怎样的，B+Tree是B Tree的一个变种，在B+Tree中，B树的路数和关键字的个数的关系不再成立了， 数据检索 规则采用的是左闭合区间，路数和关键个数关系 ... Sep 30, 2024 · 这些特性使得MySQL能够在处理大量数据时提供高性能的查询和更新操作。 理解MySQL为什么选择B+树作为索引，有助于我们在设计和优化数据库应用程序时作出合适的决策。 Sep 2, 2025 · MySQL为何选择B+树作为索引结构？ 本文深入解析B+树的底层机制，通过对比哈希表、二叉树、B树等数据结构，揭示其在磁盘I/O效率、范围查询和数据稳定性方面的优势。 索引的数据机构面试时常问到这个问题：数据库索引的存储结构一般是B+树，为什么不使用红黑树等普通的二叉树？ 根据问题得到如下几个情况： 1. 数据库文件是放在硬盘上，每次读取数据库都需要在磁盘上搜索，因此需…",
+   "source": "https://xiaolincoding.com/mysql/index/why_index_chose_bpuls_tree.html",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "MySQL 为什么使用 B+ 树作为索引结构？-阿里云开发者社区",
+   "content": "Sep 30, 2024 · 这些特性使得MySQL能够在处理大量数据时提供高性能的查询和更新操作。 理解MySQL为什么选择B+树作为索引，有助于我们在设计和优化数据库应用程序时作出合适的决策。",
+   "source": "https://developer.aliyun.com/article/1615654",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "数据库面试必备：MySQL为什么选择B+树作为索引结构？_b+tree的优点-CS...",
+   "content": "Mar 28, 2025 · 先介绍索引基本需求，对比哈希表、二叉搜索树、B树等常见数据结构。 阐述B+树在高效查找、减少磁盘I/O、范围查询等方面的优势，还提及InnoDB对其的优化，最后说明不选其他变种的理由，指出B+树是综合考量后的最佳选择。",
+   "source": "https://blog.csdn.net/qq_58299462/article/details/146505673",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:什么是 ReAct 智能体范式？": [
+  {
+   "title": "什么是 ReAct 智能体？| IBM",
+   "content": "ReAct 智能体概述 ReAct 智能体是一种 AI 智能体，它使用“推理与行动” (ReAct) 框架，将 思维链 (CoT) 推理与外部工具使用相结合。 ReAct 框架通过增强大型语言模型 (LLM) 在 智能体工作流中 处理复杂任务和决策的能力，提升了其整体性能。",
+   "source": "https://www.ibm.com/cn-zh/think/topics/react-agent",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "大模型入门指南——ReAct (Reasoning and Acting) 到底是什么？",
+   "content": "Jul 22, 2025 · 它不是简单的 “先想后做”，而是将推理过程与实际行动深度绑定，让智能体在动态环境中不断迭代优化。 今天，我们就来拆解 ReAct 到底是什么、它解决了什么问题，以及为什么它成了 智能体开发 的主流范式之一。",
+   "source": "https://zhuanlan.zhihu.com/p/1931035639949817621",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "【必学收藏】ReAct智能体架构详解：从理论到实践，构建大模型Agent开...",
+   "content": "1、什么是 ReAct？ ReAct = Reasoning（推理）+ Acting（行动），本质是一种让语言模型通过与外部工具、环境动态交互完成复杂任务的智能体架构范式。",
+   "source": "https://zhuanlan.zhihu.com/p/1999161023387680912",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:RLHF 核心训练流程解析": [
+  {
+   "title": "RLHF训练流程分步说明 - 知乎",
+   "content": "一、RLHF核心流程解析 1. 初始化阶段 输入 ：prompt（用户输入）、sft_model（监督微调模型）、reward_model（奖励模型） 模型初始化 ： Actor模型 和 Ref模型 初始化为 sft_model（防止训练崩溃）。 …",
+   "source": "https://zhuanlan.zhihu.com/p/1892981270226641005",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "基于人类反馈的强化学习 (RLHF)深度解析 - 知乎",
+   "content": "Mar 2, 2025 · 前言用四篇文章按照层层深入的方式，依次介绍强化学习基础，基于人类反馈的强化学习 (RLHF)，近端策略优化 (PPO) ，群相对策略优化 (GRPO)。 上一篇内容快速回顾了一下强化学习的主要知识点： 捏太阳：强化学习快速…",
+   "source": "https://zhuanlan.zhihu.com/p/27441484575",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "大模型训练全流程解析：从预训练到RLHF实战指南-CSDN博客",
+   "content": "Jul 22, 2026 · 预训练采用Transformer架构，强调数据质量与分布式训练优化；SFT通过高质量标注数据对齐人类意图，常用LoRA等参数高效微调技术；RLHF包含奖励建模与PPO策略优化，需防范奖励黑客。 文中还涵盖训练稳定性、评估监控及资源优化等关键技术实践。",
+   "source": "https://blog.csdn.net/weixin_29032337/article/details/163127850",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:强化学习人类反馈对齐技术": [
+  {
+   "title": "Boomi AI - Advanced Generative AI - Watch The Webinar Today",
+   "content": "Experience Enhanced Productivity with Our Customized Cutting-Edge AI Integration Tools. Boomi's AI Integration Tools Offer Sustainable Success in an Evolving Digital Landscape. No Developer Needed · 20,000+ Customers · Easily Automate Workflows · Drag & Drop Interface",
+   "source": "https://www.bing.com/aclick?ld=e8jChJSFEJXZHjVHxIngkVxTVUCUy--ry1BJoDgUEn2rBs5l-FQgOm7_BXTQM-LWbCC8TQjej5QaS5Wpi3mNFLEmlXkbKrn1uj1V8j5NjlWW0zen6gDtPIc8cckkJ-keVXdWGUka7FvC96kE-3hhnK5ZBnuGVqQWL7NkOmMd7w6oxti0O70V-tHfGY7JiFjsHwNMbo0Q&u=aHR0cHMlM2ElMmYlMmZtYXJrZXRpbmcuYm9vbWkuY29tJTJmd2ViaW5hci1ob3ctdG8tYmVjb21lLUFJLXJlYWR5JTNmdXRtX3NvdXJjZSUzZGJpbmclMjZ1dG1fbWVkaXVtJTNkcGFpZHNlYXJjaCUyNmFkX3BsYXRmb3JtX2lkJTNkNDk0MjQzNzk1LTEyNTAxNDYwNTMwNTgyNjMtJTI2dXRtX2NhbXBhaWduJTNkQVBKXy1fQVVfLV9FTkdfLV9TZWFyY2hfLV9Ob24tQnJhbmRfLV9Cb29taV9BSSUyNnV0bV9rZXl3b3JkJTNkYXJ0aWZpY2lhbCUyNTIwaW50ZWxsaWdlbmNlJTI1MjBhcHBsaWNhdGlvbnMlMjUyMGFuZCUyNTIwaW5ub3ZhdGlvbnMlMjZfYnQlM2QlMjZfYmslM2RhcnRpZmljaWFsJTI1MjBpbnRlbGxpZ2VuY2UlMjUyMGFwcGxpY2F0aW9ucyUyNTIwYW5kJTI1MjBpbm5vdmF0aW9ucyUyNl9ibSUzZHAlMjZuZXR3b3JrJTNkbyUyNmFkZ3JvdXAlM2QxMjUwMTQ2MDUzMDU4MjYzJTI2bXNjbGtpZCUzZGJlYjkyN2ZmMzUyNTE5NDExYzcwNGQwZWZhYTYwYzNm&rlid=beb927ff352519411c704d0efaa60c3f",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "大模型对齐核心技术深度解析：RLHF（强化学习与人类反馈）详解！",
+   "content": "随着 大语言模型 （LLM）规模和能力飞跃，单纯依赖预训练和 监督微调 难以让模型完全符合人类期望。 RLHF 通过结合 人类反馈 和强化学习，显著提升模型的 对齐性 和输出质量，成为当前 AI 安全和性能优化的重要手段。 阅读本文时，请带着这三个问题思考：",
+   "source": "https://zhuanlan.zhihu.com/p/1951954471778254932",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "RLHF是什么？一文说清RLHF（人类反馈强化学习）的概念和实现过程",
+   "content": "RLHF（Reinforcement Learning from Human Feedback）是一种结合了强化学习（Reinforcement Learning, RL）和人类反馈的机器学习方法。 这种方法特别适用于那些难以通过传统监督学习方法获得高质量标签数据的情况。 …",
+   "source": "https://zhuanlan.zhihu.com/p/1899472091121682346",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:RAG 和长上下文窗口各自适合什么场景？": [
+  {
+   "title": "RAG 还是长上下文（Long Context）？2026 年检索增强到底该怎么选_rag...",
+   "content": "Jun 17, 2026 · 本文对比RAG与长上下文两种检索增强方案，指出单纯依赖大窗口存在成本高、延迟大、“中间迷失”等问题；分析各自适用场景，并强调2026年主流趋势是融合架构：RAG负责粗筛与知识更新，长上下文用于精读与全局推理，辅以混合检索、重排序和提示缓存提升 ...",
+   "source": "https://blog.csdn.net/m0_73614031/article/details/162066726",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "笔记：浅聊一下 RAG 与长上下文之争 - 知乎",
+   "content": "另外就是一说 RAG 在用户意图很强的情况下，不够精确。 所以从某种意义上说，长上下文确实略胜一筹。 那 RAG 已经落败了吗？ 其实并不然， RAG 有两个当前长上下文完全无法比拟的点，一个是快，还省内存，且可以离线处理，一个是可能的可解释性。",
+   "source": "https://zhuanlan.zhihu.com/p/8280024582",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "长上下文时代，RAG 还有必要吗？— 从企业级实践出发的深度分析本文探...",
+   "content": "Jul 26, 2026 · 本文探讨在大模型上下文窗口不断扩展的背景下（2026 年主流模型已支持 128K-1M token），RAG（检索增强生成）是否仍有存在价值。 文章从企业级知识库的真实痛点出发，分析长上下文模型的固有限 长上下文时代，RAG 还有必要吗？",
+   "source": "https://juejin.cn/post/7666089320763523082",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:长上下文窗口模型适用场景": [
+  {
+   "title": "LLM 上下文窗口详解：从 4K 到 1M Token（2026） - DevTk.AI",
+   "content": "Feb 19, 2026 · LLM 上下文窗口详解：从 4K 到 1M Token（2026） Gemini 支持 1M token、GPT-5 支持 400K、Claude 支持 200K——但实际能用多少？ 各模型 token 上限、真实容量对比，以及 RAG、分块、滑动窗口等 5 种长上下文处理方案（含代码示例）。",
+   "source": "https://devtk.ai/zh/blog/llm-context-window-explained/",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "长上下文处理（Long Context Handling）：核心概念、使用场景与实践说...",
+   "content": "Mar 25, 2026 · 让大语言模型突破固定上下文窗口限制、有效利用超长输入的一组核心技术。 本文详细解读长上下文处理的核心概念、典型使用场景与工程实践要点，归入「模型算法篇」知识栏目，涉及长上下文、上下文窗口、位置编码等关键主题。",
+   "source": "https://learnagent.wiki/agent/cards/long-context-handling",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "长上下文技术（Long Context Technology）：核心概念、使用场景与实践...",
+   "content": "Mar 25, 2026 · 本文详细解读长上下文技术的核心概念、典型使用场景与工程实践要点，归入「模型算法篇」知识栏目，涉及长上下文、上下文窗口、位置编码等关键主题。 在 Learn Agent 知识库中适合按主题连续阅读...",
+   "source": "https://learnagent.wiki/agent/cards/long-context-technology",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:大模型微调和 RAG 应该怎么选？": [
+  {
+   "title": "大模型微调 & RAG：核心区别、优劣势全解析 - 知乎",
+   "content": "大模型**微调（Fine-tuning）**和**RAG（检索增强生成，Retrieval-Augmented Generation）**是大模型落地中**两种最主流的能力/知识增强方案**，核心本质差异一句话概括： **RAG 不修改模型权重，靠外挂知识库检索…",
+   "source": "https://zhuanlan.zhihu.com/p/2029581851530916974",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "收藏这篇就够了！RAG与微调的正确选择姿势，从场景、成本到效果全讲透...",
+   "content": "Dec 22, 2025 · 本文深入解析RAG与微调的技术差异及适用场景，涵盖数据动态性、专业性需求、可追溯性、成本和响应速度五大决策维度。 结合金融、法律、产品文档等实战案例，提出组合使用策略，并给出从RAG起步到最终融合的实施路径，助力企业在AI应用中实现高效落地。",
+   "source": "https://blog.csdn.net/m0_59164520/article/details/156145710",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "大模型落地企业场景：RAG与微调如何选择？这篇指南值得收藏-CSDN博客",
+   "content": "文章提供了一套技术选型决策框架，强调RAG与微调可互补使用，并详细对比了两种方法在成本、工程复杂度和数据安全方面的差异，最终建议根据实际需求选择合适方案或采用RAG+LoRA混合架构。",
+   "source": "https://blog.csdn.net/2401_85325726/article/details/155696482",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:大模型微调技术选型指南": [
+  {
+   "title": "Boomi AI - Advanced Generative AI - Watch The Webinar Today",
+   "content": "Experience Enhanced Productivity with Our Customized Cutting-Edge AI Integration Tools. Boomi's AI Integration Tools Offer Sustainable Success in an Evolving Digital Landscape. 20,000+ Customers · No Developer Needed · Drag & Drop Interface · Code-Free Integrations",
+   "source": "https://www.bing.com/aclick?ld=e8aZAT6OYigJfbqXiLzcHueTVUCUxzxwxKlsHFxpbO1OzSt_f9OF-fJvpf4Iy6bppl6_bFkGEwGhx6XkydFCGYij54NQc29UbsVIN-KaQYeaBC1yqz9JX1sxBaZwCyp_7Ah6wxpv9WIyxjFbjt-Gr2SSe0ByRwZe5T6yZP21nYui3FLDf4UeV0UJIkAIlYUAoymJYy7w&u=aHR0cHMlM2ElMmYlMmZtYXJrZXRpbmcuYm9vbWkuY29tJTJmd2ViaW5hci1ob3ctdG8tYmVjb21lLUFJLXJlYWR5JTNmdXRtX3NvdXJjZSUzZGJpbmclMjZ1dG1fbWVkaXVtJTNkcGFpZHNlYXJjaCUyNmFkX3BsYXRmb3JtX2lkJTNkNDk0MjQzNzk1LTEyNTAxNDYwNTMwNTgyNjMtJTI2dXRtX2NhbXBhaWduJTNkQVBKXy1fQVVfLV9FTkdfLV9TZWFyY2hfLV9Ob24tQnJhbmRfLV9Cb29taV9BSSUyNnV0bV9rZXl3b3JkJTNkYXJ0aWZpY2lhbCUyNTIwaW50ZWxsaWdlbmNlJTI1MjBhcHBsaWNhdGlvbnMlMjUyMGFuZCUyNTIwaW5ub3ZhdGlvbnMlMjZfYnQlM2QlMjZfYmslM2RhcnRpZmljaWFsJTI1MjBpbnRlbGxpZ2VuY2UlMjUyMGFwcGxpY2F0aW9ucyUyNTIwYW5kJTI1MjBpbm5vdmF0aW9ucyUyNl9ibSUzZHAlMjZuZXR3b3JrJTNkbyUyNmFkZ3JvdXAlM2QxMjUwMTQ2MDUzMDU4MjYzJTI2bXNjbGtpZCUzZDhmYmI5ZjI3Yzg4ZjE1YjYxNWIyZjVkNjA3MjEwYjdk&rlid=8fbb9f27c88f15b615b2f5d607210b7d",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "大模型选型与微调实战：从理论到生产的完整指南-CSDN博客",
+   "content": "Sep 11, 2025 · 本文旨在系统性地解析大模型选型的技术考量与商业因素，并深入探讨微调技术（全参数微调、LoRA、QLoRA）的原理与实战。 文章将结合具体代码示例、流程图表及最佳实践，为读者提供一份从理论到生产的完整指南。",
+   "source": "https://blog.csdn.net/qq_21886255/article/details/151586316",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "2026 主流大模型微调框架全解析：从选型到落地，新手也能快速上手一、...",
+   "content": "Feb 3, 2026 · 优先选择可视化框架：无代码基础的新手，优先选 LLaMA-Factory 这类带可视化界面的框架，避开纯命令行框架，降低上手难度； 先做轻量验证：不要一开始就追求大模型、全参数微调，先用 7B 模型 + LoRA 微调做小批量验证，熟悉流程后再逐步升级；",
+   "source": "https://juejin.cn/post/7602440800295272494",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:RAG 架构与微调对比分析": [
+  {
+   "title": "收藏这篇就够了！RAG与微调的正确选择姿势，从场景、成本到效果全讲透...",
+   "content": "Dec 22, 2025 · 本文深入解析RAG与微调的技术差异及适用场景，涵盖数据动态性、专业性需求、可追溯性、成本和响应速度五大决策维度。 结合金融、法律、产品文档等实战案例，提出组合使用策略，并给出从RAG起步到最终融合的实施路径，助力企业在AI应用中实现高效落地。",
+   "source": "https://blog.csdn.net/m0_59164520/article/details/156145710",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "模型微调 vs. RAG：AI技术如何选择？一文读懂两者的区别与应用场景",
+   "content": "Mar 7, 2025 · 引言在AI技术领域，模型微调（Fine-tuning）和检索增强生成（RAG, Retrieval-Augmented Generation）是两种常见的技术手段。 它们各有优劣，适用于不同的场景。 本文将深入探讨模型微调和RAG的区别、应用场景以及如…",
+   "source": "https://zhuanlan.zhihu.com/p/28730147832",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "大模型微调 & RAG：核心区别、优劣势全解析 - 知乎",
+   "content": "大模型**微调（Fine-tuning）**和**RAG（检索增强生成，Retrieval-Augmented Generation）**是大模型落地中**两种最主流的能力/知识增强方案**，核心本质差异一句话概括： **RAG 不修改模型权重，靠外挂知识库检索…",
+   "source": "https://zhuanlan.zhihu.com/p/2029581851530916974",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:PostgreSQL 和 MySQL 如何选型？": [
+  {
+   "title": "如何选择合适的数据库？PostgreSQL与MySQL各项维度对比",
+   "content": "Jul 10, 2026 · PostgreSQL与MySQL对比：PostgreSQL适合企业级应用，支持复杂查询和地理空间数据；MySQL轻量高效，适合Web应用。 两者都开源且支持SQL标准，但Postgres功能更丰富，MySQL读取性能更优。 选择时需考虑项目规模、数据类型和性能需求。",
+   "source": "https://cloud.tencent.com/developer/article/2706952",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "MySQL 与 PostgreSQL，该怎么选_postsql mysql-CSDN博客",
+   "content": "Oct 29, 2025 · 文章浏览阅读1k次，点赞31次，收藏27次。 本文对比MySQL与PostgreSQL的设计哲学与核心技术差异，涵盖数据类型、索引机制及扩展性等方面。 结合实际应用场景给出选型建议，并介绍通过ServBay实现双数据库并行开发的便捷方案，帮助开发者根据项目需求做出合理 ...",
+   "source": "https://blog.csdn.net/Sammyyyyy/article/details/154066000",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "MySQL与PostgreSQL选型对比及适用场景说明 - CSDN博客",
+   "content": "Jan 15, 2026 · 文章浏览阅读947次，点赞23次，收藏11次。 本文深入对比MySQL与PostgreSQL在核心定位、操作差异、适用场景及关键性能维度的区别，涵盖事务隔离、锁机制、索引特性、分页优化等方面。",
+   "source": "https://blog.csdn.net/weixin_55685021/article/details/156990565",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:PostgreSQL 与 MySQL 选型对比": [
+  {
+   "title": "MySQL 与 PostgreSQL 深入对比：架构、特性与选型指南 - cfanzp学习笔...",
+   "content": "Aug 8, 2026 · PostgreSQL 是最接近 SQL 标准的开源数据库，在 窗口函数、 WITH （CTE）、 GROUPING SETS 、 ROLLUP 、 CUBE 、 MERGE （15+）、 RETURNING 等标准特性上支持较完整；MySQL 8.0 之后补齐了 CTE 、窗口函数、 MERGE （8.0.19+）等，但某些行为仍与标准有差异（比如对 LIMIT 子句的宽容解析 ...",
+   "source": "https://cfanzp008.github.io/mysql-vs-postgresql/",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "数据库：MySQL vs PostgreSQL 详尽对比（2026版）",
+   "content": "Jun 9, 2026 · 最新版本中，PostgreSQL在数据类型（如JSONB、数组、GIS）、SQL标准兼容性、并发控制（无锁读取）、扩展性（如pgvector向量检索）等方面优势明显。 MySQL在简单查询性能、学习成本上仍有优势。",
+   "source": "https://blog.csdn.net/snowball_li/article/details/161829229",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "MySQL与PostgreSQL选型对比及适用场景说明 - CSDN博客",
+   "content": "Jan 15, 2026 · 文章浏览阅读947次，点赞23次，收藏11次。 本文深入对比MySQL与PostgreSQL在核心定位、操作差异、适用场景及关键性能维度的区别，涵盖事务隔离、锁机制、索引特性、分页优化等方面。",
+   "source": "https://blog.csdn.net/weixin_55685021/article/details/156990565",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:数据库选型指南 PostgreSQL vs MySQL": [
+  {
+   "title": "数据库：MySQL vs PostgreSQL 详尽对比（2026版）",
+   "content": "Jun 9, 2026 · 最新版本中，PostgreSQL在数据类型（如JSONB、数组、GIS）、SQL标准兼容性、并发控制（无锁读取）、扩展性（如pgvector向量检索）等方面优势明显。 MySQL在简单查询性能、学习成本上仍有优势。",
+   "source": "https://blog.csdn.net/snowball_li/article/details/161829229",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "如何选择合适的数据库？PostgreSQL与MySQL各项维度对比",
+   "content": "Jul 10, 2026 · PostgreSQL与MySQL对比：PostgreSQL适合企业级应用，支持复杂查询和地理空间数据；MySQL轻量高效，适合Web应用。 两者都开源且支持SQL标准，但Postgres功能更丰富，MySQL读取性能更优。 选择时需考虑项目规模、数据类型和性能需求。",
+   "source": "https://cloud.tencent.com/developer/article/2706952",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "MySQL 与 PostgreSQL 深入对比：架构、特性与选型指南 - cfanzp学习笔...",
+   "content": "Aug 8, 2026 · MySQL 与 PostgreSQL 深入对比：架构、特性与选型指南 MySQL 和 PostgreSQL 是当今最流行的两款开源关系型数据库。 根据 Stack Overflow 2025 年的开发者调查，PostgreSQL 连续多年被评为\"最受开发者喜爱的数据库\"，而 MySQL 则是使用率常年位居前二的开源数据库。",
+   "source": "https://cfanzp008.github.io/mysql-vs-postgresql/",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:gRPC 和 REST 有什么区别？": [
+  {
+   "title": "gRPC vs REST：两种API架构风格的对比 - InfoQ",
+   "content": "Jun 15, 2021 · REST API 也可以构建在 HTTP 2 上，但通信的请求-响应模型保持不变，这使得 REST API 无法充分利用 HTTP 2 的优势，例如 流式通信 和 双向支持。 gRPC 没有面临类似的障碍。 它建立在 HTTP 2 之上，且遵循客户端-响应通信模型。",
+   "source": "https://www.infoq.cn/article/i71vnujcel09ebukak59",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "gRPC 与 REST - 应用程序设计之间的区别 - AWS",
+   "content": "gRPC 和 REST 是设计 API 的两种方式。 API 是允许两个软件组件使用一组定义和协议相互通信的机制。 在 gRPC 中，一个组件（客户端）调用另一个软件组件（服务器）中的特定函数。 在 REST 中，客户端不会调用函数，而会请求或更新服务器上的数据。 了解 API »",
+   "source": "https://aws.amazon.com/cn/compare/the-difference-between-grpc-and-rest/",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "REST 与 gRPC 的详细比较 - 知乎",
+   "content": "与仅支持单向请求的 REST 相比，这是 gRPC 的一个非常大的优势。 在 REST API 中支持其他服务模式将需要使用不同的协议，如 服务器发送事件 或 WebSockets，这并不完全是“RESTful”的。 要求 REST API 通常“只要工作”就可以与任何类型的 HTTP 版本一起使用。",
+   "source": "https://zhuanlan.zhihu.com/p/718163761",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:REST API 架构特点对比": [
+  {
+   "title": "API 架构选哪种？SOAP、REST、GraphQL 与 RPC 全方位对比分析-腾讯云...",
+   "content": "Nov 12, 2025 · 本文深入解析RPC、SOAP、REST和GraphQL四种主流API架构风格，详细对比其优缺点及适用场景。 RPC适合内部微服务，SOAP安全性强适用于支付系统，REST抽象度高适合公共API，GraphQL则能精准获取数据。 帮助开发者根据项目需求选择最佳API架构方案。",
+   "source": "https://cloud.tencent.com/developer/article/2586597",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "RESTful API 设计规范完全指南 — 10 条原则 + 实战示例",
+   "content": "Jun 24, 2026 · 本篇 RESTful 教程 将系统性地拆解 API 设计原则 与 API 设计规范，覆盖 REST 架构的 6 大约束、10 条最核心的设计原则、一套可落地的 Node.js/Express 实战示例、10 个最常见的反模式，并深度对比 REST 和 GraphQL 区别，帮助你一次性建立完整的 RESTful 知识体系。",
+   "source": "https://devstoolbox.net/blog/restful-api-design",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "API架构选择指南：SOAP、REST、GraphQL与RPC深度对比",
+   "content": "Sep 18, 2025 · 一、引言：API架构选择的战略意义 在微服务架构和分布式系统普及的今天，API已成为连接不同系统和服务的关键纽带。 根据Postman 2023年 开发者 调查报告，78%的企业同时使用至少三种API架构风格。",
+   "source": "https://developer.baidu.com/article/detail.html?id=3650525",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:Kafka 和 RabbitMQ 有什么区别？": [
+  {
+   "title": "还在纠结Kafka 和 RabbitMQ用哪个？一篇文章告诉你他们的区别",
+   "content": "Jan 6, 2022 · 前言经常有人问我 有个 xx 需求，我应该用 Kafka 还是 RabbitMQ ？ 这个问题很常见，而且很多人对二者的选择也把握不好。 所以我决定写篇文章来详细说一下：Kafka 和 RabbitMQ 的区别，适用于什么场景？ 同时，这…",
+   "source": "https://zhuanlan.zhihu.com/p/453957145",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "RabbitMQ、Kafka对比（超详细），Kafka、RabbitMQ、RocketMQ的区别",
+   "content": "Aug 6, 2024 · 本文深入对比了Kafka和RabbitMQ的设计目标、架构模型、吞吐量、消息存储、传递保证及生态系统等方面。 Kafka适用于高吞吐量和大数据处理场景，而RabbitMQ更适合实时、可靠的消息传递需求。",
+   "source": "https://cloud.tencent.com/developer/article/2442460",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "kafka和rabbitmq对比 (超详细，从实战维度比较)_kafka和rabbitmq的区...",
+   "content": "Oct 21, 2018 · 本文对比了Kafka和RabbitMQ两种消息队列系统，详细分析了它们在开发语言、多租户支持、消息优先级、消息有序性、监控、消费者模式等方面的差异。 Kafka适用于高吞吐量的大数据场景，而RabbitMQ则在金融场景中表现出更高的严谨性和实时性。",
+   "source": "https://blog.csdn.net/myhes/article/details/83247108",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:Kafka 消息队列原理与特性": [
+  {
+   "title": "Kafka基本原理详解（超详细！）_kafka工作原理-CSDN博客",
+   "content": "Jun 24, 2020 · 本文深入讲解Kafka的产生背景、核心特性和应用场景，详细剖析其架构原理，包括消息队列通信模式、工作流程、基础架构与设计思想。 涵盖点对点与发布订阅模式，以及Kafka如何实现高吞吐量、持久化存储和容错性。",
+   "source": "https://blog.csdn.net/weixin_45366499/article/details/106943229",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "【消息队列】——Kafka入门一篇就够了！_kafka消息队列-CSDN博客",
+   "content": "Mar 26, 2024 · 本文是Kafka入门介绍，涵盖创建背景、简介、基础概念等内容。 Kafka是分布式消息系统，有生产者、消费者等角色，通过主题和分区管理消息。 其设计基于文件系统，采用pull模型。 还阐述了生产者和消费者设计，以及Kafka保证可靠性的四点措施。",
+   "source": "https://blog.csdn.net/weixin_53580595/article/details/137044418",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "人人都说kafka，何为kafka？？？三分钟kafka原理详解~ - 知乎",
+   "content": "尽管消息的产生非常简单，但是消息的发送过程还是比较复杂的 我们从创建一个 ProducerRecord 对象开始，ProducerRecord 是 Kafka 中的一个核心类，它代表了一组 Kafka 需要发送的 key/value 键值对，它由记录要发送到的主题名称（Topic Name），可选的分区号（Partition Number ...",
+   "source": "https://zhuanlan.zhihu.com/p/1976637853099397655",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:向量检索和关键词检索（BM25）各有什么优缺点？": [
+  {
+   "title": "AI Agent开发实战⑭｜检索策略深度对比：向量检索 vs BM25 vs 混合检索...",
+   "content": "Jun 15, 2026 · BM25检索与向量检索 本文对比分析了BM25检索和向量检索的技术原理、适用场景及优缺点。 BM25基于词频统计，适用于关键词匹配和短文本 检索，计算高效但无法处理语义； 向量检索通过 深度学习映射语义空间，适用于长文本和跨语言 检索，但计算复杂。",
+   "source": "https://blog.csdn.net/chreehero/article/details/162010583",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "知识库双路召回：BM25 关键词与语义向量 RRF 融合，附指标实测目录 为...",
+   "content": "Aug 12, 2026 · BM25 使用标准 Robertson IDF 公式（无额外偏移版本） 向量检索严格遵循 BGE 官方规范：查询添加检索前缀，原始文档不添加 Ground Truth 基于关键词字符串匹配自动生成，存在评测偏置，详见 §11.2 目录 为什么需要混合检索 BM25 算法原理深度解析 向量检索：让机器 ...",
+   "source": "https://juejin.cn/post/7672900029128163338",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "BM25 和向量检索的区别 - ExplorerMan - 博客园",
+   "content": "Mar 10, 2025 · BM25 和向量检索的区别 BM25和向量检索是两种不同的信息检索方法，它们在原理、效率、语义理解能力等方面存在显著区别，适用于不同的应用场景。 以下是两者的详细对比：",
+   "source": "https://www.cnblogs.com/ExMan/p/18762905",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:BM25 算法优势与局限性": [
+  {
+   "title": "BM25 算法详解：从原理到代码实现，掌握搜索与 RAG 的核心检索技术-CS...",
+   "content": "Jun 6, 2026 · BM25算法基本使用以及在RAG中的应用 BM25算法被多种RAG开源框架和向量库的向量查询中提到或使用到。 本文介绍BM25算法的基本原理，并通过一个可运行的例子来说明如何使用 BM25算法。",
+   "source": "https://blog.csdn.net/weixin_69500620/article/details/161751314",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "深入理解信息检索之BM25算法 - CSDN博客",
+   "content": "Mar 18, 2025 · 本文介绍了BM25算法，它基于概率排名模型衡量文档与查询的相关性。 核心原理涉及逆文档频率和词频调整。 该算法优点包括简单高效、鲁棒性强、可调节等，也存在上下文无关、独立词假设等局限。 虽有不足，但在信息检索领域仍很重要。",
+   "source": "https://blog.csdn.net/qq_45141261/article/details/139839244",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "BM25算法详解与实践总结BM25（Best Matching 25）是一种用于信息检索...",
+   "content": "Jun 9, 2025 · BM25（Best Matching 25）是一种用于信息检索（Information Retrieval）和文本挖掘的算法，它被广泛应用于搜索引擎和相关领域。 BM25 基于 TF-IDF（Term Frequency-Inverse Document Frequency）的思想，但对其进行了改进以考虑文档的长度等因素。",
+   "source": "https://juejin.cn/post/7513557849248743436",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:单体架构和微服务架构如何取舍？": [
+  {
+   "title": "【微服务】微服务 vs 单体架构 区别、服务拆分原则、DDD领域驱动设计-...",
+   "content": "Apr 22, 2026 · 本文构建“架构对比→拆分准则→DDD方法论→落地实践→避坑指南”闭环体系，系统剖析单体与微服务的本质差异、演进路径及反模式；详解微服务拆分八大原则与六大禁忌；深度整合DDD战略设计（限界上下文即服务边界）与战术设计（四层架构+聚合建模 ...",
+   "source": "https://developer.aliyun.com/article/1729981",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "单体架构与微服务架构 | IBM",
+   "content": "单片架构与微服务：哪种最适合您？ 单片架构与微服务：哪种最适合您？ 什么是单体架构？ 什么是微服务架构？ 单体架构和微服务架构的历史和发展 单体服务与微服务：一对一比较 用例建议 单体架构与微服务：哪种适合您的用例？",
+   "source": "https://www.ibm.com/cn-zh/think/topics/monolithic-vs-microservices",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "详解单体架构和微服务（概念，优缺点和区别）_java后端单体和微服务-C...",
+   "content": "Aug 21, 2023 · 文章浏览阅读6.3k次，点赞6次，收藏9次。本文比较了单体架构与微服务架构，阐述了单体架构的简洁部署与扩展限制，以及微服务的解耦、独立部署和性能优势。同时讨论了微服务的优缺点和适用场景，如大型复杂项目和快速迭代的优先选择。,",
+   "source": "https://blog.csdn.net/xjx666666/article/details/132413595",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:单体与微服务架构对比分析": [
+  {
+   "title": "Prep AI Data in 3 minutes - Skip Manual Tagging & Taxonomy",
+   "content": "Enterprise metadata framework that scales without SME workshops. See it on your data. Automated metadata management for vector DBs, RAG, and AI agents. Skip manual tagging. Governance Solutions · Understand Your Data · Make Sense Of Your Data · Protect Customer Data Best Data Governance Solution. - Data Management Review",
+   "source": "https://www.bing.com/aclick?ld=e85nnjAWpGcQOhfGeXQNc-EzVUCUxawFSczOfcVAZEBuM3S0Z-iLrFdMcFjKNIkG5OIUkgfRngSiUA65f2iKkI48vrykUefVopkCthEGQutyLOXSY4O-e7G-CaCe4b3I7SFP0DwcKa01GrxLC9D5UXD29fYPFfhaOk87dxNFQC66gbNwJr9Jo9Lf1xvjugEP6ckom5-XnRbPFgn7r15BLg6XgnlQM&u=aHR0cHMlM2ElMmYlMmZ3d3cuY29sbGlicmEuY29tJTJmZGVtbyUzZnV0bV9zb3VyY2UlM2RiaW5nJTI2dXRtX21lZGl1bSUzZHBhaWQtc2VhcmNoJTI2dXRtX2NhbXBhaWduJTNkQ09MX0VNRUEtQUxMLUFMTF9EUS1MSU5FQUdFX0VOVEVSUFJJU0VfREVNX0FMV0FZU09OX0ctU0NSX05CUk5EX1JPSSUyNnV0bV9zb3VyY2UlM2RiaW5nJTI2dXRtX21lZGl1bSUzZHBhaWQtc2VhcmNoJTI2dXRtX2NhbXBhaWduJTNkQ09MX05BTUVSLUFMTC1BTExfQ09NUExJQU5DRV9FTlRFUlBSSVNFX0RFTV9BTFdBWVNPTl9HLVNDUl9OQlJORF9ST0klMjZtc2Nsa2lkJTNkNWQwN2UwZDliYjE3MWM3M2RjM2I4YTI4NmIyYjFmZDY&rlid=5d07e0d9bb171c73dc3b8a286b2b1fd6",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "SpringBoot：单体架构与微服务架构全景深度对比分析",
+   "content": "Aug 6, 2026 · 文章浏览阅读350次，点赞9次，收藏6次。 本文基于SpringBoot技术栈，系统对比单体架构与微服务架构在核心定义、工程结构、数据库事务、部署运维、性能开销、团队协作等维度的本质差异。",
+   "source": "https://blog.csdn.net/snowball_li/article/details/163530642",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "详解单体架构和微服务（概念，优缺点和区别）_java后端单体和微服务-C...",
+   "content": "Aug 21, 2023 · 文章浏览阅读6.3k次，点赞6次，收藏9次。本文比较了单体架构与微服务架构，阐述了单体架构的简洁部署与扩展限制，以及微服务的解耦、独立部署和性能优势。同时讨论了微服务的优缺点和适用场景，如大型复杂项目和快速迭代的优先选择。,",
+   "source": "https://blog.csdn.net/xjx666666/article/details/132413595",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:企业级软件架构选型决策指南": [
+  {
+   "title": "2026企业软件选型指南：架构、AI与数据资产化-CSDN博客",
+   "content": "Oct 16, 2026 · 重点分析ERP、协同平台、BI与安全软件的选型逻辑，强调TCO测算、集成能力、供应商生态及AI可信度验证等四大关键判断维度，并提出场景化七步选型法与合同避坑要点，聚焦信息技术落地实效。",
+   "source": "https://blog.csdn.net/weixin_29057163/article/details/168203881",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "企业级软件技术选型指南 - 百度文库",
+   "content": "企业级软件技术选型指南-需区分“刚性需求”与“弹性需求”：刚性需求为必须满足的功能（如财务软件需符合会计准则），弹性需求为可优化或可选配的功能（如报表工具支持自定义可视化）。 选型时需保证候选方案100%满足刚性需求，弹性需求按优先级排序。",
+   "source": "https://wenku.baidu.com/view/1756d138b84cf7ec4afe04a1b0717fd5370cb233.html",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "2026企业软件选型全景指南：六大类别头部厂商对比与AI原生、云边协同...",
+   "content": "资源浏览阅读36次。资源摘要信息: 本文《企业软件2026主流选型趋势与供应商全景：六大类别头部厂商对比及AI原生、云边协同发展方向分析》是一份面向企业数字化转型纵深阶段的战略级技术决策指南，其核心价值在于将宏观技术演进、中观产业格局与微观选型实操三者深度融合，构建起一套兼具 ...",
+   "source": "https://wenku.csdn.net/doc/8qvzofydkieh",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:SQL 和 NoSQL 数据库有什么区别？": [
+  {
+   "title": "干货 | SQL 与 NoSQL还在傻傻分不清？ - 知乎",
+   "content": "上一节我们认识了数据库，了解了数据库事务是什么，索引是如何提升数据库性能的，现在我们来学习下大家常说的一些数据库，MySQL、mongoDB、kv等等这些又有什么区别。 本文中，SQL 与 NoSQL 代表关系型数据库与非关…",
+   "source": "https://zhuanlan.zhihu.com/p/63371253",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "SQL 数据库与 NoSQL 数据库：有什么区别？ | IBM",
+   "content": "这些数据库通常称为 NoSQL。 SQL 和 NoSQL 的不同之处在于：它们是关系型 (SQL) 还是非关系型 (NoSQL)；它们的架构是预定义的还是动态的；它们的扩展方式；它们包含的数据类型；以及更适用于多行事务还是非结构化数据处理。",
+   "source": "https://www.ibm.com/cn-zh/think/topics/sql-vs-nosql",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "NoSQL和SQL的区别及使用场景 - CSDN博客",
+   "content": "Nov 17, 2019 · 本文深入探讨了NoSQL数据库的概念及其与SQL数据库的主要区别，包括它们各自适用的场景、特性及优缺点。 NoSQL数据库适合处理大规模、非结构化数据，而SQL数据库则在数据完整性和精确查询方面表现更佳。",
+   "source": "https://blog.csdn.net/fesfsefgs/article/details/103109505",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:SQL 与 NoSQL 核心差异对比": [
+  {
+   "title": "SQL与NoSQL数据库核心技术对比与选型指南-CSDN博客",
+   "content": "Oct 26, 2026 · 本文系统对比SQL与NoSQL在数据模型、查询能力、事务一致性（ACID vs BASE）、扩展架构（垂直vs水平）、性能优化、典型场景及运维成本等核心技术维度，涵盖文档型、键值型、列族型和图数据库的差异化特性，并提出基于CAP、访问模式、团队技能与TCO的结构化选型 ...",
+   "source": "https://blog.csdn.net/weixin_33507732/article/details/169196766",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "SQL 与 NoSQL 本质差异完全指南：从数据模型到选型决策的深度剖析-CSD...",
+   "content": "Oct 14, 2026 · 全文摘要 SQL（Structured Query Language，结构化查询语言） 与 NoSQL（Not Only SQL，非关系型数据库） 之争，是每个后端工程师都绕不开的一课 🎓。",
+   "source": "https://blog.csdn.net/2301_79239314/article/details/167890134",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "SQL 与 NoSQL 数据库：关键差异与实践洞见 | DataCamp",
+   "content": "Oct 6, 2026 · SQL 以其结构化、关系型模型，在数据定义明确、关系至关重要的场景中表现出色，并通过 ACID 特性确保即时一致性。 相对地，NoSQL 数据库提供灵活性与可扩展性，适配现代应用中普遍存在的动态、非结构化数据类型。",
+   "source": "https://www.datacamp.com/zh/blog/sql-vs-nosql-databases",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:Python 的 asyncio 和多线程有什么区别？": [
+  {
+   "title": "Python异步编程详解：asyncio和多线程 - CSDN博客",
+   "content": "Apr 27, 2024 · 文章浏览阅读1.1k次，点赞3次，收藏3次。 本文探讨了Python的异步编程（asyncio）和多线程并发，介绍了asyncio的基本概念如协程、事件循环和任务，以及多线程的线程、锁概念。 对比了两者在用途、性能和复杂性上的差异，建议根据具体应用场景选择合适的技术。",
+   "source": "https://blog.csdn.net/2301_79507619/article/details/138241093",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "深度对比 Python 几种并发方案的优缺点 - CSDN博客并发迷思：深度解析 Python asyncio 与多线程/多进程的协作模式一文带您了解Python中的并发：异步 (Asyncio)和多线程 (Multithreadin...Python并发优化实战：多线程 vs 多进程 vs asyncio 性能对比python 的asyncio与multiporcess - iTech - 博客园Python 中的并发：多线程、多进程和Asyncio - 张志敏的技术专栏",
+   "content": "Python解释器使用单进程，如果服务器或者你的电脑是多核的，这么用其实是很浪费的，所以可以通过多进程提速: 使用多进程池，但没指定进程数量，所以会按着Macbook的核数启动10个进程一起工作，耗时如下: 多进程理论上可以有十倍效率的提升，因为10个进程在一起执行任务。当然由于任务数量是25，不是整数倍，是无法达到10倍的降低耗时，而且由于抓取太快了，没有充分显示多进程方案下的效率提升，所以用时1秒，也就是大约4倍的效率提升。 多进程方案下没有明显的缺点，只要机器够强悍，就可以更快。 See full list on blog.csdn.net Python解释器不是线程安全的，为此Python设计了GIL: 获得GIL锁才可以访问线程中的Python对象。所以在任何一个时间，只有一个线程可以执行代码，这样就不会引发竞态条件(Race Condition) ，虽然GIL的问题很多，但是GIL却是还有它存在的优点，例如简化了内存管理等等，这些不是本文重点所以就不展开了，有兴趣的可以专门去了解。 那么有同学会问，既然同一时间永远只有一个线程在工作，那么多线程可以提高并发效率的原因是什么呢？ 解释这个问题还是要提GIL。延伸阅读链接1《Understanding the Python GIL》中做了很好的解释（这里要注意，我们提的方案是Python 3.2新的GIL，而不是Python2的旧版GIL，现在网上有很多针对旧的GIL的描述，其... See full list on blog.csdn.net 这里也顺便提一下 concurrent.futures的方案。其实它不是一个全新的方案，这是在其他语言(例如Java)里早就出现的一种框架，可以通过它控制线(进)程的启动、执行和关闭。我把它理解为抽象了多进程池和多线程池的代码，让开发者不需要关注多线程和多进程模块的具体细节和用法。其实理解起来也不难，你可以这么拆解: 其实理解起来也不难，例如ThreadPoolExecutor可以这么拆解: ThreadPoolExecutor=Thread+Pool+Executor，其实就是线程+池+执行器。就是预先创建一个线程池用来被重复使用，Executor将任务提交和任务执行进行解耦，它完成线程的调配(如何以及何时)和任务的执行部分。 如果你想了解它的细节，我推荐直接看它的源码文件头部的注释，里面... See full list on blog.csdn.net 前面的多线程相关的方案中，需要开发者根据经验或者去实验，找到一个(或者多个)最优的线程数量，不同的场景这个值区别是很大的，这对于初学者很不友好，非常容易陷入【在用多线程，但是用错了或者用的不够好】这么一种境地。 后来Python引入了新的并发模型: aysncio，本小节给大家解释下最新的asyncio方案为什么是一个更优的选择。首先还是看《Understanding the Python GIL》里面的一页PPT: 我们回忆一下，它提到当只有单个线程时，实际上不会触发GIL，这个独立的线程可以一直执行下去。这也是asyncio找到的切入点: 因为是单进程单线程的，所以理论上不受GIL的限制。在事件驱动的机制下，可以更好的利用单线程的性能，尤其是通过await关键词可以让开发者自己决定调度方... See full list on blog.csdn.net Nov 18, 2025 · 多线程 (Multithreading) 指的是多个线程并行执行任务（在多核 CPU 上）或在不同时间片上切换执行任务。 asyncio 的主要优势在于它的高效，因为它避免了多线程/多进程上下文切换的高开销，非常适合 I/O 密集型任务。 Mar 12, 2024 · 了解多线程和Asyncio的细微差别对于根据您应用程序的性质做出明智的决策至关重要。 无论您选择多线程的并行性还是Asyncio的效率，Python的多样性确保您可以同时处理各种各样的任务，并为您的应用程序提供最佳性能。 在 Python 项目开发中，很多开发者都会遇到一个问题： 程序执行太慢，如何提升并发能力？ Python 提供了多种并发方案，例如： 多线程 多进程 协程（asyncio） 但是很多人并不清楚： 什么时候用多线程？ 什么时候用多进程？ asyncio 是否真的更快？ 本文通过 实际代码测试 对比三种方案的性能差异。 Jun 3, 2025 · python 的asyncio与multiporcess 在 Python 中，协程（asyncio）、多线程（multithreading）和多进程（multiprocessing）是实现并发和并行的三种主要方式。 它们各有优劣，适用于不同场景。 以下是它们的比较、使用实例和适用场景。 May 18, 2025 · Python 中的并发：多线程、多进程和Asyncio ... 上一篇 使用 ANEMLL 在苹果芯片 (M1 Max) 的 NPU 上运行大模型 下一篇 在 Redmi K40S 上安装 LineageOS 记录",
+   "source": "https://blog.csdn.net/m0_49189932/article/details/126278906",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "并发迷思：深度解析 Python asyncio 与多线程/多进程的协作模式",
+   "content": "Nov 18, 2025 · 多线程 (Multithreading) 指的是多个线程并行执行任务（在多核 CPU 上）或在不同时间片上切换执行任务。 asyncio 的主要优势在于它的高效，因为它避免了多线程/多进程上下文切换的高开销，非常适合 I/O 密集型任务。",
+   "source": "https://runebook.dev/zh/docs/python/library/asyncio-dev/concurrency-and-multithreading",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:Python asyncio 与多线程对比": [
+  {
+   "title": "Python 并发怎么选？多线程 / 多进程 / asyncio 真实性能对比（附实测...",
+   "content": "Jun 26, 2026 · 本文基于36组实测数据（IO/CPU/混合三大场景×4方案×3任务量级），系统对比Python多线程、多进程与asyncio的性能与内存开销。 结果表明：IO密集场景asyncio最优（小量级快30%）；CPU密集场景仅多进程有效（6.1倍加速），多线程因GIL无加速；混合场景推荐asyncio+线程池。",
+   "source": "https://blog.csdn.net/guwentian/article/details/162332259",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "Python 多进程 / 多线程 / Asyncio 异步全场景实战：并发模型选型、性...",
+   "content": "Jul 18, 2026 · 本文系统剖析Python多线程、多进程与Asyncio三大并发模型的底层原理与适用场景：多线程适用于IO密集型任务，受限于GIL无法提升CPU密集性能；多进程可真正利用多核，适合Pandas/PyTorch等CPU密集计算；Asyncio基于事件循环，专为高并发IO设计，但需纯异步生态支持。",
+   "source": "https://blog.csdn.net/unegoist/article/details/162987698",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "并发迷思：深度解析 Python asyncio 与多线程/多进程的协作模式",
+   "content": "Nov 18, 2025 · Python 的 asyncio 库主要用于编写单线程、并发执行的结构化网络代码和其他 I/O 密集型任务。 并发 (Concurrency)指的是处理多个任务的能力。",
+   "source": "https://runebook.dev/zh/docs/python/library/asyncio-dev/concurrency-and-multithreading",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:异步编程 vs 多线程机制差异": [
+  {
+   "title": "异步编程与多线程的核心差异与应用场景解析-CSDN博客",
+   "content": "5 days ago · 本文深入对比异步编程与多线程的本质差异：异步基于单线程事件循环和非阻塞I/O，适用于高并发I/O密集型场景（如Web服务器、实时通信）；多线程依赖操作系统调度和并行执行，适合CPU密集型任务（如视频转码、科学计算）。",
+   "source": "https://blog.csdn.net/weixin_33507732/article/details/170110421",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "一篇文章，搞懂异步和多线程的区别 - 知乎异步与多线程的区别 - 知乎专栏19、多线程与异步编程对比 - jessqiu - 博客园异步VS多线程 - #疆先绅# - 博客园一篇文章，搞懂异步和多线程的区别-腾讯云开发者社区-腾讯云",
+   "content": "最近在研究Spring Boot中的异步处理，发现涉及到异步和多线程的很多知识点，就先写几篇关于异步与多线程的文章，带大一起回顾或学习一下相关的知识点。下面开始正文内容： See full list on zhuanlan.zhihu.com 在本文中，我们通过一些通俗易懂的方式来解释异步编程和多线程编程，然后再介绍一下它们之间的区别。 See full list on zhuanlan.zhihu.com 首先来看一下异步模型。在异步模型中，允许同一时间发生（处理）多个事件。程序调用一个耗时较长的功能（方法）时，它并不会阻塞程序的执行流程，程序会继续往下执行。当功能执行完毕时，程序能够获得执行完毕的消息或能够访问到执行的结果（如果有返回值或需要返回值时）。 下面通过一个示例来看一下同步和异步的区别。示例中程序通过网络获取两个文件，并对两个文件进行合并处理： 上述示例，在异步系统当中的解决方案是开启一个额外的线程进行处理。第一个线程获取第一个文件，第二个线程获取第二个文件，第二个线程并不需要等待第一个线程执行完毕再执行。当两个线程都获得到对应的结果之后，再重新同步处理合并结果的操作。 再来看另外一个场景。单线程方法读取OS（操作系统）当中的文件并需要进行数学运算。而在异步系统中，程序发起读取OS中文件的请求，由于读取操作比较耗时，在等待读取文件时，程序会将控制器返回给CPU进行数学运算。 See full list on zhuanlan.zhihu.com 多线程是指同时并发或并行执行多个指令（线程）。 在单核处理器上，多线程往往会给人程序是在并行执行的错觉。实际上，处理器是通过调度算法在多线程之间进行切换和调度。或者根据外部输入（中断）和线程的优先级的组合来进行线程的切换。 在多核处理器上，线程才是真正的并行运行。多个处理器同时执行多个线程，以达到更加高效的处理。 一个简单的示例就是：开启两个浏览器窗口同时下载两个文件。每个窗口都使用一个新的线程去下载文件，它们之间并不需要谁等待谁完成，而是并行进行下载。 See full list on zhuanlan.zhihu.com 通过上面的介绍，我们可以看出多线程都是关于功能的并发执行。而异步编程是关于函数之间的非阻塞执行，我们可以将异步应用于单线程或多线程当中。 因此，多线程只是异步编程的一种实现形式。 比如，你和你的朋友决定一起做一顿午餐。“异步”就是你对朋友说：“你去商店买意大利面，回来的时候告诉我一声，然后一起做午餐。在你买意大利面的同时，我去准备番茄酱和饮料。” 而“线程”是：“你烧水，我加热番茄酱。当水烧开了，告诉我，我把意大利放进去。当番茄酱热了，你可以把奶酪添加进去。当两者都完成了，就可以坐下来一起吃晚餐。”在线程的示例中，我们可以看到“When，Do”的事件顺序，而这些顺序代表着每个人（线程）的指令集集合的顺序。 上述示例可以看出，多线程是与具体的执行者相关的，而异步是与任务相关的。 多线程是程序设计的逻辑层概念，它是进程中并发运行的一段代码，可以实现线程间的切换执行。 See full list on zhuanlan.zhihu.com 面对多线程和异步，我们该如何选择呢？其实，通常情况下选择的依据是主要取决于性能。 那么，同步/异步与单线程/多线程之间的所有组合，哪种模型表现更好？ 简而言之，对于具有大量I/O操作和不同计算的大规模应用程序，使用异步多线程有利于充分利用计算资源，并且能够照顾到非阻塞函数。这也是所有操作系统所采用的线程模型。 编写异步操作的复杂程度较高，程序主要使用回调方式进行处理，与正常的思维方式有些出入，而且难以调试。而多线程的使用（滥用）会给系统带来上下文切换的额外负担，并且线程间的共享变量可能造成死锁。 See full list on zhuanlan.zhihu.com 在本文中，我们讲解了异步编程和多线程编程的定义，然后是它们之间的区别。而本文中的所有术语和概念均与具体技术实现无关。后面我们会继续讲解多线程与异步相关的其他知识点，比如异步调用与回调等。 See full list on zhuanlan.zhihu.com Oct 5, 2022 · 一个常见的概念混淆就是把异步和多线程当成一回事，其实不一样。 异步侧重于任务的执行顺序，而多线程则是关于多个线程如何并发执行。 应该说多线程是实现异步的常用手段，但不能说他们是一回事。 即便是只有一个线程的情况下，我们仍然可以实现异步。 Aug 27, 2025 · 19、多线程与异步编程对比 多线程与异步编程对比 知识点 基本概念 多线程编程：创建和管理多个执行线程来并行处理任务 异步编程：通过非阻塞方式处理耗时操作，提高应用程序响应性 并发 vs 并行：并发是同时处理多个任务，并行是同时执行多个任务 主要区别 Mar 26, 2024 · 一个常见的概念混淆就是吧异步和多线程当成一回事，其实不一样。 异步侧重于任务的执行顺序，而多线程则是关于多个线程如何并发执行。 应该说多线程是实现异步的常用手段，但不能说他们是一回事。 即便是只有一个线程的情况下。 我们仍然可以实现异步。 Mar 1, 2021 · 本文深入解析Spring Boot中异步编程与多线程的区别，通过生活化案例说明异步是非阻塞任务处理，多线程是实现并发的技术手段。 适合开发者理解异步处理原理及多线程应用场景，提升系统性能优化能力。 异步编程和多线程编程有什么区别? 异步编程和多线程编程都是实现并发的手段，但它们在设计理念、实现方式、适用场景及解决的问题上有着显著的区别。 核心区别对比： 提高程序的 响应性 和 吞吐量，尤其是在I/O密集型任务中。 充分利用多核CPU，实现 真正的并行，加速CPU密集型任务的执行。 非阻塞（Non-blocking），基于事件驱动和回调机制。 发起操作后立即返回，不等待结果。 阻塞（Blocking），通过创建独立的执行流（线程）来并行执行任务。 一个线程可以阻塞而不影响其他线程。 侧重于在等待I/O操作（如网络、磁盘）时释放CPU，处理其他任务。 主要解决 I/O密集型 问题。 侧重于利用多核CPU同时执行多个计算任务。 主要解决 CPU密集型 问题。 什么是多线程环境中的异步模式? 多线程环境中的异步模式： 在多线程应用程序中，主线程（例如GUI线程）可以使用异步模式来启动耗时的操作，并将这些操作的执行委托给后台的线程池。 这样，主线程可以保持响应，而不会因为等待耗时操作完成而被阻塞。 混合模型： 在许多高性能的服务器应用中，会采用 混合模型。 例如，一个主线程运行事件循环，负责处理大量的并发网络连接（异步I/O）。 当某个连接接收到需要大量计算的数据时，事件循环会将这个计算任务 分发给一个由多个工作线程组成的线程池 进行处理。 计算完成后，结果再通过异步机制返回给事件循环，由事件循环发送回客户端。 这种模型结合了异步I/O的高吞吐量和多线程的并行计算能力，能够最大限度地利用系统资源。 什么是多线程编程? 多线程编程 是一种程序设计技术，一个应用程序同时运行多个独立的执行序列（即线程）。 与异步编程主要关注非阻塞I/O以提高响应性不同，多线程编程的核心目标是实现 真正的并行，即在多核CPU或多处理器系统上，让多个任务同时在不同的CPU核心上执行，从而显著提升CPU密集型任务的执行效率。 C++中异步I/O和多线程混合处理Web服务器有何优势? 一个C++中异步I/O（使用Boost.Asio）与多线程（使用自定义线程池）混合处理Web服务器的示例。 这个模式非常适合处理并发连接，并将耗时的业务逻辑从I/O线程中分离出来，提高服务器的响应能力和吞吐量。 核心思想：",
+   "source": "https://zhuanlan.zhihu.com/p/350816301",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "19、多线程与异步编程对比 - jessqiu - 博客园",
+   "content": "Aug 27, 2025 · 19、多线程与异步编程对比 多线程与异步编程对比 知识点 基本概念 多线程编程：创建和管理多个执行线程来并行处理任务 异步编程：通过非阻塞方式处理耗时操作，提高应用程序响应性 并发 vs 并行：并发是同时处理多个任务，并行是同时执行多个任务 主要区别",
+   "source": "https://www.cnblogs.com/jessqiu/p/19060105",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:AI Agent 应该用单智能体还是多智能体架构？": [
+  {
+   "title": "Multi-Agent System，一篇就够了。 - 知乎",
+   "content": "在深入其架构细节之前，我推荐大家简单思考下基于 Multi Agent System 的 Deep Research 与 RAG（检索增强生成）的不同。 传统 RAG 采用的是 静态检索：一次性地根据用户查询抓取最相关的文本块，然后基于这些固定的信息生成答案（当然，我觉得 Anthropic 这里说的是 ...",
+   "source": "https://zhuanlan.zhihu.com/p/1928636720796136414",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "2026 年 AI Agent 技术全景：12 大主流框架深度解析与架构演进趋势",
+   "content": "Apr 11, 2026 · 2026 年 AI Agent 技术全景：12 大主流框架深度解析与架构演进趋势 本文首发于 2026 年 4 月，基于最新行业调研与技术实践，带你系统了解 AI Agent 的核心架构、主流框架选型与未来趋势。 一、AI Agent 是什么？ 为…",
+   "source": "https://zhuanlan.zhihu.com/p/2026254728342905724",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "多智能体（Multi-Agent）架构深度拆解：协作模式、框架与落地建议",
+   "content": "Apr 15, 2026 · 当下很多企业级 AI 应用已经全面从Single-Agent向Multi-Agent 跃迁。单智能体虽能解决简单对话、基础生成等场景，但面对跨领域决策、长链路业务、多角色协作时，会遭遇上下文窗口瓶颈、能力单一、容错性差、意图漂移等致命问题。而多智能体系统（Mu",
+   "source": "https://www.woshipm.com/ai/1546717.html",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:单智能体与多智能体架构对比": [
+  {
+   "title": "单智能体与多智能体工作模式深度综述：架构演进、核心范式与选型实践 ...",
+   "content": "通过对各范式的定义、核心流程、适用场景、优缺点及代表框架的深度解析，结合 AutoGen、 CrewAI 、LangGraph、DSPy、Anthropic Agent SDK、OpenAI Agents SDK、Google ADK 等主流框架的对比分析，以及工业界实际应用案例，本文旨在为技术从业者、产品经理和研究者提供一份系统 ...",
+   "source": "https://zhuanlan.zhihu.com/p/2043081855960888119",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "单智能体 vs 多智能体系统：架构对比与选择_单体智能和多体智能有什么...",
+   "content": "May 21, 2026 · 本文将带你深入了解单智能体系统和多智能体系统的核心概念、架构特点、优势与局限。 我们将通过对比分析，帮助你理解在不同场景下应该如何选择合适的架构。 不仅如此，我们还会提供实际的代码示例，让你能够亲手实现简单的单智能体和多智能体系统。",
+   "source": "https://blog.csdn.net/2502_91865303/article/details/161292704",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "【干货收藏】大模型智能体系统详解：从单智能体到多智能体的技术演进...",
+   "content": "Oct 14, 2025 · 文章浏览阅读1.8k次，点赞22次，收藏24次。 本文系统阐述了从单智能体到多智能体的技术演进路径，深入分析了单智能体与多智能体在架构、任务处理和适用场景上的核心差异，并对AutoGen、CrewAI、LangGraph等主流多智能体框架进行了功能解析。",
+   "source": "https://blog.csdn.net/youmaob/article/details/153261834",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:AI Agent 系统架构选型分析": [
+  {
+   "title": "Agentic AI infra playbook - Agent context layer design",
+   "content": "Serve your agents fresh data at Redis speed. Get the context architecture playbook. Plan agent context retrieval, memory and data pipelines against a production reference.",
+   "source": "https://www.bing.com/aclick?ld=e8eAhOPC1DsVqrBtCG3o7nNDVUCUxZ40tFeFnrfF_UqpXRPxrlFmwdn8qh3HUvLvXx647qGL_kyzYnlEmU3o1eBN1VCeImrRrPI_saJRYTRCuK7WbtmHgx9phGsGEiWpMPKHVLv9_r6zB4hN5JEBL3Cb9_YzN_ymbXaLsIIyktN8mPVTY934NPcOdmGYn8IzU1eE09joX6J9aUprFnBd9sHiBEt5I&u=aHR0cHMlM2ElMmYlMmZyZWRpcy5pbyUyZmd1aWRlcyUyZmNvbnRleHQtYXJjaGl0ZWN0dXJlLWZvci1wcm9kdWN0aW9uLWFpLWFnZW50cyUyZiUzZnV0bV9zb3VyY2UlM2RiaW5nJTI2dXRtX21lZGl1bSUzZGNwYyUyNnV0bV9jYW1wYWlnbiUzZHNlYXJjaC1ub25icmFuZC1oYW5kLXJhaXNlci1hbWVyJTI2dXRtX2NvbnRlbnQlM2RuYi1hc3NldC1jb250ZXh0LWFyY2hpdGVjdHVyZS1hbWVyLXJzYTElMjZ1dG1fY2FtcGFpZ24lM2QlMjZ1dG1fc291cmNlJTNkYmluZyUyNnV0bV9tZWRpdW0lM2RjcGMlMjZ1dG1fY29udGVudCUzZCUyNnV0bV90ZXJtJTNkJTI2ZGV2aWNlJTNkYyUyNm1hdGNodHlwZSUzZHAlMjZoc3RrX2NyZWF0aXZlJTNkJTI2aHN0a19jYW1wYWlnbiUzZDU4MTYyMTU3MyUyNmhzdGtfbmV0d29yayUzZGdvb2dsZUFkcyUyNm1zY2xraWQlM2Q0OWE0Y2VjYTBkOGExN2I5ZTBmNmE0M2JkZDFhMGMwNA&rlid=49a4ceca0d8a17b9e0f6a43bdd1a0c04",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "2026 年 AI Agent 框架全景：12 大主流框架深度横评",
+   "content": "2026 年被称为\"Agent 元年\"。 根据 斯坦福大学 《2026 年 AI 指数报告》，AI 智能体处理现实世界计算机任务的成功率从 18 个月前的 12% 跃升至 2026 年 3 月的显著水平。 随着 LLM 能力成熟、工程化框架完善和企业需求爆发，AI Agent 正在从概念验证走向规模落地。",
+   "source": "https://zhuanlan.zhihu.com/p/2065414418951938099",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "2026 年 AI Agent 技术全景：12 大主流框架深度解析与架构演进趋势",
+   "content": "Apr 11, 2026 · 2026 年 AI Agent 技术全景：12 大主流框架深度解析与架构演进趋势 本文首发于 2026 年 4 月，基于最新行业调研与技术实践，带你系统了解 AI Agent 的核心架构、主流框架选型与未来趋势。 一、AI Agent 是什么？ 为…",
+   "source": "https://zhuanlan.zhihu.com/p/2026254728342905724",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:2030 年世界杯夺冠概率分析": [
+  {
+   "title": "2030年世界杯冠军预测：西班牙、法国、英格兰，谁最有可能捧杯？_百度...",
+   "content": "未来6年的演变：年轻一代的成长 2030年世界杯的冠军归属，很大程度上取决于未来六年各队新生代球星的成长轨迹。 除了西班牙的“黄金一代”，其他强国也都在进行新老交替。 例如意大利等队已启动针对2030年的长期计划，旨在提拔更多年轻人。",
+   "source": "https://wenku.baidu.com/view/911fc79d4d649b6648d7c1c708a1284ac85005b6.html",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "2030世界杯夺冠赔率:西班牙稳坐头名 阿根廷仅第7_国际足球_新浪竞技风...",
+   "content": "Jul 21, 2026 · 西班牙稳坐2030世界杯夺冠赔率头名2026美加墨世界杯落下帷幕，西班牙时隔16年重夺冠军，阿根廷决赛折戟收获亚军。相关机构开出了2030西葡摩世界 ...",
+   "source": "https://sports.sina.com.cn/l/2026-07-21/doc-iniiptrk8190151.shtml",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "2030世界杯夺冠赔率：西班牙领跑，法国紧追|英格兰|变量|赔率|西班牙|...",
+   "content": "三、关键变量与历史规律 冠军得主的历史范围：历届世界杯冠军仅从巴西、德国、意大利、阿根廷、乌拉圭、法国、西班牙、英格兰八国产生，这一规律可能延续。 卫冕魔咒：自1962年巴西之后，尚无球队能成功卫冕，西班牙若想打破这一魔咒需克服巨大挑战。",
+   "source": "https://sina.cn/detail/niiteiu7860299",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:明天上证指数的收盘点位是多少？": [
+  {
+   "title": "上证指数 (000001)_股票行情_走势图—东方财富网",
+   "content": "提供上证指数 (000001)的行情走势、资金流向、行业概念板块排行、成份股排行、大盘分析、证券聚焦、市场总貌、股吧互动等与上证指数 (000001)有关的信息和服务。",
+   "source": "https://quote.eastmoney.com/ZS000001.html",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "上证指数 (000001)大盘走势图,大盘指数实时行情_新浪财经_新浪网",
+   "content": "新浪财经为您提供上证指数 (000001)股票实时行情走势,实时资金流向,实时新闻资讯,研究报告,股吧互动,交易信息,个股点评,公告,财务指标分析等与 ...",
+   "source": "https://finance.sina.com.cn/realstock/company/sh000001/nc.shtml?wm=wm���",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "上证指数预测： 2026年、2027年-2029年",
+   "content": "1 day ago · 11月26日星期四上证指数预测： 价格为 3570 美元，最高 3820，最低 3320。 11月27日星期五上证指数预测： 价格为 3584 美元，最高 3835，最低 3333。 在3周内： 11月30日星期一上证指数预测： 价格为 3593 美元，最高 3845，最低 3341。",
+   "source": "https://longforecast.net/上证指数预测",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:上证指数明日收盘预测": [
+  {
+   "title": "上证指数预测： 2026年、2027年-2029年",
+   "content": "1 day ago · 12月1日星期二上证指数预测： 价格为 3536 美元，最高 3784，最低 3288。 12月2日星期三上证指数预测： 价格为 3505 美元，最高 3750，最低 3260。 12月3日星期四上证指数预测： 价格为 3508 美元，最高 3754，最低 3262。",
+   "source": "https://longforecast.net/上证指数预测",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "上证指数 (000001)_股票行情_走势图—东方财富网",
+   "content": "提供上证指数 (000001)的行情走势、资金流向、行业概念板块排行、成份股排行、大盘分析、证券聚焦、市场总貌、股吧互动等与上证指数 (000001)有关的信息和服务。",
+   "source": "https://quote.eastmoney.com/zs000001.html?isappinstalled=0",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "明日 上证指数 预测大概率走势（60%概率）震荡整理，小幅反弹波动区间...",
+   "content": "Dec 4, 2025 · 明日 上证指数 预测 大概率走势（60%概率） 震荡整理，小幅反弹 波动区间：3870-3910点 核心逻辑： 连续调整后技术面有超跌反弹需求 创业板 率先反弹显示成长股情绪回暖 量能萎缩显示抛压减轻 可能走势（30%概率） 继续探底，测试支撑 波动区间：3850-3890点 ...",
+   "source": "https://xueqiu.com/2834944800/364582412",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:我们公司上个季度的内部销售额是多少？": [
+  {
+   "title": "Excel如何统计指定时间段的销售额_excel第三季度的总销售额公式-CSDN...",
+   "content": "Dec 18, 2021 · 文章浏览阅读4.7k次。 本文介绍如何使用Excel中的SUMPRODUCT函数配合MONTH函数统计指定时间段内的销售额。 通过实例演示了上半年及第三季度销售额的计算方法。",
+   "source": "https://blog.csdn.net/ffcell2016/article/details/122018715",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "如何查企业的销售额 - worktile.com",
+   "content": "Dec 2, 2025 · 企业销售额的获取可以通过官方年报、证券监管数据库（如SEC EDGAR）、专业商业信息平台（如Bloomberg、Orbis、Statista）、行业协会榜单等权威渠道，准确可靠地满足市场分析、投资决策和信用评估等多场景需求。",
+   "source": "https://worktile.com/insights/yy1d4apw40v2rdhtfnscjm76",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "如何查询公司销售额 - ailegal.baidu.com",
+   "content": "Nov 16, 2024 · 要查询公司销售额，可以通过以下几种途径进行： 一、企业财务报表 利润表：企业销售收入是利润表中的重要指标，反映了企业在一定期间内的经营成果。 通过查看利润表，可以直观地了解到企业的销售收入情况。",
+   "source": "https://ailegal.baidu.com/legalarticle/qadetail?id=055048afd9ebca241114",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:北京霁川云栈科技 2025 年净利润": [
+  {
+   "title": "云从科技：2025年营收同比增长25.86%，亏损持续收窄|非经常性损益|归...",
+   "content": "Feb 27, 2026 · 公告显示，公司2025年实现营业总收入5.01亿元，同比增长25.86%；归属于母公司所有者的净利润为-5.45亿元，较上年同期的-6.96亿元亏损收窄；扣除非经常性损益后的归母净利润为-6.39亿元，较上年同期的-7.22亿元亏损同样收窄。",
+   "source": "https://finance.sina.cn/2026-02-27/detail-inhphqpe0600549.d.html?vt=4",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "A股2025年年报全榜单出炉！|净利润_新浪财经_新浪网",
+   "content": "May 6, 2026 · 总体来看，2025年所有已披露财报的A股上市公司合计实现营业总收入72.92万亿元，同比增长0.87%；合计归属母公司股东净利润5.39万亿元，同比增长1.89%。",
+   "source": "https://finance.sina.com.cn/wm/2026-05-06/doc-inhwwmhz3859061.shtml",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "2025《财富》中国500强 · 完整榜单 - caifuzhongwen.com",
+   "content": "而净利润率最高的前十家公司中，有三家来自饮料行业中的酒企，分别是贵州茅台、泸州老窖和山西汾酒，其中贵州茅台以超过49%的利润率在利润率榜中居首。 排在利润率榜第三位的是台积公司，利润率超过40%。",
+   "source": "https://www.caifuzhongwen.com/fortune500/rankings/china500/2025/",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:霁川云栈公司年度财务报表": [
+  {
+   "title": "企业年报查询 - 工商年报查询官网 - 公司年报信息公示大全 - 天眼查",
+   "content": "1 北京华方置地投资有限责任公司年报 2 中电投（天津武清）光伏发电有限公司年报 3 上海爱建资产管理有限公司年报 4 中电投京润（天津）光伏发电有限公司年报 5 上海爱建纺织品有限公司年报 6 上海爱建产业发展有限公司年报 7 中电投京盛（天津）光伏发电 ...",
+   "source": "https://nianbao.tianyancha.com/",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "爱企查-工商查询_专业企业信息查询平台_公司查询_老板查询_工商信息查...",
+   "content": "爱企查是百度推出的企业信用查询工具,提供一站式的企业信息查询服务,能够快速查询浏览工商信息、企业法人股东、主要成员、变更记录、企业风险、企业股权、网站icp备案、对外投资、分支机构、年报、企业财务信息等相关信息,查询信息就到爱企查官网,省时 ...",
+   "source": "https://aiqicha.baidu.com/",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "公司2025年度财务决算及2026年度财务预算报告 公",
+   "content": "Mar 30, 2026 · 第一部分: 2025 年度财务决算报告 2025 年,公司财务部门严格按照《企业会计准则》、《企业会计制度》、《会计法》的规定进行了财务核算,公司所编制的资产负债表、利润表、现金流量表、股东权益变动表以及财务报表附注已经中审众环会计师事务所(特殊普通合伙)审计,并出具了标准无保留意见的 ...",
+   "source": "https://static.cninfo.com.cn/finalpage/2026-03-30/1225044947.PDF",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:2028 年诺贝尔物理学奖得主是谁？": [
+  {
+   "title": "诺贝尔物理学奖得主列表 - 维基百科，自由的百科全书",
+   "content": "至今共有五位女性获得过该奖，分别是 玛丽·居里 （1903年）、 玛丽亚·格佩特-梅耶 （1963年）、 唐娜·斯特里克蘭 （2018年）、 安德烈娅·盖兹 （2020年）和 安妮·呂利耶 （2023年）。 在六个诺贝尔奖项中，这是女性获奖人次第二少的奖项 [註 1][7]。",
+   "source": "https://zh.wikipedia.org/wiki/诺贝尔物理学奖得主列表",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "诺贝尔奖得主档案 | 诺贝尔奖讯",
+   "content": "弗朗西斯·哈尔岑博士 Francis Halzen for decisive contributions to the IceCube Neutrino Observatory and the discovery of high-energy neutrinos of astrophysical origin 以表彰其对冰立方中微子观测台的决定性贡献，以及发现具有天体物理起源的高能中微子",
+   "source": "https://www.nobelpress.org/",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "All Nobel Prizes in Physics - NobelPrize.org",
+   "content": "All Nobel Prizes in Physics All Nobel Prizes in Physics The Nobel Prize in Physics has been awarded 120 times to 231 Nobel Prize laureates between 1901 and 2026. John Bardeen is the only laureate who has been awarded the Nobel Prize in Physics twice, in 1956 and 1972. This means that a total of 230 individuals have received the Nobel Prize in Physics. Click on the links to get more information.",
+   "source": "https://www.nobelprize.org/prizes/lists/all-nobel-prizes-in-physics/",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:2028 年诺贝尔物理学奖预测名单": [
+  {
+   "title": "诺贝尔物理学奖预测：热门候选与研究方向解析|量子|石墨烯|诺奖|引文|...",
+   "content": "依据：2027年诺贝尔物理专题研讨会（Nobel Symposium）主题正是 Beyond Boltzmann: Complexity, Memory and Non-additive Entropies，Tsallis是本次研讨会共同主席，他创立Tsallis熵（非广延统计力学），拓展玻尔兹曼-吉布斯统计，广泛用于复杂系统、混沌、长程相互作用体系，引用量 ...",
+   "source": "https://k.sina.cn/article_7879996043_1d5af328b06802jnb0.html",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "2026年诺贝尔物理学奖预测：中科院院士现身预测名单",
+   "content": "Oct 3, 2026 · 图片来源：The Nobel Prize 从量子信息到扭转石墨烯，从光晶格钟到超材料，今天物理学家究竟在研究什么、哪些问题正在改变我们理解世界的方式，这些才是诺贝尔奖背后更值得关注的东西。 2026年诺贝尔物理学奖将于10月6日揭晓。",
+   "source": "https://www.sohu.com/a/1083752177_181847",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "诺贝尔奖预测：谁将成为下一个科学巨匠？ - 知乎【诺奖预测】2026年诺贝尔物理学奖会有中国科学家？诺贝尔物理学奖热门预测名单有哪些学者？|量子|量子反常霍尔效应|瑞典...2026年诺贝尔物理学奖预测：今年会花落谁家？中国科学家有机会吗？_腾...2026年诺奖会有中国科学家？我们深度分析了一下可能性……",
+   "content": "一年一度万众期待的诺贝尔奖已经全部公布了，回顾今年的生理学或医学奖、物理学奖、化学奖，从促进新冠病毒有效mRNA疫苗的开发，到为电子拍摄影片的阿秒科学，再到点亮电视屏幕的量子点，科学家们展示了对微观领域不遗余力的研究，一如既往地，这些奖项表彰了在各自领域做出杰出贡献的科学家和学者。 诺贝尔奖作为全球科学界的最高荣誉，每年都吸引着全世界的目光。而诺贝尔风向标奖，被誉为诺贝尔奖的“预测器”，旨在表彰那些有望在未来获得诺贝尔奖的杰出科学家。很遗憾本年度诺奖并没有看到华人的身影，今天，小编将结合诺奖风向标奖和AMiner AI塔尖人才预测算法，利用人工智能技术预测未来可能获得诺贝尔奖的10位华人科学家们，并分享他们的经历与主要成就。 See full list on zhuanlan.zhihu.com 1. 何川-表观遗传学研究领域的奠定者 教育和工作经历： 1994年，中国科学技术大学，理学学士 2000年，麻省理工学院，理学博士 2000-2002年，哈佛大学，博士后 2002-2010年，芝加哥大学， 助理教授，副教授，教授 See full list on zhuanlan.zhihu.com 1. 斯其苗-铁基超导体领域做出了开创性的贡献 教育和工作经历： 1981-1986年，中国科技大学，学士学位 1987-1992年，芝加哥大学，物理学博士 罗格斯大学和伊利诺伊大学香槟分校，博士后 1994年至今，莱斯大学，物理学和天体物理学教授 See full list on zhuanlan.zhihu.com 1. 杨培东-在纳米导线光子学研究领域取得多个重大突破 教育和工作经历： 1993年，中国科技大学，应用化学学士学位 1997年，哈佛大学，化学博士学位 1997-1999年，加利福尼亚大学圣塔芭芭拉分校，博士后 1999年至今，加州大学伯克利分校，先后担任助理教授、副教授、终身教授 See full list on zhuanlan.zhihu.com Oct 4, 2026 · 今年，果壳根据以往诺奖颁发的规律，请教相关领域的科学家，并结合AI分析，做了一份今年的物理学诺奖预测名单，其中有中国科学家薛其坤、方忠、戴希。 排完之后，取综合分最高的5-6个，再按“N强必有一中”的口径把… Oct 6, 2026 · 瑞典皇家科学院不会公开诺贝尔物理学奖正式入围提名名单，所有提名材料保密50年。 网络上流传的名单全部是第三方机构、媒体、学界基于过往获奖规律、引文数据、重要奖项做出的预测热门人选，不是官方提名名单。 Oct 6, 2026 · 10月5日，2026年诺贝尔生理学或医学奖率先揭晓。10月6日，诺贝尔物理学奖将成为全球科学界关注的焦点。 根据诺贝尔官网消息，2026年物理学奖将于 ... Sep 29, 2026 · 今年，果壳根据以往诺奖颁发的规律，请教相关领域的科学家，并结合AI分析， 做了一份今年的诺奖预测名单，其中不乏多位中国科学家。 每个奖项，我们最初都讨论了10-12个可能的奖项，每一个奖项都按同一套标准衡量： 成果是否已经成熟？",
+   "source": "https://zhuanlan.zhihu.com/p/663058941",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:未来诺贝尔物理学奖获奖者趋势分析": [
+  {
+   "title": "诺贝尔物理学奖的调查研究",
+   "content": "对获奖者的各项数据进行统计，从性别、国籍、获奖年龄等8项指标展开分析，探究了获奖者的成功与相关原因的可能关联性.调查发现获奖者的研究成果呈现出显著的国际合作趋势，且实验与理论并重.数据揭示了物理学研究前沿正从单一领域向跨学科融合演进 ...",
+   "source": "https://dxwl.bnu.edu.cn/CN/10.16854/j.cnki.1000-0712.250247",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "2026年诺贝尔物理学奖预测：中科院院士现身预测名单",
+   "content": "Oct 3, 2026 · 图片来源：The Nobel Prize 从量子信息到扭转石墨烯，从光晶格钟到超材料，今天物理学家究竟在研究什么、哪些问题正在改变我们理解世界的方式，这些才是诺贝尔奖背后更值得关注的东西。 2026年诺贝尔物理学奖将于10月6日揭晓。",
+   "source": "https://www.sohu.com/a/1083752177_181847",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "2026诺贝尔物理学奖全球候选预测，热门方向深度解析",
+   "content": "Oct 1, 2026 · 六、总结 综合全球学界、引文桂冠、历年颁奖规律来看，2026诺贝尔物理学奖最大概率落在凝聚态物理与新型功能材料领域。 薛其坤院士的量子反常霍尔效应，是本次预测中最受国内关注的重大成果；Nicola Spaldin多铁材料、OLED发光材料团队是海外两大强力竞争者。",
+   "source": "https://www.toutiao.com/article/7691523814454428199/",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:Kafka 跨分区消息顺序处理策略": [
+  {
+   "title": "阿里二面：Kafka中如何保证消息的顺序性？这周被问到两次了 - 码农Aca...",
+   "content": "Mar 20, 2024 · 本文介绍了Apache Kafka如何通过分区、键控路由策略和消费者组机制保证消息顺序消费，展示了自定义分区器实现及利用内存队列进行异步处理以兼顾顺序性和效率的优化实践，强调在实际应用中需综合考量系统性能、可用性和消息顺序性。",
+   "source": "https://www.cnblogs.com/coderacademy/p/18082553",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "Kafka消息顺序性原理与跨分区解决方案 - CSDN博客",
+   "content": "6 days ago · 本文深入解析Kafka消息顺序性的本质，强调其仅保证单分区内的严格有序，并剖析分区机制在吞吐量与顺序性间的权衡。 重点介绍跨分区顺序保障的三大技术路径：业务Key路由、单生产者单分区模式、批次窗口排序及事务型消息模式。",
+   "source": "https://blog.csdn.net/weixin_32181267/article/details/169975877",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "面试官：如何保证 Kafka 消息的顺序消费？（4 种方案，从青铜到王者）...",
+   "content": "Oct 4, 2025 · 本文详细解析了Kafka的消息顺序性保证及乱序原因，提出了四种确保消息顺序消费的解决方案。 包括利用Key保持分区有序、设置单分区实现全局有序、消费者端内存队列优化并发处理，以及通过外部协调实现全局有序。 适用于不同业务场景下的顺序需求。",
+   "source": "https://blog.csdn.net/dandandeshangni/article/details/152464763",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:HNSW 算法核心机制": [
+  {
+   "title": "【干货】HNSW算法详解：从基础到进阶，掌握大模型向量搜索核心技术！-...",
+   "content": "Nov 8, 2025 · 本文深入解析HNSW算法，涵盖其核心思想、多层图构建与搜索机制，并对比NSW的局限性。 通过引入跳表结构思想，HNSW显著提升了高维空间中近似最近邻搜索的效率与精度，是大模型时代向量检索的关键技术基础。 简介",
+   "source": "https://blog.csdn.net/2401_85375151/article/details/154571998",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "HNSW算法核心机制解析与Faiss实战调优-CSDN博客",
+   "content": "May 18, 2026 · HNSW算法通过分层导航小世界图实现高效的近似最近邻搜索，结合概率跳表和可导航小世界图的双引擎设计，显著提升搜索速度和召回率。 文章还详细介绍了Faiss中的参数调优、内存优化方法及真实场景下的避坑指南，帮助开发者更好地应用HNSW算法解决实际问题。",
+   "source": "https://blog.csdn.net/weixin_27303545/article/details/161180386",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "【向量检索与RAG全流程解析】HNSW原理、实践及阿里云灵积DashScope嵌...",
+   "content": "Nov 24, 2025 · 一、HNSW算法：向量检索的“性能标杆” HNSW是由Yury Malkov团队于2016年提出的近似最近邻（Approximate Nearest Neighbor, ANN）检索算法，核心思想是通过“层次化图结构”模拟“小世界网络”（Small World Network）特性，在保证高召回率的同时，实现毫秒级的高维向量检索。",
+   "source": "https://www.cnblogs.com/gccbuaa/p/19265831",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:Transformer 自注意力计算复杂度分析": [
+  {
+   "title": "Transformer 101 (一): 参数量和时间空间复杂度",
+   "content": "Jul 7, 2024 · 先看下 Positional Encoding 和 Embedding，由于前者使用的是 三角函数 直接计算得到的，参数量为 0，后者出现在 Transformer 中的 3 个位置（Input Embedding、Output Embedding、Pre-softmax），但是参数共享，所以只有一份参数，也就是 V\\times D。",
+   "source": "https://zhuanlan.zhihu.com/p/661804092",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "Transformer学习笔记二：Self-Attention（自注意力机制）",
+   "content": "Jan 10, 2022 · 例如在transformer的decoder层中，我们就用到了 masked attention，这样的操作可以理解为模型为了防止decoder在解码encoder层输出时“作弊”，提前看到了剩下的答案，因此需要强迫模型根据输入序列左边的结果进行attention。 Masked的实现机制其实很简单，如图：",
+   "source": "https://zhuanlan.zhihu.com/p/455399791",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "从直觉到数学推导：彻底理解 Transformer 中的 Self-Attention",
+   "content": "Nov 1, 2026 · Self-Attention（自注意力机制）是 Transformer 架构最核心的组成部分之一，也是理解现代大语言模型的重要基础。 初次接触 Self-Attention 时，我们通常会遇到一系列问题： Self-Attention 究竟解决了什么问题？ 为什么每个 Token 都需要生成 Que",
+   "source": "https://www.cnblogs.com/ZhengQC/p/23513040",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:什么是 RAG（检索增强生成）？": [
+  {
+   "title": "什么是 RAG？— 检索增强生成 AI 详解 — AWS",
+   "content": "RAG 允许开发人员为生成模型提供最新的研究、统计数据或新闻。 他们可以使用 RAG 将 LLM 直接连接到实时社交媒体提要、新闻网站或其他经常更新的信息来源。 LLM 随即可以向用户提供最新信息。 增强用户信任度 RAG 允许 LLM 通过来源归属来呈现准确的信息。",
+   "source": "https://aws.amazon.com/cn/what-is/retrieval-augmented-generation/",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "什么是 RAG（检索增强生成）？| IBM",
+   "content": "Oct 2, 2026 · RAG 将 LLM 锚定在由真实、权威和最新数据支持的特定知识中。 与仅在其训练数据上运行的生成模型相比，RAG 模型倾向于在其外部数据的上下文中提供更准确的答案。 虽然 RAG 可以降低出现幻觉的风险，但它不能使模型完全无误。",
+   "source": "https://www.ibm.com/cn-zh/think/topics/retrieval-augmented-generation",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "RAG详解：检索增强生成（Retrieval Augmented Generation）",
+   "content": "在RAG中，我们通常使用搜索算法将输入查询与相关文本片段进行匹配。 然而，有几种不同的算法和工具可以用于支持RAG。 例如，从业者最近探索了将LLM连接到 图数据库，形成一种RAG系统，该系统可以通过对图数据库（例如Neo4J）的查询来搜索相关信息。",
+   "source": "https://zhuanlan.zhihu.com/p/1973784509318205455",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:RAG 技术原理与架构": [
+  {
+   "title": "RAG彻底爆了！一文读懂其架构演进及核心要点 - 知乎",
+   "content": "Oct 14, 2025 · 文章通过对比Naive RAG、Advanced RAG、Modular RAG和Agentic RAG四代架构的核心特点与技术突破，揭示了RAG技术如何通过 模块化设计 、智能体协同等创新解决知识更新、语义对齐和复杂任务处理等关键问题，为 LLM 应用落地提供重要参考。",
+   "source": "https://zhuanlan.zhihu.com/p/1961434040168084659",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "大模型 RAG 技术深度解析：原理架构、通俗解读与实战代码（大模型应用...",
+   "content": "Mar 31, 2026 · 本文系统阐述检索增强生成（RAG）的技术原理与工业级架构，涵盖知识库构建（文档加载、文本分块、向量化、向量存储）和在线问答（语义检索、提示词拼接、答案生成）两大流程；介绍主流技术选型如BGE/m3e向量模型、FAISS/Milvus向量库、LangChain框架及Qwen等大 ...",
+   "source": "https://blog.csdn.net/m0_63537602/article/details/159678059",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "RAG 技术全解析：从基础原理到实战落地，附开源框架选型与代码实现-CS...",
+   "content": "Aug 15, 2025 · 本文深入剖析RAG技术，介绍其核心价值、系统架构和工作流程。 RAG技术能弥补大语言模型缺陷，在多领域有应用。 还探讨了其发展与挑战，给出应对策略。 此外，分享了构建简易RAG系统代码和框架选型指南，以及大模型学习资料。",
+   "source": "https://blog.csdn.net/xxue345678/article/details/150418994",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:HTTP/2 相比 HTTP/1.1 有哪些主要改进？": [
+  {
+   "title": "HTTP_2.0与HTTP_1.1相比有哪些主要改进？｜高频面试题｜计算机网络高...",
+   "content": "HTTP/2.0 相比 HTTP/1.1 的主要改进是高频面试考点，核心包括多路复用解决队头阻塞、HPACK头部压缩节省带宽、二进制协议提升解析效率、流优先级优化资源加载顺序以及服务器推送减少延迟。",
+   "source": "https://notes.kamacoder.com/base/http2-improvements.html",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "【计算机网络】HTTP2.0与HTTP1.1相比有哪些主要改进？-CSDN博客",
+   "content": "文章浏览阅读461次，点赞3次，收藏7次。 HTTP/2 用“二进制帧 + 多路复用 + 头部压缩 + 服务器推送”极大提高了性能，但仍受 TCP 队头阻塞限制。",
+   "source": "https://blog.csdn.net/weixin_72986432/article/details/149912608",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "HTTP2.0 相比 HTTP1.1 的主要改进 - CSDN博客",
+   "content": "Nov 23, 2024 · 本文详细介绍了 HTTP2.0 相比 HTTP1.1 的主要改进，包括二进制协议、多路复用、头部压缩、服务器推送和优先级控制等。 还阐述了 HTTP2.0 的 HPACK 压缩算法和服务器推送的工作原理、使用场景、控制机制及最佳实践，这些特性提升了页面加载速度和用户体验。",
+   "source": "https://blog.csdn.net/weixin_46053950/article/details/143996445",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:CAP 定理核心内容解析": [
+  {
+   "title": "CAP定理解析：分布式系统设计的核心权衡与实践-CSDN博客",
+   "content": "5 days ago · 本内容遵循CC 4.0 BY-SA版权协议 2000年，计算机科学家Eric Brewer在分布式计算领域提出了一个影响深远的理论框架——CAP定理。这个看似简单的三要素权衡模型，如今已成为大数据系统设计的基石原则。我在过去五年参与金融级 ...",
+   "source": "https://blog.csdn.net/weixin_29035147/article/details/170120381",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "CAP定理解析：分布式系统设计的核心原则与实践-CSDN博客",
+   "content": "5 days ago · 1. CAP定理的本质与核心价值 2000年由计算机科学家Eric Brewer提出的CAP定理，堪称分布式系统设计领域的\"牛顿第一定律\"。 这个看似简单的三字母组合，实际上定义了所有分布式数据存储系统都无法逾越的物理边界。",
+   "source": "https://blog.csdn.net/weixin_42629815/article/details/170113113",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "分布式系统的CAP定理详解 - 知乎系统架构设计师必考：CAP定理与分布式一致性原理全解析以问答形式深入理解CAP理论在分布式系统设计的核心，存在着一个看似简...分布式系统CAP定理深度解析-腾讯云开发者社区-腾讯云CAP 定理深度解析：分布式系统设计的基石 - lightsong - 博客园",
+   "content": "CAP定理是分布式系统中的重要理论，在一个分布式系统中最多只能同时满足一致性（Consistency）、可用性（Availability）和分区容错性（Partition tolerance）这三项中的两项，不能同时满足这三项。 •C：Consistency（一致性） •A：Availability（可用性） •P：Partition tolerance（分区容错性） See full list on zhuanlan.zhihu.com 一致性（Consistency） 一致性指\"all nodes see the same data at the same time\"，即更新操作成功后，所有节点在同一时间的数据完全一致。对于一致性的理解，可以从客户端和服务端两个不同的视角来分析。 •从客户端来看，一致性主要指的是多并发请求时更新过的数据如何获取的问题？如果更新过的数据需要立刻被后续的请求获取到就是强一致性，如果能容忍后续的请求部分或者全部访问不到则是弱一致性，如果经过一段时间后要求能访问到更新后的数据则是最终一致性。 •从服务端来看，一致性则是数据更新后如何同步到整个分布式系统，以保证数据最终一致性。 可用性（Availability） 可用性指\"reads and writes always succeed\"，即服务一直可用且能够正常响应（不保证返回的是最新写入的数据）。 对于一个讲究可用性的分布式系统，每一个非故障的节点必须对每一个请求作出响应，因此我们在衡量一个系统可用性的时候，都是通过停机时间来计算的。通过描述一个系统的可用性时，比如某某系统可用性可以达到5个9，意思就是说该系统的可用水平是99.999%，即全年停机时间不超过(1-0.99999)*365*24*60 = 5.256min，这是一个极高的要求。 好的可用性主要是指系统能够很好的为用户提供服务，不出现操作失败或者访问超时等用户体验不好的情况。一个分布式系统设计会涉及很多子系统，例如负载均衡器、Web服务器、应用代码、缓存系统、数据库服务器等，任何一个节点的不稳定都可以会影响整个系统的可用性。 分区容错性（Partition tolerance） 分区容错性指\"the system continues to operate despite arbitrary message loss or failure of part of the system\"，即分布式系统在遇到某节点或网络分区故障的时候，仍然能够对外提供满足一致性和可用性的服务。 See full list on zhuanlan.zhihu.com 如上图，在一个分布式系统中有两个节点N1和N2，他们之间可以通过网络互相连通。N1中有一个应用程序A和一个数据库V，N2中有一个应用程序B和一个数据库V，A和B是分布式系统的两个部分，V是分布式系统数据存储的两个子数据库。 •在满足一致性的时候，N1和N2中的数据是一样的（V0=V0）。 •在满足可用性的时候，用户无论请求N1还是N2，都会立即得到响应。 •在满足分区容错性的情况下，N1和N2有任何一方宕机或者网络不通的时候，都不会影响N1或N2正常运行。 如上图，是分布式系统数据正常运转流程： 1.用户向N1机器请求数据更新，程序A更新数据库V0为V1； See full list on zhuanlan.zhihu.com CA舍弃P 这种情况在分布式系统中是不存在的，在分布式系统下，网络分区是一个基本要求。如果要舍弃P就意味着舍弃分布式系统，那也就没有必要讨论CAP定理了，这也是为什么在前面的CAP证明中，我们以系统满足P为前提论述了无法同时满足C和A。因此对于一个分布式系统来说，P是一个基本要求，CAP三者中只能在CA两者之间做权衡，并且要想尽办法提升P。 CP舍弃A 如果一个分布式系统不要求强的可用性，即允许系统停机或者长时间无响应的话，就可以在CAP三者中保障CP而舍弃A。这样的分布式系统一旦发生网络故障或者消息丢失等情况，就要牺牲用户体验，等数据一致后再让用户访问系统。 设计成CP的系统比较典型的就是分布式数据库，在发生极端情况时，优先保证数据的强一致性，代价就是舍弃系统的可用性。如Redis、HBase这种分布式存储系统，如ZooKeeper这种分布式协调系统，数据的一致性是最基本的要求。 AP舍弃C 保证高可用和分区容错性的同时，需要放弃一致性，为了保证高可用，用户请求时需要马上返回，每个节点只能用本地数据提供服务，这样会导致全局数据的不一致性。确切的说是放弃了数据强一致性，退而求其次保证数据最终一致性。这种舍弃强一致性而保证系统的分区容错性和可用性的场景非常多，比如电商网站的秒杀活动或者12306购票，在高并发情况下可能需要一些排队机制，这就是在可用性和分区容错性方面保证了系统正常服务，然后在数据的一致性方面做了一些让步，会影响一些用户体验，但也不会造成用户流程的严重阻塞，这种机制虽然在瞬间可能存在数据不一致的情况，但过了一段时间还是要保证最终一致性的。 CAP如何权衡和取舍没有好坏之分，需要根据不同的业务场景进行选择，适合的才是最好的。对于涉及到钱这种不能有任何差错的场景，数据强一致性是必须要保证的。对于其他场景，比较普遍的做法是选择可用性和分区容错性，舍弃强一致性，退而求其次使用最终一致性来保证数据的安全。 See full list on zhuanlan.zhihu.com 基本可用（Basically Available） 基本可用是指分布式系统在出现故障时，允许损失部分可用性，即保证核心可用。如电商大促时，为了应对访问量激增，部分用户可能会被引导到降级页面，服务层也可能只提供降级服务，这就是损失部分可用性的体现。 软状态（Soft State） 软状态是指允许系统存在中间状态，而该中间状态不会影响系统整体可用性。分布式存储中一般一份数据会有多个副本，允许不同节点间副本同步的延时就是软状态的体现（如MySQL的复制）。 最终一致性（Eventual Consistency） 最终一致性是指系统中的所有数据副本经过一定时间后，最终能够达到一致的状态。 See full list on zhuanlan.zhihu.com Jul 13, 2026 · 深入解析CAP定理与分布式一致性原理，详解CAP三要素定义及工程实践中的取舍策略。 涵盖Paxos、Raft等核心算法，剖析BASE理论与ACID区别，提供系统架构设计师考试高频考点解析与备考技巧。 Jan 31, 2026 · 本文将从基本定义出发，通过和AI的问答深入解析下这个常被误解的定理。 一、什么是CAP理论？ 1.1 定理的完整说明 CAP定理阐述了一个分布式系统的三个核心属性之间的根本关系： Mar 30, 2026 · CAP定理揭示分布式系统设计的核心权衡：一致性、可用性和分区容错性不可兼得。 电商架构需根据业务场景选择CP或AP方案，金融系统优先一致性，社交平台侧重可用性。 掌握CAP与BASE理论，才能在分布式架构中做出合理决策。 Sep 29, 2026 · 1. 什么是 CAP 定理？ CAP 定理（又称 Brewer 定理）由 Eric Brewer 在 2000 年提出，它指出一个分布式系统 不可能同时满足 以下三个特性： C (Consistency)：所有节点在同一时刻看到的数据是一致的。",
+   "source": "https://zhuanlan.zhihu.com/p/335617791",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:ReAct 框架原理与机制": [
+  {
+   "title": "React 原理详解 | 温佳鑫",
+   "content": "Jul 28, 2026 · React 是当今最流行的前端框架之一，它的设计理念和实现原理值得深入学习。 本文将从核心概念出发，详细解析 React 的工作原理，包括 Fiber 架构、渲染流程、diff 算法、key 的作用、批处理机制以及并发模式等关键内容，帮助你彻底理解 React 的内部工作机制。",
+   "source": "https://baimohui.github.io/框架和类库/react/React+原理/",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "ReAct框架深度解析：原理、优缺点与应用场景 - 知乎",
+   "content": "Jul 15, 2025 · ReAct （Re asoning andAct ing）框架是一种为智能体（Agent）设计的 决策机制，由Yao等人在2022年提出。 它将 推理 过程与 行动 过程紧密融合，使大型语言模型（LLM）驱动的 智能体 能够一边思考一边与外部环境交互，在解决复杂任务时表现出更接近人类的决策能力。",
+   "source": "https://zhuanlan.zhihu.com/p/1928501676257547283",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "react 整体的底层原理（基本构造）React 的底层原理可以从「核心设计...",
+   "content": "Jul 29, 2025 · React 的底层原理可以从「核心设计目标」「核心机制」「关键技术实现」三个层面拆解，核心是解决「高效更新 UI」和「简化复杂交互逻辑管理」的问题。 以下是关键原理的梳理： 一、核心设计目标：为什么需要 React？ 传统 DOM 操作存在两个核心问题：",
+   "source": "https://juejin.cn/post/7532320991775948838",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:ReAct 智能体在 AI 中的应用": [
+  {
+   "title": "什么是 ReAct 智能体？| IBM",
+   "content": "ReAct 智能体概述 ReAct 智能体是一种 AI 智能体，它使用“推理与行动” (ReAct) 框架，将 思维链 (CoT) 推理与外部工具使用相结合。 ReAct 框架通过增强大型语言模型 (LLM) 在 智能体工作流中 处理复杂任务和决策的能力，提升了其整体性能。",
+   "source": "https://www.ibm.com/cn-zh/think/topics/react-agent",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "AI Agent | 一文解析AI智能体ReAct架构设计模式，搞懂ReAct智能体的工...",
+   "content": "Jul 2, 2025 · 本文深入剖析了AI智能体ReAct架构设计模式，介绍其工作原理，通过示例展示其如何结合推理与行动，减少幻觉和错误传播，提高决策透明度。 此外，还提供了系统学习掌握AI大模型的方法，包括成长路线图、书籍、教程、报告、实战和面试题等。",
+   "source": "https://blog.csdn.net/m0_56255097/article/details/149066633",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "【必学收藏】ReAct智能体架构详解：从理论到实践，构建大模型Agent开...",
+   "content": "1、什么是 ReAct？ ReAct = Reasoning（推理）+ Acting（行动），本质是一种让语言模型通过与外部工具、环境动态交互完成复杂任务的智能体架构范式。",
+   "source": "https://zhuanlan.zhihu.com/p/1999161023387680912",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:RLHF 的主要训练步骤是什么？": [
+  {
+   "title": "RLHF训练过程 - 知乎 - 知乎专栏",
+   "content": "RLHF（基于人类反馈的强化学习）的训练过程通过多阶段协作实现模型对齐人类偏好，其核心流程分为三个阶段，各模型在不同阶段发挥关键作用。 以下是训练步骤及各模型配合的详细解析： 1、训练过程 一、监督微调（Su…",
+   "source": "https://zhuanlan.zhihu.com/p/1925931798791185941",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "RLHF训练流程分步说明 - 知乎",
+   "content": "一、RLHF核心流程解析 1. 初始化阶段 输入 ：prompt（用户输入）、sft_model（监督微调模型）、reward_model（奖励模型） 模型初始化 ： Actor模型 和 Ref模型 初始化为 sft_model（防止训练崩溃）。 …",
+   "source": "https://zhuanlan.zhihu.com/p/1892981270226641005",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "一文搞懂大模型训练全流程：从预训练到RLHF的完整指南！-CSDN博客",
+   "content": "Oct 23, 2025 · 本文详细讲解了大模型的训练流程，包括预训练、微调、RLHF等关键技术。 重点阐述了预训练阶段如何通过无监督学习让模型掌握通用知识，微调阶段如何适配特定任务，以及RLHF如何通过人类反馈优化模型输出。 同时分析了RL与PPO、GRPO算法的区别及适用场景。",
+   "source": "https://blog.csdn.net/m0_65555479/article/details/153780641",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:RAG 技术应用场景分析": [
+  {
+   "title": "72 个 RAG 实战场景大公开！从医疗到金融，总有一个戳中你的需求（附...",
+   "content": "Jun 11, 2025 · 本文介绍RAG（检索增强生成）技术，涵盖前沿技术、行业落地、开发者工具等方面。 前沿技术包括知识图谱与多模态RAG；行业落地涉及医疗、企业服务、金融等领域；还介绍了RAG工具及未来形态。",
+   "source": "https://blog.csdn.net/m0_48891301/article/details/148583550",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "《RAG应用场景实战：7大真实案例带你落地RAG技术》",
+   "content": "一、RAG应用场景概览 1.1 什么是RAG应用场景 RAG（检索增强生成）的核心思想很简单： 给LLM加上外挂知识库，让AI能够基于你的私有数据回答问题。 这意味着： 任何需要基于大量文档、知识库来回答问题的场景，都适合用RAG。 1.2 七大典型应用场景",
+   "source": "https://zhuanlan.zhihu.com/p/1994348312162215096",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "收藏！RAG 实战全解析：从入门到生产级应用 - 知乎",
+   "content": "此外，文章还展望了 RAG 的演进全景，对比了 RAG 与其他方案的优劣，并提供了实战 Checklist 和十题速查，帮助读者全面了解并应用 RAG 技术。 文章内容丰富，适合对大模型和 AI 落地感兴趣的小白和程序员学习。",
+   "source": "https://zhuanlan.zhihu.com/p/2063630180288144228",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:向量检索技术优缺点分析": [
+  {
+   "title": "程序员必备技能：大模型时代，一文搞懂向量检索原理与实战（建议收藏...",
+   "content": "Dec 16, 2025 · 你可能已经听说过： 大模型时代，向量数据库火了。 无论是搭建智能客服、语义搜索，还是实现“以图搜图”，背后都离不开一个关键技术： 向量检索。 但很多开发者在使用向量数据库（比如Milvus、Qdrant、Weaviate）时，常常遇到这样的困惑：",
+   "source": "https://blog.csdn.net/2401_85375186/article/details/155969304",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "一文纵览向量检索 - 知乎专栏全文检索、向量检索和混合检索的比较分析 - 知乎LLM 系列（十）：RAG 番外篇-向量检索-腾讯云开发者社区-腾讯云请从技术原理、优缺点和适用场景三个维度对比分析向量检索与全文检索...向量检索原理HNSW优化及阿里云OpenSearch技术选型-开发者社区-阿里云请从技术原理、优缺点和适用场景三个维度对比分析向量检索与全文检索...",
+   "content": "首先我们了解下什么是向量，所谓向量就是由n个数字（二值向量由n个比特组成）组成的数组，我们称之为n维向量。而向量检索就是在一个给定向量数据集中，按照某种度量方式，检索出与查询向量相近的K个向量（K-Nearest Neighbor，KNN），但由于KNN计算量过大，我们通常只关注近似近邻（Approximate Nearest Neighbor，ANN）问题。 See full list on zhuanlan.zhihu.com 常见的向量度量有四种：欧式距离、余弦、内积、海明距离 不同的度量方式对应不同的场景，通常欧式距离用于图片检索，余弦用于人脸识别，内积多用于推荐，海明距离由于向量比较小，通常用于大规模视频检索场景。 有了度量以后，我们通常会用召回率（也通常叫精度）来评估向量检索的效果，对于给定的向量q，其在数据集上的K近邻为N，通过检索召回的K个近邻集合为M，则 召回越接近100%代表索引效果越好。 See full list on zhuanlan.zhihu.com 向量检索从本质上讲，其思维框架和传统的检索方法没有什么区别，后面在讲解向量检索的索引结构部时，体会能更深刻一些。 1. 减少候选向量集 和传统的文本检索类似，向量检索也需要某种索引结构来避免在全量的数据上做匹配，传统文本检索是通过倒排索引来过滤掉无关文档，而向量检索是通过对向量建立索引结构来绕过不相关的向量，本文重点讨论相关的向量索引结构。 2. 降低单个向量计算的复杂度 传统文本检索在排序时通常会采用漏斗模型，上层计算比较轻量，越往下计算越精细，但随着过滤的进行，需要计算的文档数也逐级下降，对高维向量而言，单个向量的计算量还是比较重，通常会对向量进行量化，对向量做近似计算，最后在一个很小的数据集上做原始向量的排序。 下面我们围绕这两个问题来展开向量检索的相关讨论。 See full list on zhuanlan.zhihu.com 为向量建立高效的索引结构是向量检索面对的头号问题，在开始展开前我们看一个Benchmark项目，这个项目在多个公开的向量数据集对比了相关索引结构的召回性能指标，使我们能够快速对各种索引结构的性能表现有个直观的认识。 See full list on zhuanlan.zhihu.com 暴力计算是最简单但复杂度最高的一种方式，在计算召回的时候，暴力计算的结果是作为答案的基准数据，在人脸识别的场景中经常要求100%的召回率，这种情况下一般直接暴力计算。 See full list on zhuanlan.zhihu.com 基于树的方法有很多种，比较典型的有KDTree、BallTree、VPTree，类比传统的二叉树，树结构无非是在建树的时候是决定往左还是往右扩展，不同的向量树索引在于按照什么标准去决策，KDTree（如下图所示）会选取向量中某个方差最大的维度取中值作为判定标准，也就是以超平面去划分空间，而BallTree则以球面去划分空间，VPTree会先选取一个制高点，然后计算每个点和制高点的距离，取距离中值作为判定标准。通常这些方法在检索的时候都会利用三角形不等式来去除不必要的探索。 基于树的方法还有很多其他类型，但万变不离其宗，无非就是按照某个判定标准，对向量空间进行划分，但不管怎么划分，由于需要回溯的，都决定了基于树的方法在性能上要稍逊一筹。 See full list on zhuanlan.zhihu.com 哈希对大家再熟悉不过，向量也可以采用哈希来加速查找，我们这里说的哈希指的是局部敏感哈希（Locality Sensitive Hashing，LSH），不同于传统哈希尽量不产生碰撞，局部敏感哈希依赖碰撞来查找近邻。 满足如下两个条件的哈希函数称为（d1,d2,p1,p2）-sensitive： 1. 如果d(x,y) = d2，则h(x) = h(y)的概率至少为p2； See full list on zhuanlan.zhihu.com 传统倒排索引是根据文档包含某个词，然后将当前文档放入改词的倒排索引中来建立索引结构，那向量是如何建立起倒排索引呢？通过聚类把整个向量空间划分为K个区域，每个区域用一个中心点C代替，这样每个向量和所有中心点对比，将自身归入到距离自己最近的中心点对应的倒排，整个索引结构就建立起来了 另一种基于倒排的索引是BOW，原理大体相同，例如一张图片会抽取出几百个局部特征，先对所有的特征聚类，形成中心点，这些中心点作为倒排的基础，建立索引时，把图片的每个局部特征归类到其最近的中心点，建立倒排，检索时会根据命中的次数来过滤结果。 See full list on zhuanlan.zhihu.com 前面介绍的索引结构都可以归类为基于空间划分的方法，每个向量只会属于某个划分好的一个区域，这些方法最大的的问题是为了提高召回需要考察很大一块区域的向量，导致计算量激增，那有没有更好的方法来解决这个问题呢？基于图的方法就可以比较好的实现这一目标，图方法最朴素的想法是邻居的邻居也可能是邻居，这样把最近邻的查找转化为图的遍历，由于其连通性，可以针对性的考察部分向量而不是按区域来考察，因此可以大幅降低向量的考察范围。 最近几年图方法是向量检索研究的一个热点，出现了如KGraph、NSG、HNSW、NGT等一批图索引方法，但实际上这些图方法的主要区别在构建过程，不同图方法采用不同的手段来提升图的质量，但图检索的步骤基本是一致的：a.选好入口点；b.遍历图；c.收敛。在不断实践中我们观察到一些特性来评判图索引质量，指引我们在图方法改进的方向： 1. 邻居点接近K近邻 2. 邻居点数量尽可能少，即减少出度 3. 尽可能保证图的连通性，增加入度 下面我们以HNSW为例介绍一下图方法的原理，之所以选取HNSW在于该方法易于理解，比较容易实现流式索引构建和更新，属于传统方法在向量上的完美体现。 See full list on zhuanlan.zhihu.com 前面把主流的向量检索的索引技术基本都概述了一遍，经过索引结构对考察的向量做了裁剪以后，对高维向量而言，单个的计算量还是很大，有没有方法来减少计算量呢？量化正是基于这个目的技术，所谓量化是指把一个很大的值空间量化到一个较小的值范围，举个简单的例子，全世界有60多亿人口，也就是地球人的表征有60多亿种，我们可以把人量化为男人和女人两种类型，这样就把一个60多亿的空间量化成只有两个值的范围。 常用的量化一般包括PQ（及其优化OPQ、LOPQ）和二值两种。 PQ原理如图，PQ中的P是乘积的意思，那怎么就冒出个乘积呢？在下图中一个128维的向量空间在经过PQ处理后，向量空间切分成了4段，每段内由256个中心点来量化表达，因此原始的128维空间现在可以用每段里的中心点组合，也即256 * 256 * 256 * 256种组合来表达，这就是所谓的乘积。 对于二值向量，由于现代CPU都提供了专门的指令，计算海明距离非常快速，在海量的向量检索中通常会直接生成二值向量，生成二值向量方法常见的有ITQ（Iterative Quantization）、DeepHash等方法。 See full list on zhuanlan.zhihu.com 畅游当今的信息海洋既是一个奇迹，又是一个迷宫。 全文和矢量搜索使我们能够构建搜索体验，使用户能够找到相关的产品、内容等。 随着我们对搜索精度和上下文的追求不断发展，出现了一个问题：我们能否平衡全文搜索的… Sep 1, 2025 · 本文系统梳理了向量检索技术演进历程，从关键词匹配到语义搜索，详解TF-IDF、BM25、HNSW、IVF等核心算法，探讨混合检索、多级检索等高级策略，提供索引优化、查询优化等性能调优方法，帮助开发者构建高性能检索系统。 技术原理方面：全文检索基于倒排索引技术，通过关键词匹配实现文档查找（如BM25算法），其核心是建立词项到文档的映射关系；向量检索则通过神经网络将文本转化为高维向量，通过余弦相似度等度量方式进行语义匹配。 Sep 19, 2023 · 本文旨在深入阐述向量检索技术的核心原理与选型要点。 内容涵盖HNSW等关键算法对比，并横向评测OpenSearch、Milvus等主流产品，为您的方案构建提供权威决策参考。 答案： 技术原理：全文检索基于关键词匹配和倒排索引，向量检索基于语义嵌入和相似度计算。 优缺点：全文检索支持精确匹配但缺乏语义理解，向量检索支持语义扩展但精确匹配较弱。 适用场景：全文检索适合精确查询场景，向量检索适合语义相关场景 ...",
+   "source": "https://zhuanlan.zhihu.com/p/260083265",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "全文检索、向量检索和混合检索的比较分析 - 知乎",
+   "content": "畅游当今的信息海洋既是一个奇迹，又是一个迷宫。 全文和矢量搜索使我们能够构建搜索体验，使用户能够找到相关的产品、内容等。 随着我们对搜索精度和上下文的追求不断发展，出现了一个问题：我们能否平衡全文搜索的…",
+   "source": "https://zhuanlan.zhihu.com/p/694046148",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:NoSQL 数据库类型及适用场景分析": [],
+ "3:单智能体 vs 多智能体 AI 架构对比": [],
+ "3:AI Agent 系统架构选型指南": [],
+ "3:2030 年世界杯冠军是哪个国家？": [],
+ "3:2030 年世界杯预测冠军": [],
+ "3:上证指数晚间走势分析": [],
+ "3:北京霁川云栈科技有限公司 2025 年的净利润是多少？": [
+  {
+   "title": "北京云霁网络科技有限公司 - 云霁网络 - 爱企查",
+   "content": "Oct 12, 2026 · 北京云霁网络科技有限公司是一家小微企业，该公司成立于2015年08月05日，位于北京市海淀区中关村东路123号4号楼2层北侧4240室，目前处于开业状态，经营范围包括技术开发、技术推广、技术转让、技术咨询、技术服务；销售自行开发后的产品；计算机系统服务 ...",
+   "source": "https://aiqicha.baidu.com/company_detail_83151732653902",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "【北京霁云科技招聘】-猎聘",
+   "content": "猎聘为您提供2026年北京霁云科技招聘信息，更有北京霁云科技企业介绍、北京霁云科技地址、北京霁云科技工作环境以及北京霁云科技招聘岗位信息，全面的为您提供北京霁云科技高薪职位，求职找工作就上猎聘。",
+   "source": "https://www.liepin.com/company/12513125/",
+   "tool": "web_search",
+   "score": 1.0
+  },
+  {
+   "title": "北京霁光科技有限公司 - 霁光科技 - 爱企查",
+   "content": "Oct 21, 2026 · 北京霁光科技有限公司是一家小微企业，该公司成立于2026年03月04日，位于北京市密云区中关村密云园兴盛南路8号501室-6233（集群注册），目前处于开业状态，经营范围包括一般项目：技术服务、技术开发、技术咨询、技术交流、技术转让、技术推广；软件开发 ...",
+   "source": "https://aiqicha.baidu.com/company_detail_63868725926857",
+   "tool": "web_search",
+   "score": 1.0
+  }
+ ],
+ "3:公司上季度内部销售总额": [],
+ "3:企业 Q4 内部营收数据": []
+}
