@@ -1,0 +1,4566 @@
+{
+  "meta": {
+    "model": "qwen3.5:4b",
+    "judge": "gemma3:4b",
+    "questions": 30,
+    "spot_check": 85,
+    "search": "ddgs 免 Key 元搜索（中文走 Bing）"
+  },
+  "summary": {
+    "planner": {
+      "answerable": 25,
+      "completed": 25,
+      "false_refusals": 0,
+      "key_point_recall": 49.6,
+      "key_point_recall_factual": 60.3,
+      "key_point_recall_comparative": 33.3,
+      "claims": 101,
+      "citation_faithfulness": 99.0,
+      "citation_coverage": 100.0,
+      "unknown_citation_reports": 0,
+      "unanswerable": 5,
+      "correct_refusals": 5,
+      "tool_calls": 90,
+      "tool_success_rate": 84.4,
+      "effective_result_rate": 84.4,
+      "avg_evidence": 6.7,
+      "latency_p50_s": 19.2,
+      "latency_p95_s": 84.5,
+      "avg_tokens": 1396
+    },
+    "no_planner": {
+      "answerable": 25,
+      "completed": 25,
+      "false_refusals": 0,
+      "key_point_recall": 44.2,
+      "key_point_recall_factual": 48.5,
+      "key_point_recall_comparative": 37.8,
+      "claims": 100,
+      "citation_faithfulness": 97.0,
+      "citation_coverage": 100.0,
+      "unknown_citation_reports": 1,
+      "unanswerable": 5,
+      "correct_refusals": 5,
+      "tool_calls": 30,
+      "tool_success_rate": 100.0,
+      "effective_result_rate": 96.7,
+      "avg_evidence": 2.9,
+      "latency_p50_s": 3.8,
+      "latency_p95_s": 5.9,
+      "avg_tokens": 708
+    }
+  },
+  "rows": {
+    "planner": [
+      {
+        "id": "F01",
+        "type": "factual",
+        "question": "PostgreSQL 的 MVCC 是如何实现的？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "PostgreSQL 的 MVCC 是如何实现的？",
+          "PostgreSQL MVCC 实现原理",
+          "PostgreSQL 多版本并发控制机制"
+        ],
+        "report": "# PostgreSQL 的 MVCC 是如何实现的？\n\nPostgreSQL 的 MVCC 通过多版本管理提升并发性能，利用事务 ID、版本链等核心组件实现高效控制 [1]。其底层基于堆表的版本存储结构，依赖 t_xmin/t_xmax 等系统字段生成 tuple 版本链 [2]。机制涵盖事务 ID、隐藏列和快照可见性判断，确保高并发下读写不互斥 [4]。系统利用事务 ID 与元组头中的版本信息，结合 Commit Log（clog）管理事务状态 [5]。MVCC 通过快照（Snapshot）的构成与可见性判断规则，在不使用传统读锁的情况下提供隔离性 [5]。该机制涉及版本控制、事务 ID 和可见性规则等核心要素 [6]。此外，还包含隐藏字段与版本链结构，以及 READ COMMITTED 等隔离级别的行为差异分析 [7]。\n\n## 参考来源\n\n[1] 深入理解 PostgreSQL 中的 MVCC（多版本并发控制）机制 - https://cloud.tencent.com/developer/article/2405841\n[2] 面试官：PostgreSQL的MVCC是怎样实现的？ - CSDN博客 - https://blog.csdn.net/cxytony/article/details/167222544\n[3] 面试官：PostgreSQL的MVCC是怎样实现的？ - 知乎 - https://zhuanlan.zhihu.com/p/78990428554\n[4] 深入理解 PostgreSQL 数据库的 MVCC：原理、优势与实践_postgresql mv... - https://blog.csdn.net/CharlesYuangc/article/details/153275076\n[5] PostgreSQL 架构原理第三期：事务与并发控制 —— MVCC、快照与锁机制 -... - https://www.cnblogs.com/kingster/p/19921127\n[6] PostgreSQL中的多版本并发控制（MVCC）深入解析_pgsql mvcc-CSDN博客 - https://blog.csdn.net/qq_40921573/article/details/142023539\n[7] 【PostgreSQL从零到精通】第22篇：MVCC多版本并发控制——PostgreSQL并... - https://blog.csdn.net/xyghehehehe/article/details/160781084",
+        "evidence_count": 7,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "PostgreSQL 的 MVCC 是如何实现的？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          },
+          {
+            "query": "PostgreSQL MVCC 实现原理",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          },
+          {
+            "query": "PostgreSQL 多版本并发控制机制",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          }
+        ],
+        "latency_ms": 8386.3,
+        "prompt_tokens": 938,
+        "completion_tokens": 206,
+        "key_points": [
+          {
+            "point": "每行元组记录创建和删除它的事务 ID（xmin/xmax）",
+            "covered": false
+          },
+          {
+            "point": "更新时写入新版本而不是原地覆盖旧数据",
+            "covered": false
+          },
+          {
+            "point": "通过事务快照判断哪些行版本可见",
+            "covered": true
+          },
+          {
+            "point": "需要 VACUUM 清理过期的死元组",
+            "covered": false
+          },
+          {
+            "point": "读操作不阻塞写操作",
+            "covered": true
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "PostgreSQL 的 MVCC 通过多版本管理提升并发性能，利用事务 ID、版本链等核心组件实现高效控制 。",
+            "citations": [
+              1
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "其底层基于堆表的版本存储结构，依赖 t_xmin/t_xmax 等系统字段生成 tuple 版本链 。",
+            "citations": [
+              2
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "机制涵盖事务 ID、隐藏列和快照可见性判断，确保高并发下读写不互斥 。",
+            "citations": [
+              4
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "系统利用事务 ID 与元组头中的版本信息，结合 Commit Log（clog）管理事务状态 。",
+            "citations": [
+              5
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "MVCC 通过快照（Snapshot）的构成与可见性判断规则，在不使用传统读锁的情况下提供隔离性 。",
+            "citations": [
+              5
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "该机制涉及版本控制、事务 ID 和可见性规则等核心要素 。",
+            "citations": [
+              6
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "此外，还包含隐藏字段与版本链结构，以及 READ COMMITTED 等隔离级别的行为差异分析 。",
+            "citations": [
+              7
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "F02",
+        "type": "factual",
+        "question": "Redis 的 RDB 和 AOF 持久化有什么区别？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "Redis 的 RDB 和 AOF 持久化有什么区别？",
+          "Redis RDB 持久化机制原理",
+          "Redis AOF 持久化机制对比"
+        ],
+        "report": "# Redis 的 RDB 和 AOF 持久化有什么区别？\n\nRedis 提供 RDB（Redis Database）和 AOF（Append Only File）两种互补的持久化方案 [2]。RDB 通过生成数据快照实现持久化，恢复速度快但可能丢失最近一次快照后的数据 [5]；其工作原理是定期生成内存数据的二进制快照并保存为压缩文件 [6]。AOF 则记录所有写操作命令，实现近乎实时的持久化且数据安全性更高，但文件体积较大 [5]；它通过记录写操作日志实现持久化，恢复速度较慢且需重写压缩 [8]。实际部署中往往需要根据业务特点进行组合配置 [2]。\n\n## 参考来源\n\n[1] Devs worldwide build on Redis - Cut latency with Redis caching - https://www.bing.com/aclick?ld=e8P9U8FI1FC5hzYmqE24HbXDVUCUwa51H7V3nVbqTzztfbYW11RdTW-VghEC2mANE2OCsI91UPw41y4mieHR7bnW-RK4R93cbQVQSdIPXZDERa9KZjTI05v4KSNXtAaP2MsvvQONqImywkVILSSDqmdroY9JDv4tRXop4a9AlBdjqJqUiNCgyji3KaSMsyvbn1W0lBBQ&u=aHR0cHMlM2ElMmYlMmZyZWRpcy5pbyUyZm1lZXRpbmclMmYlM2Z1dG1fY2FtcGFpZ24lM2RnZy1zX2RnX2FtZXJfc2VhcmNoX2JvZnVfZnJlZS10cmlhbC1ib29rLWEtbWVldGluZyUyNnV0bV9zb3VyY2UlM2RiaW5nJTI2dXRtX21lZGl1bSUzZGNwYyUyNnV0bV9jb250ZW50JTNkYW1lcl9yZWRpc19jYWNoZSUyNnV0bV90ZXJtJTNkJTI2ZGV2aWNlJTNkYyUyNm1hdGNodHlwZSUzZHAlMjZoc3RrX2NyZWF0aXZlJTNkJTI2aHN0a19jYW1wYWlnbiUzZDU4MTYyMTU3MSUyNmhzdGtfbmV0d29yayUzZGdvb2dsZUFkcyUyNm1zY2xraWQlM2Q0NmIxZGNjZTFkYzAxMWQ1ZDEyYWI2M2ZkM2M1NDFjMQ&rlid=46b1dcce1dc011d5d12ab63fd3c541c1\n[2] Redis持久化机制：RDB与AOF深度解析与优化实践-CSDN博客 - https://blog.csdn.net/weixin_29587015/article/details/170119137\n[3] Redis RDB 和 AOF 持久化的区别，如何选择？_redis rdb与aof对比-CSDN... - https://blog.csdn.net/m0_56653160/article/details/139754865\n[4] See Redis in action - The real-time data platform - https://www.bing.com/aclick?ld=e82ICbs0zyGgmmXMPk3SnUWDVUCUxLctazA6orSDMwUZUgozAV0MoiBllZd_NLGXBXAgsLY4Ws82dmr1rO-DFXxWL_4_vIXwbZWoZ1uvkx5WI-KB2KlkdiYWdEkG60NaSqQNmMg6Of1Xmloh54VOL7nOEZDqWX5ka317xWjcqJ11TmHIxJdaCM3By-EvadYCiT1vzJRqwm0onHtTAHVeTsFVA6Cc4&u=aHR0cHMlM2ElMmYlMmZyZWRpcy5pbyUyZmxwJTJmZ2V0LXN0YXJ0ZWQzJTJmJTNmdXRtX2NhbXBhaWduJTNkZ2ctc19kZ19hbWVyX3NlYXJjaF9ib2Z1X2ZyZWV0cmlhbCUyNnV0bV9zb3VyY2UlM2RiaW5nJTI2dXRtX21lZGl1bSUzZGNwYyUyNnV0bV9jb250ZW50JTNkYW1lcl9yZWRpc19jYWNoZSUyNnV0bV90ZXJtJTNkJTI2ZGV2aWNlJTNkYyUyNm1hdGNodHlwZSUzZHAlMjZoc3RrX2NyZWF0aXZlJTNkJTI2aHN0a19jYW1wYWlnbiUzZDU4MTYyMTU3MCUyNmhzdGtfbmV0d29yayUzZGdvb2dsZUFkcyUyNm1zY2xraWQlM2Q3NDdiZmZmMTFhN2MxNjAzZWRhMjk1MDBkNDc0ZTIyNg&rlid=747bfff11a7c1603eda29500d474e226\n[5] Redis 持久化机制深度解析：RDB 与 AOF 原理、配置及生产环境选择 - https://redis.com.cn/articles/redis-persistence-rdb-aof-production-guide.html\n[6] Redis 持久化机制：RDB 与 AOF 的实现原理与实践_redis rdb原理-CSDN... - https://blog.csdn.net/lssffy/article/details/148856273\n[7] Cut latency with Redis caching - In-memory DB for devs - https://www.bing.com/aclick?ld=e80DHW0e4-V-plwVkenhsguzVUCUytiAZdhi6r2E0GdITJHNJMGy7ReW2hBkNa-nslQ2oKirhd_xRtIymzYPbBBqX4wnIlXANi1uheUJJvIkNKCWlq7aCaYebXQZ9cMtwqIXw3E0-ApISDHK5xR9KFafE3nDIAb4vcc8Dx9R4n6ySMD4yHpgBhNXuMpf7soiQ4T2vDBgAqBbbzZm5sD-J0qNXnr4E&u=aHR0cHMlM2ElMmYlMmZyZWRpcy5pbyUyZm1lZXRpbmclMmYlM2Z1dG1fY2FtcGFpZ24lM2RnZy1zX2RnX2FtZXJfc2VhcmNoX2JvZnVfZnJlZS10cmlhbC1ib29rLWEtbWVldGluZyUyNnV0bV9zb3VyY2UlM2RiaW5nJTI2dXRtX21lZGl1bSUzZGNwYyUyNnV0bV9jb250ZW50JTNkYW1lcl9yZWRpc19jYWNoZSUyNnV0bV90ZXJtJTNkJTI2ZGV2aWNlJTNkYyUyNm1hdGNodHlwZSUzZHAlMjZoc3RrX2NyZWF0aXZlJTNkJTI2aHN0a19jYW1wYWlnbiUzZDU4MTYyMTU3MSUyNmhzdGtfbmV0d29yayUzZGdvb2dsZUFkcyUyNm1zY2xraWQlM2QyZDY4ZjQ3OTEyMGUxNjk2OTYzMzllODhkYzFmYzM2NQ&rlid=2d68f479120e169696339e88dc1fc365\n[8] Redis持久化终极指南：RDB、AOF与混合模式全解析-CSDN博客 - https://blog.csdn.net/2501_93705143/article/details/170246047\n[9] Redis 持久化深度解析：RDB、AOF 与混合持久化原理及踩坑实录 - https://blog.csdn.net/shengdanxue/article/details/158849469",
+        "evidence_count": 9,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "Redis 的 RDB 和 AOF 持久化有什么区别？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          },
+          {
+            "query": "Redis RDB 持久化机制原理",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          },
+          {
+            "query": "Redis AOF 持久化机制对比",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          }
+        ],
+        "latency_ms": 5689.2,
+        "prompt_tokens": 1117,
+        "completion_tokens": 154,
+        "key_points": [
+          {
+            "point": "RDB 定期把内存数据保存为快照文件",
+            "covered": true
+          },
+          {
+            "point": "AOF 以追加方式记录每条写命令",
+            "covered": true
+          },
+          {
+            "point": "AOF 丢失的数据更少（例如每秒同步一次）",
+            "covered": false
+          },
+          {
+            "point": "RDB 文件更紧凑、恢复速度更快",
+            "covered": false
+          },
+          {
+            "point": "AOF 可以通过重写压缩文件体积",
+            "covered": false
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "Redis 提供 RDB（Redis Database）和 AOF（Append Only File）两种互补的持久化方案 。",
+            "citations": [
+              2
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "RDB 通过生成数据快照实现持久化，恢复速度快但可能丢失最近一次快照后的数据 ；其工作原理是定期生成内存数据的二进制快照并保存为压缩文件 。",
+            "citations": [
+              5,
+              6
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "AOF 则记录所有写操作命令，实现近乎实时的持久化且数据安全性更高，但文件体积较大 ；它通过记录写操作日志实现持久化，恢复速度较慢且需重写压缩 。",
+            "citations": [
+              5,
+              8
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "实际部署中往往需要根据业务特点进行组合配置 。",
+            "citations": [
+              2
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "F03",
+        "type": "factual",
+        "question": "Kafka 如何保证消息的顺序？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "Kafka 如何保证消息的顺序？",
+          "Kafka 分区内消息顺序保证机制",
+          "Kafka 跨分区消息顺序处理策略"
+        ],
+        "report": "# Kafka 如何保证消息的顺序？\n\nKafka 默认仅保证**分区内有序**（Partition Order），即同一 Key 的消息在同一个 Partition 中按生产顺序消费 [3][4]。全局有序（Total Order）无法直接保证，需付出显著代价 [4]。实现方案包括：1. **单分区策略**：将 Topic 设为单 Partition，确保所有消息全局有序 [2][3]；2. **Key 路由**：指定业务 Key 使相同 Key 的消息进入同一 Partition，实现局部有序 [3][5]；3. **配置优化**：设置 `max.in.flight.requests.per.connection = 1` 避免并发打乱顺序 [3][5]；4. **消费端控制**：使用单线程或保证顺序的线程模型处理消息 [2][5]。若需跨分区全局有序，可采用业务 Key 路由、单生产者单分区模式等技术路径 [6]。\n\n## 参考来源\n\n[1] 阿里二面：Kafka中如何保证消息的顺序性？这周被问到两次了 - 码农Aca... - https://www.cnblogs.com/coderacademy/p/18082553\n[2] 面试官：如何保证 Kafka 消息的顺序消费？（4 种方案，从青铜到王者）... - https://blog.csdn.net/dandandeshangni/article/details/152464763\n[3] Kafka如何保证消息的消费顺序【全局有序、局部有序】、Kafka如何保证...Kafka 怎么保证消息的顺序性Kafka 怎么保证消息的顺序性 很多人在用 K...kafka顺序消费，重复消费，保证消息不丢失问题Kafka 消息队列的面试讲...深入解析：Kafka 如何保证顺序消费 - ljbguanli - 博客园Kafka消息是否有序？怎样保证有序？ - 知乎 - https://blog.csdn.net/weixin_45863010/article/details/136294454\n[4] Kafka消息顺序性保证机制与最佳实践 - CSDN博客 - https://blog.csdn.net/weixin_31062533/article/details/164957042\n[5] Kafka 顺序性保证深度解析：局部有序的艺术与全局有序的代价-CSDN博客 - https://blog.csdn.net/qq_41840843/article/details/158541998\n[6] Kafka消息顺序性原理与跨分区解决方案 - CSDN博客 - https://blog.csdn.net/weixin_32181267/article/details/169975877",
+        "evidence_count": 6,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "Kafka 如何保证消息的顺序？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          },
+          {
+            "query": "Kafka 分区内消息顺序保证机制",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          },
+          {
+            "query": "Kafka 跨分区消息顺序处理策略",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 6368
+          }
+        ],
+        "latency_ms": 13842.1,
+        "prompt_tokens": 1610,
+        "completion_tokens": 216,
+        "key_points": [
+          {
+            "point": "同一分区内的消息按 offset 顺序写入和消费",
+            "covered": true
+          },
+          {
+            "point": "只保证分区内有序，不保证跨分区有序",
+            "covered": true
+          },
+          {
+            "point": "相同 key 的消息会被发送到同一个分区",
+            "covered": true
+          },
+          {
+            "point": "重试可能导致乱序，可用幂等生产者或限制在途请求数解决",
+            "covered": false
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "Kafka 默认仅保证**分区内有序**（Partition Order），即同一 Key 的消息在同一个 Partition 中按生产顺序消费 。",
+            "citations": [
+              3,
+              4
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "全局有序（Total Order）无法直接保证，需付出显著代价 。",
+            "citations": [
+              4
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "实现方案包括：1. **单分区策略**：将 Topic 设为单 Partition，确保所有消息全局有序 ；2. **Key 路由**：指定业务 Key 使相同 Key 的消息进入同一 Partition，实现局部有序 ；3. **配置优化**：设置 `max.in.flight.requests.per.connection = 1` 避免并发打乱顺序 ；4. **消费端控制**：使用单线程或保证顺序的线程模型处理消息 。",
+            "citations": [
+              2,
+              3,
+              5
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "若需跨分区全局有序，可采用业务 Key 路由、单生产者单分区模式等技术路径 。",
+            "citations": [
+              6
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "F04",
+        "type": "factual",
+        "question": "什么是 MCP（Model Context Protocol）？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "什么是 MCP（Model Context Protocol）？",
+          "MCP 协议定义与架构",
+          "MCP 在 AI 开发中的应用"
+        ],
+        "report": "# 什么是 MCP（Model Context Protocol）？\n\nMCP（Model Context Protocol）是 Anthropic 推动的一项开放标准 [1]。其目的是为大型语言模型应用提供标准化接口，使其能连接外部数据源和工具并交互 [2]。该协议支持广泛的客户端与服务器，如 Claude、ChatGPT 及 Visual Studio Code 等开发工具 [3]。MCP 被誉为 AI 世界的\"USB-C 接口”，为 LLM 与外部工具、数据源的交互提供统一高效的方式 [7]。它旨在标准化 AI 应用与外部工具及数据源之间的集成，帮助开发人员增强模型功能以生成更准确的响应 [8]。\n\n## 参考来源\n\n[1] 模型上下文协议 - 维基百科，自由的百科全书 - https://zh.wikipedia.org/wiki/模型上下文协议\n[2] Model Context Protocol - Route MCP Protocol Traffic - https://www.bing.com/aclick?ld=e8esuN0OVsAkOhMvSGn4YWUjVUCUx2rUQeP0vGyhrB2oL3ASIVYjMV7hflEHYQ89aHT-oAnEtVm8JUo9ae0g6532e9RTUjsrEOr1y5Yj-VzAYEKI8O1atrxCPKsI7cmbPkI6pYrVl56pPNTQImDowYCtxQ-pqzxS5fHWQiPQxndwqyT4FkM5oH65-Kv0EYXMlnTOPZDZZlD0nCEH92u08wcOd70uw&u=aHR0cHMlM2ElMmYlMmZ3d3cuZ3Jhdml0ZWUuaW8lMmZwbGF0Zm9ybSUyZmFpLWFnZW50LW1hbmFnZW1lbnQlM2Z2ZWN0b3JfaWQlM2Q1NzA4OTM5MTYlMjZ2ZWN0b3Jfc291cmNlJTNkQklORyUyNnZlY3Rvcl9jYW1wYWlnbiUzZCUyNmhzdGtfY3JlYXRpdmUlM2QlMjZoc3RrX2NhbXBhaWduJTNkNTcwODkzOTE2JTI2aHN0a19uZXR3b3JrJTNkZ29vZ2xlQWRzJTI2dXRtX3Rlcm0lM2RtY3AlMjUyMHByb3RvY29sJTI2dXRtX2NhbXBhaWduJTNkJTI2dXRtX3NvdXJjZSUzZGJpbmclMjZ1dG1fbWVkaXVtJTNkcHBjJTI2dXRtX2lkJTNkNTcwODkzOTE2JTI2aHNhX2FjYyUzZDQwMDYyODQ3OTQlMjZoc2FfY2FtJTNkNTcwODkzOTE2JTI2aHNhX2dycCUzZDExODA4Nzc1OTYyMjMwMzIlMjZoc2FfYWQlM2QlMjZoc2Ffc3JjJTNkbyUyNmhzYV90Z3QlM2Rrd2QtNzM4MDUzOTA4MjA5MzklM2Fsb2MtMTY0JTI2aHNhX2t3JTNkbWNwJTI1MjBwcm90b2NvbCUyNmhzYV9tdCUzZGUlMjZoc2FfbmV0JTNkYWR3b3JkcyUyNmhzYV92ZXIlM2QzJTI2bXNjbGtpZCUzZDQ3ZjExMmY2NTBlYzFiOWFkYjY2NzgwNzllZDU0ZjgwJTI2dXRtX2NvbnRlbnQlM2RNQ1A&rlid=47f112f650ec1b9adb6678079ed54f80\n[3] What is the Model Context Protocol (MCP)? - https://modelcontextprotocol.io/docs/2026-07-28/getting-started/intro\n[4] Inside MCP Security Guide - MCP Security Guide - https://www.bing.com/aclick?ld=e8OT2GEYS83Z7GySUNja0TwzVUCUyRYiElvKJy5Fjue37rlmJqvhFEuOFUIdsEmQEBD7qRP639pirTMS6l1UiMGEyBiWC_eSSUYOH3n_vNsF5ib-e4WmbBhebI_CexWsKb8fZCUuOHXMYAwbNtrsqytwmdrspmWPryFGPze_jxjyRYCQYOHXFHdTDqYy90FVxsZrEc8jkH_NtMnAA1I5dXNwbqdWs&u=aHR0cHMlM2ElMmYlMmZ3d3cud2l6LmlvJTJmbHAlMmZpbnNpZGUtbWNwLXNlY3VyaXR5LWEtcmVzZWFyY2gtZ3VpZGUtb24tZW1lcmdpbmctcmlza3MlM2Z1dG1fc291cmNlJTNkYmluZyUyNnV0bV9tZWRpdW0lM2RwcGMlMjZ1dG1fY2FtcGFpZ24lM2Rub24tYnJhbmQtY29tbWVyY2lhbC1jb250ZW50LXNlYXJjaC1hcGFjJTI2dXRtX3Rlcm0lM2RNQ1AlMjUyMGZyYW1ld29yayUyNnV0bV9hZGdyb3VwbmFtZSUzZCU3Yk1DUCU3ZCUyNnV0bV9kZXZpY2UlM2RjJTI2bXNjbGtpZCUzZDMwMjVkMTEwMmZiMjE0Yjg4NWE4YmJlMWUxODlkN2Y0&rlid=3025d1102fb214b885a8bbe1e189d7f4\n[5] 2.1 MCP架构深度解析 | MCP 中文教程 · 遇码 - https://mcp.meetcoding.cn/02-core-concepts/architecture-overview.html\n[6] MCP (Model Context Protocol)，一篇就够了。 - 知乎 - https://zhuanlan.zhihu.com/p/29001189476\n[7] 一文读懂 MCP——从起源到应用，解锁 AI 的“万能接口” - https://zhuanlan.zhihu.com/p/1905272000181678702\n[8] .NET AI 和 MCP 入门 - .NET | Microsoft Learn - https://learn.microsoft.com/zh-cn/dotnet/ai/get-started-mcp",
+        "evidence_count": 8,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "什么是 MCP（Model Context Protocol）？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          },
+          {
+            "query": "MCP 协议定义与架构",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          },
+          {
+            "query": "MCP 在 AI 开发中的应用",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          }
+        ],
+        "latency_ms": 5069.7,
+        "prompt_tokens": 887,
+        "completion_tokens": 151,
+        "key_points": [
+          {
+            "point": "由 Anthropic 在 2024 年 11 月提出并开源",
+            "covered": false
+          },
+          {
+            "point": "为 AI 应用连接外部工具和数据源提供统一的标准协议",
+            "covered": true
+          },
+          {
+            "point": "采用客户端-服务器架构",
+            "covered": true
+          },
+          {
+            "point": "服务器可以提供工具（tools）、资源（resources）和提示模板（prompts）",
+            "covered": false
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "MCP（Model Context Protocol）是 Anthropic 推动的一项开放标准 。",
+            "citations": [
+              1
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "其目的是为大型语言模型应用提供标准化接口，使其能连接外部数据源和工具并交互 。",
+            "citations": [
+              2
+            ],
+            "supported": false
+          },
+          {
+            "sentence": "该协议支持广泛的客户端与服务器，如 Claude、ChatGPT 及 Visual Studio Code 等开发工具 。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "MCP 被誉为 AI 世界的\"USB-C 接口”，为 LLM 与外部工具、数据源的交互提供统一高效的方式 。",
+            "citations": [
+              7
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "它旨在标准化 AI 应用与外部工具及数据源之间的集成，帮助开发人员增强模型功能以生成更准确的响应 。",
+            "citations": [
+              8
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "F05",
+        "type": "factual",
+        "question": "LangGraph 的 checkpointer 有什么作用？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "LangGraph 的 checkpointer 有什么作用？",
+          "LangGraph 检查点器机制原理",
+          "LangGraph 持久化存储方案对比"
+        ],
+        "report": "# LangGraph 的 checkpointer 有什么作用？\n\nLangGraph 的 Checkpoint 是内置的会话级状态快照持久化体系 [1]。它通过 BaseCheckpointSaver 接口实现状态的保存、读取、回溯与恢复 [1]。在执行图的每一步（super-step）保存状态，从而支持记忆、容错、时间旅行及人机协作等能力 [2]。作为核心组件，Checkpointer 确保状态图在多次交互中能保存和加载状态，进而支撑会话记忆、错误恢复及人工干预等功能 [3]。\n\n## 参考来源\n\n[1] LangGraph之CheckpointLangGraph Checkpoint 完整深度解析（原理、核... - https://juejin.cn/post/7663042240814235688\n[2] LangGraph 如何通过 Checkpoint 实现持久化LangGraph 的持久化通过 ch... - https://juejin.cn/post/7573597479981121572\n[3] 【LangGraph】什么是检查点（Checkpointer） - CSDN博客 - https://blog.csdn.net/u013172930/article/details/148036704",
+        "evidence_count": 3,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "LangGraph 的 checkpointer 有什么作用？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          },
+          {
+            "query": "LangGraph 检查点器机制原理",
+            "status": "timeout",
+            "result_count": 0,
+            "elapsed_ms": 40012
+          },
+          {
+            "query": "LangGraph 持久化存储方案对比",
+            "status": "timeout",
+            "result_count": 0,
+            "elapsed_ms": 40007
+          }
+        ],
+        "latency_ms": 84460.3,
+        "prompt_tokens": 509,
+        "completion_tokens": 124,
+        "key_points": [
+          {
+            "point": "在图执行的每一步保存状态快照",
+            "covered": true
+          },
+          {
+            "point": "支持多轮对话记忆（按 thread 区分）",
+            "covered": true
+          },
+          {
+            "point": "支持中断后恢复和人工介入（human-in-the-loop）",
+            "covered": true
+          },
+          {
+            "point": "支持回放历史状态（时间旅行）",
+            "covered": true
+          },
+          {
+            "point": "有内存、SQLite、Postgres 等多种实现",
+            "covered": false
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "LangGraph 的 Checkpoint 是内置的会话级状态快照持久化体系 。",
+            "citations": [
+              1
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "它通过 BaseCheckpointSaver 接口实现状态的保存、读取、回溯与恢复 。",
+            "citations": [
+              1
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "在执行图的每一步（super-step）保存状态，从而支持记忆、容错、时间旅行及人机协作等能力 。",
+            "citations": [
+              2
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "作为核心组件，Checkpointer 确保状态图在多次交互中能保存和加载状态，进而支撑会话记忆、错误恢复及人工干预等功能 。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "F06",
+        "type": "factual",
+        "question": "BM25 算法的核心思想是什么？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "BM25 算法的核心思想是什么？",
+          "BM25 算法原理详解",
+          "BM25 模型核心机制"
+        ],
+        "report": "# BM25 算法的核心思想是什么？\n\nBM25（Best Matching 25）是一种基于概率检索框架的排序算法，由 Stephen E. Robertson 和 Karen Spärck Jones 于 1970 年代提出 [5]。其核心思想是基于词频 (TF) 和逆文档频率 (IDF) 来计算文档与查询的相关性，并引入了文档长度信息以解决传统 TF-IDF 的不足 [3]。该算法通过词频非线性饱和、IDF 平滑计算及文档长度归一化机制，提升了关键词相关性排序质量 [4]。BM25 是 Okapi TF-IDF 算法的改进版本，被广泛应用于 Elasticsearch 等搜索引擎作为默认排序算法 [3][5]。\n\n## 参考来源\n\n[1] BM25 算法详解：从原理到代码实现，掌握搜索与 RAG 的核心检索技术-CS... - https://blog.csdn.net/weixin_69500620/article/details/161751314\n[2] BM25算法的概念、定性理解+公式定量理解、举例说明、一文详解。 - Alp... - https://www.cnblogs.com/geekbruce/articles/19438527\n[3] RAG提效利器——BM25检索算法原理和Python实现BM25 算法详解：从原理到代码实现，掌握搜索与 RAG 的核心检索技术_ra...RAG 混合检索深度解析：BM25 + 向量检索 + RRF 算法，让 AI 真正\"找到...【算法科普】BM25：搜索引擎的核心排序算法详解 - 搜索客，搜索人自己...BM25算法详解与实践总结BM25（Best Matching 25）是一种用于信息检索... - https://zhuanlan.zhihu.com/p/670322092\n[4] BM25 算法详解：从原理到代码实现，掌握搜索与 RAG 的核心检索技术_ra... - https://blog.csdn.net/zzzzz77777aaaaaa/article/details/164003831\n[5] 大模型面试高频题：请详细讲解检索中的BM25算法-CSDN博客 - https://blog.csdn.net/qq_38646027/article/details/159752817",
+        "evidence_count": 5,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "BM25 算法的核心思想是什么？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          },
+          {
+            "query": "BM25 算法原理详解",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          },
+          {
+            "query": "BM25 模型核心机制",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          }
+        ],
+        "latency_ms": 5953.3,
+        "prompt_tokens": 1617,
+        "completion_tokens": 168,
+        "key_points": [
+          {
+            "point": "考虑词频，且词频的贡献会逐渐饱和",
+            "covered": true
+          },
+          {
+            "point": "使用逆文档频率（IDF）降低常见词的权重",
+            "covered": true
+          },
+          {
+            "point": "对文档长度做归一化",
+            "covered": true
+          },
+          {
+            "point": "有 k1 和 b 两个可调参数",
+            "covered": false
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "BM25（Best Matching 25）是一种基于概率检索框架的排序算法，由 Stephen E. Robertson 和 Karen Spärck Jones 于 1970 年代提出 。",
+            "citations": [
+              5
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "其核心思想是基于词频 (TF) 和逆文档频率 (IDF) 来计算文档与查询的相关性，并引入了文档长度信息以解决传统 TF-IDF 的不足 。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "该算法通过词频非线性饱和、IDF 平滑计算及文档长度归一化机制，提升了关键词相关性排序质量 。",
+            "citations": [
+              4
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "BM25 是 Okapi TF-IDF 算法的改进版本，被广泛应用于 Elasticsearch 等搜索引擎作为默认排序算法 。",
+            "citations": [
+              3,
+              5
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "F07",
+        "type": "factual",
+        "question": "HNSW 向量索引的原理是什么？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "HNSW 向量索引的原理是什么？",
+          "HNSW 算法核心机制",
+          "向量索引构建与搜索策略"
+        ],
+        "report": "# HNSW 向量索引的原理是什么？\n\nHNSW 是一种基于图的向量索引算法 [1]。其核心思想是通过“层次化图结构”模拟“小世界网络”特性 [2]。该算法全称 Hierarchical Navigable Small World，专为高维空间最近邻搜索设计 [3]。它利用多层图结构与分层跳跃搜索加速检索 [1]。HNSW 结合概率跳表和可导航小世界图的双引擎设计，显著提升搜索速度和召回率 [4]。\n\n## 参考来源\n\n[1] HNSW 原理详解：高维向量检索的图索引方法 - 千问AI平台 - https://www.qianwenai.com/discover/what-is-hnsw\n[2] 【向量检索与RAG全流程解析】HNSW原理、实践及阿里云灵积DashScope嵌... - https://www.cnblogs.com/gccbuaa/p/19265831\n[3] 【干货】HNSW算法详解：从基础到进阶，掌握大模型向量搜索核心技术！-... - https://blog.csdn.net/2401_85375151/article/details/154571998\n[4] HNSW算法核心机制解析与Faiss实战调优-CSDN博客 - https://blog.csdn.net/weixin_27303545/article/details/161180386\n[5] 万物皆可Embedding，深入理解向量索引的构建和检索-CSDN博客 - https://blog.csdn.net/python123456_/article/details/140348248\n[6] 向量索引向量索引技术总结笔记 1. 向量索引基础概念 向量索引是一种特... - https://juejin.cn/post/7517602418487263247\n[7] 【向量检索索引优化终极指南】：揭秘HNSW与IVF如何提升查询效率90%-CS... - https://blog.csdn.net/ByteChat/article/details/155631038",
+        "evidence_count": 7,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "HNSW 向量索引的原理是什么？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          },
+          {
+            "query": "HNSW 算法核心机制",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 12699
+          },
+          {
+            "query": "向量索引构建与搜索策略",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          }
+        ],
+        "latency_ms": 16840.0,
+        "prompt_tokens": 944,
+        "completion_tokens": 114,
+        "key_points": [
+          {
+            "point": "基于分层的可导航小世界图",
+            "covered": true
+          },
+          {
+            "point": "上层图稀疏、下层图稠密",
+            "covered": false
+          },
+          {
+            "point": "搜索从顶层开始贪心查找并逐层向下",
+            "covered": false
+          },
+          {
+            "point": "是近似最近邻搜索，用少量召回损失换取速度",
+            "covered": false
+          },
+          {
+            "point": "主要参数有 M、efConstruction、efSearch",
+            "covered": false
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "HNSW 是一种基于图的向量索引算法 。",
+            "citations": [
+              1
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "其核心思想是通过“层次化图结构”模拟“小世界网络”特性 。",
+            "citations": [
+              2
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "该算法全称 Hierarchical Navigable Small World，专为高维空间最近邻搜索设计 。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "它利用多层图结构与分层跳跃搜索加速检索 。",
+            "citations": [
+              1
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "HNSW 结合概率跳表和可导航小世界图的双引擎设计，显著提升搜索速度和召回率 。",
+            "citations": [
+              4
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "F08",
+        "type": "factual",
+        "question": "Transformer 中自注意力的计算复杂度是多少，为什么？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "Transformer 中自注意力的计算复杂度是多少，为什么？",
+          "Transformer 自注意力计算复杂度分析",
+          "自注意力机制时间复杂度推导原因"
+        ],
+        "report": "# Transformer 中自注意力的计算复杂度是多少，为什么？\n\nTransformer 中自注意力的计算复杂度为 $O(N^2)$ [3]，其中 $N$ 为输入序列长度。该复杂度的核心来源是自注意力机制中查询（Query）、键（Key）和值（Value）矩阵之间点积的计算过程 [3]。具体而言，其详细复杂度为 $O(n^2d)$ [4]，这一结果主要由 QK^T 和 AV 矩阵乘法的主导性开销决定 [4]。自注意力机制是 Transformer 架构中计算复杂度最高的部分 [5]。\n\n## 参考来源\n\n[1] Transformer 101 (一): 参数量和时间空间复杂度 - https://zhuanlan.zhihu.com/p/661804092\n[2] 从零吃透Transformer：Self-Attention机制与架构深度剖析 - https://blog.csdn.net/weixin_29048309/article/details/170215834\n[3] 为什么transformer的时间复杂度是N的平方，具体是里面的哪一个计算流... - https://blog.csdn.net/qq_39970492/article/details/143980109\n[4] Transformer 自注意力复杂度 O(n²d) 详解：从矩阵乘法到 PyTorch 源码... - https://blog.csdn.net/weixin_31715171/article/details/162677156\n[5] 从数学原理到代码实现：手把手推导Transformer时间复杂度公式（附PyTo... - https://blog.csdn.net/weixin_29251131/article/details/159714156",
+        "evidence_count": 5,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "Transformer 中自注意力的计算复杂度是多少，为什么？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          },
+          {
+            "query": "Transformer 自注意力计算复杂度分析",
+            "status": "timeout",
+            "result_count": 0,
+            "elapsed_ms": 40007
+          },
+          {
+            "query": "自注意力机制时间复杂度推导原因",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          }
+        ],
+        "latency_ms": 44521.4,
+        "prompt_tokens": 727,
+        "completion_tokens": 134,
+        "key_points": [
+          {
+            "point": "复杂度与序列长度的平方成正比，即 O(n²)",
+            "covered": true
+          },
+          {
+            "point": "每个 token 都要与所有 token 计算注意力分数",
+            "covered": false
+          },
+          {
+            "point": "注意力矩阵的大小是 n×n",
+            "covered": false
+          },
+          {
+            "point": "长上下文代价高，因此出现稀疏注意力、线性注意力、FlashAttention 等优化",
+            "covered": true
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "Transformer 中自注意力的计算复杂度为 $O(N^2)$ ，其中 $N$ 为输入序列长度。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "该复杂度的核心来源是自注意力机制中查询（Query）、键（Key）和值（Value）矩阵之间点积的计算过程 。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "具体而言，其详细复杂度为 $O(n^2d)$ ，这一结果主要由 QK^T 和 AV 矩阵乘法的主导性开销决定 。",
+            "citations": [
+              4
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "自注意力机制是 Transformer 架构中计算复杂度最高的部分 。",
+            "citations": [
+              5
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "F09",
+        "type": "factual",
+        "question": "什么是 RAG（检索增强生成）？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "什么是 RAG（检索增强生成）？",
+          "RAG 技术原理与架构",
+          "RAG 在人工智能中的应用场景"
+        ],
+        "report": "# 什么是 RAG（检索增强生成）？\n\nRAG 全称检索增强生成（Retrieval-Augmented Generation），其核心思想是给大语言模型（LLM）加上外挂知识库，使其能基于私有数据回答问题 [7]。该技术通过搜索算法将查询与相关文本片段匹配，利用外部真实、权威的最新数据来锚定 LLM，从而提供比仅依赖训练数据的模型更准确的回答 [2]。RAG 的工作流程涵盖知识库构建（文档加载、分块、向量化）和在线问答（语义检索、提示词拼接、答案生成）两大环节 [5]。它通过来源归属呈现准确信息，降低幻觉风险，并解决知识更新、语义对齐及复杂任务处理等问题 [1][4]。RAG 已应用于社交媒体提要、新闻网站等场景，支持多领域落地 [1][6]。\n\n## 参考来源\n\n[1] 什么是 RAG？— 检索增强生成 AI 详解 — AWS - https://aws.amazon.com/cn/what-is/retrieval-augmented-generation/\n[2] 什么是 RAG（检索增强生成）？| IBM - https://www.ibm.com/cn-zh/think/topics/retrieval-augmented-generation\n[3] RAG详解：检索增强生成（Retrieval Augmented Generation） - https://zhuanlan.zhihu.com/p/1973784509318205455\n[4] RAG彻底爆了！一文读懂其架构演进及核心要点 - 知乎 - https://zhuanlan.zhihu.com/p/1961434040168084659\n[5] 大模型 RAG 技术深度解析：原理架构、通俗解读与实战代码（大模型应用... - https://blog.csdn.net/m0_63537602/article/details/159678059\n[6] RAG 技术全解析：从基础原理到实战落地，附开源框架选型与代码实现-CS... - https://blog.csdn.net/xxue345678/article/details/150418994\n[7] 《RAG应用场景实战：7大真实案例带你落地RAG技术》 - https://zhuanlan.zhihu.com/p/1994348312162215096\n[8] 一文讲透RAG在垂直领域大模型的应用-CSDN博客 - https://blog.csdn.net/TonyChacha635401873/article/details/136155013\n[9] 小白到进阶：RAG、AI智能体与Agentic RAG详解（附实战应用）-CSDN博客 - https://blog.csdn.net/qq_46094651/article/details/157653535",
+        "evidence_count": 9,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "什么是 RAG（检索增强生成）？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 1947
+          },
+          {
+            "query": "RAG 技术原理与架构",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 33386
+          },
+          {
+            "query": "RAG 在人工智能中的应用场景",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          }
+        ],
+        "latency_ms": 41688.7,
+        "prompt_tokens": 1113,
+        "completion_tokens": 189,
+        "key_points": [
+          {
+            "point": "生成前先从外部知识库检索相关内容",
+            "covered": true
+          },
+          {
+            "point": "把检索结果作为上下文提供给大模型",
+            "covered": true
+          },
+          {
+            "point": "可以减少幻觉并提供引用来源",
+            "covered": true
+          },
+          {
+            "point": "不需要重新训练模型就能更新知识",
+            "covered": true
+          },
+          {
+            "point": "由 Lewis 等人在 2020 年提出",
+            "covered": false
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "RAG 全称检索增强生成（Retrieval-Augmented Generation），其核心思想是给大语言模型（LLM）加上外挂知识库，使其能基于私有数据回答问题 。",
+            "citations": [
+              7
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "该技术通过搜索算法将查询与相关文本片段匹配，利用外部真实、权威的最新数据来锚定 LLM，从而提供比仅依赖训练数据的模型更准确的回答 。",
+            "citations": [
+              2
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "RAG 的工作流程涵盖知识库构建（文档加载、分块、向量化）和在线问答（语义检索、提示词拼接、答案生成）两大环节 。",
+            "citations": [
+              5
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "它通过来源归属呈现准确信息，降低幻觉风险，并解决知识更新、语义对齐及复杂任务处理等问题 。",
+            "citations": [
+              1,
+              4
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "RAG 已应用于社交媒体提要、新闻网站等场景，支持多领域落地 。",
+            "citations": [
+              1,
+              6
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "F10",
+        "type": "factual",
+        "question": "Docker 容器和虚拟机有什么区别？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "Docker 容器和虚拟机有什么区别？",
+          "Docker 容器与虚拟机核心差异",
+          "虚拟机与容器技术对比分析"
+        ],
+        "report": "# Docker 容器和虚拟机有什么区别？\n\nDocker 容器与虚拟机在虚拟化层级、资源占用及启动速度上存在显著差异。容器采用操作系统层虚拟化，复用宿主机 Linux 内核，因此镜像小且启动快 [1]；而虚拟机通过硬件级虚拟化提供完整操作系统的隔离环境，资源开销大且启动慢 [6]。由于容器无需运行独立操作系统，其系统资源利用率更高，相同配置下可运行更多应用 [2]。在安全隔离方面，虚拟机提供强隔离性，适合高安全性需求场景 [3]；容器虽具备资源限制能力，但隔离性相对较弱 [6]。两者各有优劣，分别适用于微服务架构与传统应用部署等不同场景 [3]。\n\n## 参考来源\n\n[1] Docker vs 虚拟机：别再搞混了！一张表看懂容器和虚拟机的本质区别_do... - https://blog.csdn.net/KevinHuang2088/article/details/159616291\n[2] 容器、Docker、虚拟机，别再傻傻分不清 - 知乎Docker容器与虚拟机的区别 - CSDN博客docker容器与虚拟机有什么区别？ - 知乎docker和虚拟机有什么区别-腾讯云开发者社区-腾讯云【Docker】Docker容器与虚拟机的对比、三要素、架构和镜像加速器的详...虚拟机与容器的区别：核心概念与应用场景详解 - Docker 入门教程 | 现... - https://zhuanlan.zhihu.com/p/271846374\n[3] Docker容器与虚拟机的区别 - CSDN博客 - https://blog.csdn.net/m0_74091159/article/details/139157060\n[4] Docker容器与VMware虚拟机：核心差异与应用场景解析-CSDN博客 - https://blog.csdn.net/weixin_33883104/article/details/169479279\n[5] 虚拟化（VMware）vs 容器化（Docker）核心区别 - 知乎 - https://zhuanlan.zhihu.com/p/1911095227638317933\n[6] 深入理解虚拟机与容器：原理、对比与应用场景分析_虚拟机 容器-CSDN博... - https://blog.csdn.net/cooldream2009/article/details/147654561\n[7] 虚拟机与容器技术详解：VM、LXC、LXD与Docker-CSDN博客 - https://blog.csdn.net/qq_37592750/article/details/149142743\n[8] 容器 vs 虚拟机：深入对比 | DataCamp - https://www.datacamp.com/zh/blog/containers-vs-virtual-machines",
+        "evidence_count": 8,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "Docker 容器和虚拟机有什么区别？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          },
+          {
+            "query": "Docker 容器与虚拟机核心差异",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          },
+          {
+            "query": "虚拟机与容器技术对比分析",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          }
+        ],
+        "latency_ms": 5972.7,
+        "prompt_tokens": 1865,
+        "completion_tokens": 162,
+        "key_points": [
+          {
+            "point": "容器共享宿主机内核，虚拟机运行独立的操作系统",
+            "covered": true
+          },
+          {
+            "point": "容器更轻量，启动更快",
+            "covered": true
+          },
+          {
+            "point": "虚拟机的隔离性更强",
+            "covered": false
+          },
+          {
+            "point": "容器依靠 Linux namespace 和 cgroups 实现隔离与资源限制",
+            "covered": false
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "容器采用操作系统层虚拟化，复用宿主机 Linux 内核，因此镜像小且启动快 ；而虚拟机通过硬件级虚拟化提供完整操作系统的隔离环境，资源开销大且启动慢 。",
+            "citations": [
+              1,
+              6
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "由于容器无需运行独立操作系统，其系统资源利用率更高，相同配置下可运行更多应用 。",
+            "citations": [
+              2
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "在安全隔离方面，虚拟机提供强隔离性，适合高安全性需求场景 ；容器虽具备资源限制能力，但隔离性相对较弱 。",
+            "citations": [
+              3,
+              6
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "两者各有优劣，分别适用于微服务架构与传统应用部署等不同场景 。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "F11",
+        "type": "factual",
+        "question": "HTTP/2 相比 HTTP/1.1 有哪些主要改进？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "HTTP/2 相比 HTTP/1.1 有哪些主要改进？",
+          "HTTP/2 协议核心特性与优势",
+          "HTTP/1.1 性能瓶颈与升级对比"
+        ],
+        "report": "# HTTP/2 相比 HTTP/1.1 有哪些主要改进？\n\nHTTP/2 相比 HTTP/1.1 的主要改进包括：多路复用解决队头阻塞 [1][2][4]；HPACK 头部压缩节省带宽 [1][3][5]；二进制协议提升解析效率 [1][3][4]；流优先级优化资源加载顺序 [1][3]；服务器推送减少延迟 [1][3]。这些特性通过二进制分帧、多路复用及头部压缩等核心技术，显著减少了传输开销并提升了页面加载速度 [2][3][5]。\n\n## 参考来源\n\n[1] HTTP_2.0与HTTP_1.1相比有哪些主要改进？｜高频面试题｜计算机网络高... - https://notes.kamacoder.com/base/http2-improvements.html\n[2] 【计算机网络】HTTP2.0与HTTP1.1相比有哪些主要改进？-CSDN博客 - https://blog.csdn.net/weixin_72986432/article/details/149912608\n[3] HTTP2.0 相比 HTTP1.1 的主要改进 - CSDN博客 - https://blog.csdn.net/weixin_46053950/article/details/143996445\n[4] HTTP/2协议核心特性与Web性能优化实践 - CSDN博客 - https://blog.csdn.net/weixin_33552698/article/details/167866130\n[5] HTTP/2协议核心特性与性能优化实践 - CSDN博客 - https://blog.csdn.net/weixin_29611239/article/details/167866123\n[6] HTTP/2：让网络飞起来本文详解了HTTP/2协议，它改善了HTTP/1.1的性能... - https://juejin.cn/post/7399674749729570842\n[7] HTTP/1.1、HTTP/2、HTTP/3 技术详解、差异对比与通用升级指南 - https://blog.csdn.net/qq_44695874/article/details/161423605\n[8] HTTP/1.1性能瓶颈分析与优化实践 - CSDN博客 - https://blog.csdn.net/weixin_33883104/article/details/165684284\n[9] HTTP/1.1 与 Web 性能｜持久连接、缓存控制、流水线与演进要点 - Lvwa... - https://lvwapro.github.io/2025/04/11/http1x/",
+        "evidence_count": 9,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "HTTP/2 相比 HTTP/1.1 有哪些主要改进？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 11536
+          },
+          {
+            "query": "HTTP/2 协议核心特性与优势",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          },
+          {
+            "query": "HTTP/1.1 性能瓶颈与升级对比",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          }
+        ],
+        "latency_ms": 16341.8,
+        "prompt_tokens": 1083,
+        "completion_tokens": 137,
+        "key_points": [
+          {
+            "point": "采用二进制分帧",
+            "covered": true
+          },
+          {
+            "point": "多路复用：一个连接上并发传输多个请求",
+            "covered": true
+          },
+          {
+            "point": "使用 HPACK 压缩请求头",
+            "covered": false
+          },
+          {
+            "point": "支持服务器推送",
+            "covered": false
+          },
+          {
+            "point": "支持请求优先级",
+            "covered": false
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "HTTP/2 相比 HTTP/1.1 的主要改进包括：多路复用解决队头阻塞 ；HPACK 头部压缩节省带宽 ；二进制协议提升解析效率 ；流优先级优化资源加载顺序 ；服务器推送减少延迟 。",
+            "citations": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "这些特性通过二进制分帧、多路复用及头部压缩等核心技术，显著减少了传输开销并提升了页面加载速度 。",
+            "citations": [
+              2,
+              3,
+              5
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "F12",
+        "type": "factual",
+        "question": "什么是 CAP 定理？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "什么是 CAP 定理？",
+          "CAP 定理核心内容解析",
+          "分布式系统一致性可用性权衡"
+        ],
+        "report": "# 什么是 CAP 定理？\n\nCAP 定理由 Eric A. Brewer 教授于 2000 年首次提出 [1]，也被称为 Brewer 定理 [1]。该定理指出，在分布式系统中最多只能同时满足一致性（Consistency）、可用性（Availability）和分区容错性（Partition tolerance）这三项中的两项，无法同时满足全部三项 [2]。其中，一致性指所有节点在同一时间看到相同数据 [2]；可用性指服务持续响应请求 [2]；分区容错性指系统在部分节点或网络故障时仍能运行 [2]。由于网络分区是分布式系统的基本特征，必须优先保证 P，因此实际设计需在 C 与 A 之间进行权衡 [7]。常见的取舍策略包括：舍弃一致性选择 AP（如电商秒杀）[2]；舍弃可用性选择 CP（如金融系统）[2]；或接受最终一致性以兼顾高可用与分区容错 [2]。\n\n## 参考来源\n\n[1] 什么是 CAP 定理？| IBM - https://www.ibm.com/cn-zh/think/topics/cap-theorem\n[2] 分布式系统的CAP定理详解 - 知乎什么是CAP 定理，为什么CAP不能同时被满足？ - 知乎CAP 定理与 BASE 理论详解：一致性、可用性、分区容错与最终一致性 | ...什么是 CAP 定理？为什么 CAP 原则不能同时被满足，只能满足其中的两...CAP定理一文带你速解（通俗易懂，图文并茂）-CSDN博客一文看懂｜分布式系统之CAP理论-腾讯云开发者社区-腾讯云 - https://zhuanlan.zhihu.com/p/335617791\n[3] 什么是CAP 定理，为什么CAP不能同时被满足？ - 知乎 - https://zhuanlan.zhihu.com/p/396110426\n[4] CAP定理解析：分布式系统设计的核心权衡与实践-CSDN博客 - https://blog.csdn.net/weixin_29035147/article/details/170120381\n[5] CAP定理解析：分布式系统设计的核心原则与实践-CSDN博客 - https://blog.csdn.net/weixin_42629815/article/details/170113113\n[6] 分布式系统设计：一致性与可用性的权衡 - baihu100 - 博客园 - https://www.cnblogs.com/reaon493/p/19798865\n[7] 分布式系统的CAP定理实践：7月案例中的一致性与可用性权衡-CSDN博客 - https://blog.csdn.net/jiang_style/article/details/163305303\n[8] 分布式系统设计：从 CAP 定理到工程实践，一致性权衡的决策框架-CSDN... - https://blog.csdn.net/qq_35160742/article/details/162045837",
+        "evidence_count": 8,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "什么是 CAP 定理？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 2
+          },
+          {
+            "query": "CAP 定理核心内容解析",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 29534
+          },
+          {
+            "query": "分布式系统一致性可用性权衡",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          }
+        ],
+        "latency_ms": 37700.6,
+        "prompt_tokens": 2468,
+        "completion_tokens": 210,
+        "key_points": [
+          {
+            "point": "一致性（Consistency）",
+            "covered": true
+          },
+          {
+            "point": "可用性（Availability）",
+            "covered": false
+          },
+          {
+            "point": "分区容错性（Partition tolerance）",
+            "covered": true
+          },
+          {
+            "point": "发生网络分区时只能在一致性和可用性之间取舍",
+            "covered": true
+          },
+          {
+            "point": "由 Eric Brewer 提出",
+            "covered": true
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "CAP 定理由 Eric A. Brewer 教授于 2000 年首次提出 ，也被称为 Brewer 定理 。",
+            "citations": [
+              1
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "该定理指出，在分布式系统中最多只能同时满足一致性（Consistency）、可用性（Availability）和分区容错性（Partition tolerance）这三项中的两项，无法同时满足全部三项 。",
+            "citations": [
+              2
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "其中，一致性指所有节点在同一时间看到相同数据 ；可用性指服务持续响应请求 ；分区容错性指系统在部分节点或网络故障时仍能运行 。",
+            "citations": [
+              2
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "由于网络分区是分布式系统的基本特征，必须优先保证 P，因此实际设计需在 C 与 A 之间进行权衡 。",
+            "citations": [
+              7
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "常见的取舍策略包括：舍弃一致性选择 AP（如电商秒杀）；舍弃可用性选择 CP（如金融系统）；或接受最终一致性以兼顾高可用与分区容错 。",
+            "citations": [
+              2
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "F13",
+        "type": "factual",
+        "question": "为什么数据库索引常用 B+ 树？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "为什么数据库索引常用 B+ 树？",
+          "B+ 树结构原理与优势",
+          "数据库为何选择 B+ 树作为索引"
+        ],
+        "report": "# 为什么数据库索引常用 B+ 树？\n\n数据库索引常用 B+ 树，主要因其迎合了磁盘存储原理。首先，数据库文件存储在硬盘上，磁盘寻道开销巨大且速度慢于内存 [3][7]。B+ 树作为多路搜索树，通过增加节点容量降低了树的高度，从而减少了查询所需的磁盘 I/O 次数 [3][5]。其次，B+ 树所有关键字均出现在叶子节点的有序链表中，非叶子节点仅存索引，这使得其相比 B 树更“矮胖”，进一步减少底层节点访问的 I/O 次数 [1][3][6]。此外，这种结构支持高效的范围查询和顺序扫描，解决了普通二叉树在极端情况下退化为链表的问题 [2][4]。\n\n## 参考来源\n\n[1] MySQL 索引：索引为什么使用 B+树？（详解B树、B+树）_索引 b+树-CSDN... - https://blog.csdn.net/qq_44631615/article/details/150229782\n[2] 为什么B+树是数据库索引的首选？一个全面的解读_b+树为什么适合数据库... - https://blog.csdn.net/qq_44591181/article/details/138248433\n[3] 数据库索引：B树、B-树、B+树、B*树详解 - 知乎为什么 MySQL 采用 B+ 树作为索引？ | 小林coding深入理解mysql索引底层数据结构B+树索引 B树是一种多路搜索树，在数据...这篇 MySQL 索引和 B+Tree 讲得太通俗易懂 - 知乎B树与数据库索引理论（为什么DB选择B-Tree？） - https://zhuanlan.zhihu.com/p/134056266\n[4] B树与B+树详解：原理、操作与应用-CSDN博客 - https://blog.csdn.net/qq_33905217/article/details/121827393\n[5] 经典树结构——B+树的原理及实现-CSDN博客 - https://blog.csdn.net/c630843901/article/details/121423196\n[6] B+树看这一篇就够了（B+树查找、插入、删除全上） - https://zhuanlan.zhihu.com/p/149287061\n[7] 为什么 MySQL 采用 B+ 树作为索引？ | 小林coding这篇 MySQL 索引和 B+Tree 讲得太通俗易懂 - 知乎MySQL 为什么使用 B+ 树作为索引结构？-阿里云开发者社区MySQL索引原理：B+树为什么是数据库的首选-阿里云开发者社区数据库索引：B树、B-树、B+树、B*树详解 - 知乎 - https://xiaolincoding.com/mysql/index/why_index_chose_bpuls_tree.html\n[8] MySQL 为什么使用 B+ 树作为索引结构？-阿里云开发者社区 - https://developer.aliyun.com/article/1615654\n[9] 数据库面试必备：MySQL为什么选择B+树作为索引结构？_b+tree的优点-CS... - https://blog.csdn.net/qq_58299462/article/details/146505673",
+        "evidence_count": 9,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "为什么数据库索引常用 B+ 树？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          },
+          {
+            "query": "B+ 树结构原理与优势",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          },
+          {
+            "query": "数据库为何选择 B+ 树作为索引",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          }
+        ],
+        "latency_ms": 7416.7,
+        "prompt_tokens": 3415,
+        "completion_tokens": 174,
+        "key_points": [
+          {
+            "point": "多路平衡树，树高低，磁盘 IO 次数少",
+            "covered": true
+          },
+          {
+            "point": "非叶子节点只存键，一个页能容纳更多键",
+            "covered": true
+          },
+          {
+            "point": "所有数据都存放在叶子节点",
+            "covered": false
+          },
+          {
+            "point": "叶子节点之间用链表相连，便于范围查询",
+            "covered": true
+          },
+          {
+            "point": "每次查询路径长度相同，性能稳定",
+            "covered": false
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "首先，数据库文件存储在硬盘上，磁盘寻道开销巨大且速度慢于内存 。",
+            "citations": [
+              3,
+              7
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "B+ 树作为多路搜索树，通过增加节点容量降低了树的高度，从而减少了查询所需的磁盘 I/O 次数 。",
+            "citations": [
+              3,
+              5
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "其次，B+ 树所有关键字均出现在叶子节点的有序链表中，非叶子节点仅存索引，这使得其相比 B 树更“矮胖”，进一步减少底层节点访问的 I/O 次数 。",
+            "citations": [
+              1,
+              3,
+              6
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "此外，这种结构支持高效的范围查询和顺序扫描，解决了普通二叉树在极端情况下退化为链表的问题 。",
+            "citations": [
+              2,
+              4
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "F14",
+        "type": "factual",
+        "question": "什么是 ReAct 智能体范式？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "什么是 ReAct 智能体范式？",
+          "ReAct 框架原理与机制",
+          "ReAct 智能体在 AI 中的应用"
+        ],
+        "report": "# 什么是 ReAct 智能体范式？\n\nReAct 智能体范式是一种将“推理”（Reasoning）与“行动”（Acting）深度融合的 AI 架构。它利用大型语言模型（LLM），通过思维链（CoT）推理结合外部工具使用，使智能体在动态环境中边思考边交互以解决复杂任务 [1][3][5]。该框架由 Yao 等人在 2022 年提出，旨在提升 LLM 处理决策与工作的整体性能，其核心在于让智能体在迭代优化中表现出接近人类的决策能力 [1][5]。\n\n## 参考来源\n\n[1] 什么是 ReAct 智能体？| IBM - https://www.ibm.com/cn-zh/think/topics/react-agent\n[2] 大模型入门指南——ReAct (Reasoning and Acting) 到底是什么？ - https://zhuanlan.zhihu.com/p/1931035639949817621\n[3] 【必学收藏】ReAct智能体架构详解：从理论到实践，构建大模型Agent开... - https://zhuanlan.zhihu.com/p/1999161023387680912\n[4] React 原理详解 | 温佳鑫 - https://baimohui.github.io/框架和类库/react/React+原理/\n[5] ReAct框架深度解析：原理、优缺点与应用场景 - 知乎 - https://zhuanlan.zhihu.com/p/1928501676257547283\n[6] react 整体的底层原理（基本构造）React 的底层原理可以从「核心设计... - https://juejin.cn/post/7532320991775948838",
+        "evidence_count": 6,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "什么是 ReAct 智能体范式？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          },
+          {
+            "query": "ReAct 框架原理与机制",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 2223
+          },
+          {
+            "query": "ReAct 智能体在 AI 中的应用",
+            "status": "timeout",
+            "result_count": 0,
+            "elapsed_ms": 40008
+          }
+        ],
+        "latency_ms": 47446.1,
+        "prompt_tokens": 774,
+        "completion_tokens": 142,
+        "key_points": [
+          {
+            "point": "让推理（Reasoning）与行动（Acting）交替进行",
+            "covered": true
+          },
+          {
+            "point": "按思考-行动-观察的循环执行",
+            "covered": true
+          },
+          {
+            "point": "行动可以调用搜索等外部工具",
+            "covered": true
+          },
+          {
+            "point": "由 Yao 等人在 2022 年提出",
+            "covered": true
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "它利用大型语言模型（LLM），通过思维链（CoT）推理结合外部工具使用，使智能体在动态环境中边思考边交互以解决复杂任务 。",
+            "citations": [
+              1,
+              3,
+              5
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "该框架由 Yao 等人在 2022 年提出，旨在提升 LLM 处理决策与工作的整体性能，其核心在于让智能体在迭代优化中表现出接近人类的决策能力 。",
+            "citations": [
+              1,
+              5
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "F15",
+        "type": "factual",
+        "question": "RLHF 的主要训练步骤是什么？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "RLHF 的主要训练步骤是什么？",
+          "RLHF 核心训练流程解析",
+          "强化学习人类反馈对齐技术"
+        ],
+        "report": "# RLHF 的主要训练步骤是什么？\n\nRLHF 训练过程分为三个阶段，核心流程包括初始化、奖励建模与策略优化。首先进行初始化阶段，将 Actor 模型和 Ref 模型初始化为监督微调（SFT）模型以防止崩溃 [2]。随后进入奖励建模阶段，利用高质量标注数据构建奖励模型以对齐人类意图 [5]。最后执行 PPO 等强化学习算法进行策略优化，通过人类反馈提升模型输出质量并防范奖励黑客 [3][5]。\n\n## 参考来源\n\n[1] RLHF训练过程 - 知乎 - 知乎专栏 - https://zhuanlan.zhihu.com/p/1925931798791185941\n[2] RLHF训练流程分步说明 - 知乎 - https://zhuanlan.zhihu.com/p/1892981270226641005\n[3] 一文搞懂大模型训练全流程：从预训练到RLHF的完整指南！-CSDN博客 - https://blog.csdn.net/m0_65555479/article/details/153780641\n[4] 基于人类反馈的强化学习 (RLHF)深度解析 - 知乎 - https://zhuanlan.zhihu.com/p/27441484575\n[5] 大模型训练全流程解析：从预训练到RLHF实战指南-CSDN博客 - https://blog.csdn.net/weixin_29032337/article/details/163127850\n[6] Boomi AI - Advanced Generative AI - Watch The Webinar Today - https://www.bing.com/aclick?ld=e8jChJSFEJXZHjVHxIngkVxTVUCUy--ry1BJoDgUEn2rBs5l-FQgOm7_BXTQM-LWbCC8TQjej5QaS5Wpi3mNFLEmlXkbKrn1uj1V8j5NjlWW0zen6gDtPIc8cckkJ-keVXdWGUka7FvC96kE-3hhnK5ZBnuGVqQWL7NkOmMd7w6oxti0O70V-tHfGY7JiFjsHwNMbo0Q&u=aHR0cHMlM2ElMmYlMmZtYXJrZXRpbmcuYm9vbWkuY29tJTJmd2ViaW5hci1ob3ctdG8tYmVjb21lLUFJLXJlYWR5JTNmdXRtX3NvdXJjZSUzZGJpbmclMjZ1dG1fbWVkaXVtJTNkcGFpZHNlYXJjaCUyNmFkX3BsYXRmb3JtX2lkJTNkNDk0MjQzNzk1LTEyNTAxNDYwNTMwNTgyNjMtJTI2dXRtX2NhbXBhaWduJTNkQVBKXy1fQVVfLV9FTkdfLV9TZWFyY2hfLV9Ob24tQnJhbmRfLV9Cb29taV9BSSUyNnV0bV9rZXl3b3JkJTNkYXJ0aWZpY2lhbCUyNTIwaW50ZWxsaWdlbmNlJTI1MjBhcHBsaWNhdGlvbnMlMjUyMGFuZCUyNTIwaW5ub3ZhdGlvbnMlMjZfYnQlM2QlMjZfYmslM2RhcnRpZmljaWFsJTI1MjBpbnRlbGxpZ2VuY2UlMjUyMGFwcGxpY2F0aW9ucyUyNTIwYW5kJTI1MjBpbm5vdmF0aW9ucyUyNl9ibSUzZHAlMjZuZXR3b3JrJTNkbyUyNmFkZ3JvdXAlM2QxMjUwMTQ2MDUzMDU4MjYzJTI2bXNjbGtpZCUzZGJlYjkyN2ZmMzUyNTE5NDExYzcwNGQwZWZhYTYwYzNm&rlid=beb927ff352519411c704d0efaa60c3f\n[7] 大模型对齐核心技术深度解析：RLHF（强化学习与人类反馈）详解！ - https://zhuanlan.zhihu.com/p/1951954471778254932\n[8] RLHF是什么？一文说清RLHF（人类反馈强化学习）的概念和实现过程 - https://zhuanlan.zhihu.com/p/1899472091121682346",
+        "evidence_count": 8,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "RLHF 的主要训练步骤是什么？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 12940
+          },
+          {
+            "query": "RLHF 核心训练流程解析",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          },
+          {
+            "query": "强化学习人类反馈对齐技术",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          }
+        ],
+        "latency_ms": 17138.6,
+        "prompt_tokens": 911,
+        "completion_tokens": 115,
+        "key_points": [
+          {
+            "point": "先做监督微调（SFT）",
+            "covered": true
+          },
+          {
+            "point": "收集人类偏好比较数据训练奖励模型",
+            "covered": true
+          },
+          {
+            "point": "用强化学习（如 PPO）根据奖励模型优化策略模型",
+            "covered": true
+          },
+          {
+            "point": "加入 KL 惩罚，防止模型偏离原模型太远",
+            "covered": false
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "首先进行初始化阶段，将 Actor 模型和 Ref 模型初始化为监督微调（SFT）模型以防止崩溃 。",
+            "citations": [
+              2
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "随后进入奖励建模阶段，利用高质量标注数据构建奖励模型以对齐人类意图 。",
+            "citations": [
+              5
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "最后执行 PPO 等强化学习算法进行策略优化，通过人类反馈提升模型输出质量并防范奖励黑客 。",
+            "citations": [
+              3,
+              5
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "C01",
+        "type": "comparative",
+        "question": "RAG 和长上下文窗口各自适合什么场景？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "RAG 和长上下文窗口各自适合什么场景？",
+          "RAG 技术应用场景分析",
+          "长上下文窗口模型适用场景"
+        ],
+        "report": "# RAG 和长上下文窗口各自适合什么场景？\n\nRAG 适用于基于私有文档或知识库回答问题的场景，如医疗、金融及企业服务领域 [4][5]；其优势在于速度快、省内存且支持离线处理与可解释性 [2]。长上下文窗口则适合用户意图强需精确匹配的场景，以及涉及全局推理和连续阅读的任务 [1][2][9]。RAG 擅长粗筛与知识更新，而长上下文用于精读 [1]。单纯依赖大窗口存在成本高、延迟大及“中间迷失”等问题 [1]。\n\n## 参考来源\n\n[1] RAG 还是长上下文（Long Context）？2026 年检索增强到底该怎么选_rag... - https://blog.csdn.net/m0_73614031/article/details/162066726\n[2] 笔记：浅聊一下 RAG 与长上下文之争 - 知乎 - https://zhuanlan.zhihu.com/p/8280024582\n[3] 长上下文时代，RAG 还有必要吗？— 从企业级实践出发的深度分析本文探... - https://juejin.cn/post/7666089320763523082\n[4] 72 个 RAG 实战场景大公开！从医疗到金融，总有一个戳中你的需求（附... - https://blog.csdn.net/m0_48891301/article/details/148583550\n[5] 《RAG应用场景实战：7大真实案例带你落地RAG技术》 - https://zhuanlan.zhihu.com/p/1994348312162215096\n[6] 收藏！RAG 实战全解析：从入门到生产级应用 - 知乎 - https://zhuanlan.zhihu.com/p/2063630180288144228\n[7] LLM 上下文窗口详解：从 4K 到 1M Token（2026） - DevTk.AI - https://devtk.ai/zh/blog/llm-context-window-explained/\n[8] 长上下文处理（Long Context Handling）：核心概念、使用场景与实践说... - https://learnagent.wiki/agent/cards/long-context-handling\n[9] 长上下文技术（Long Context Technology）：核心概念、使用场景与实践... - https://learnagent.wiki/agent/cards/long-context-technology",
+        "evidence_count": 9,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "RAG 和长上下文窗口各自适合什么场景？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          },
+          {
+            "query": "RAG 技术应用场景分析",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 14547
+          },
+          {
+            "query": "长上下文窗口模型适用场景",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          }
+        ],
+        "latency_ms": 19170.8,
+        "prompt_tokens": 1145,
+        "completion_tokens": 129,
+        "key_points": [
+          {
+            "point": "长上下文可以直接放入全文，省去检索环节",
+            "covered": false
+          },
+          {
+            "point": "长上下文的成本和延迟随长度增加",
+            "covered": true
+          },
+          {
+            "point": "RAG 适合超大规模或经常更新的知识库",
+            "covered": false
+          },
+          {
+            "point": "RAG 便于引用来源",
+            "covered": false
+          },
+          {
+            "point": "两者可以结合使用",
+            "covered": false
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "RAG 适用于基于私有文档或知识库回答问题的场景，如医疗、金融及企业服务领域 ；其优势在于速度快、省内存且支持离线处理与可解释性 。",
+            "citations": [
+              2,
+              4,
+              5
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "长上下文窗口则适合用户意图强需精确匹配的场景，以及涉及全局推理和连续阅读的任务 。",
+            "citations": [
+              1,
+              2,
+              9
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "RAG 擅长粗筛与知识更新，而长上下文用于精读 。",
+            "citations": [
+              1
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "单纯依赖大窗口存在成本高、延迟大及“中间迷失”等问题 。",
+            "citations": [
+              1
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "C02",
+        "type": "comparative",
+        "question": "大模型微调和 RAG 应该怎么选？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "大模型微调和 RAG 应该怎么选？",
+          "大模型微调技术选型指南",
+          "RAG 架构与微调对比分析"
+        ],
+        "report": "# 大模型微调和 RAG 应该怎么选？\n\n大模型微调与 RAG 的核心区别在于：RAG 不修改模型权重，依赖外挂知识库检索；而微调直接调整模型参数 [1]。选择依据包括数据动态性、专业性需求、可追溯性及成本响应速度等五大维度 [2]。两者可互补使用，甚至采用 RAG+LoRA 混合架构 [3]。决策需综合考量成本、工程复杂度及数据安全因素 [3]。对于新手或无代码基础者，建议优先选择可视化框架（如 LLaMA-Factory）并先用小批量模型验证流程 [6]。具体实施路径可从 RAG 起步逐步融合微调策略 [2]。\n\n## 参考来源\n\n[1] 大模型微调 & RAG：核心区别、优劣势全解析 - 知乎 - https://zhuanlan.zhihu.com/p/2029581851530916974\n[2] 收藏这篇就够了！RAG与微调的正确选择姿势，从场景、成本到效果全讲透... - https://blog.csdn.net/m0_59164520/article/details/156145710\n[3] 大模型落地企业场景：RAG与微调如何选择？这篇指南值得收藏-CSDN博客 - https://blog.csdn.net/2401_85325726/article/details/155696482\n[4] Boomi AI - Advanced Generative AI - Watch The Webinar Today - https://www.bing.com/aclick?ld=e8aZAT6OYigJfbqXiLzcHueTVUCUxzxwxKlsHFxpbO1OzSt_f9OF-fJvpf4Iy6bppl6_bFkGEwGhx6XkydFCGYij54NQc29UbsVIN-KaQYeaBC1yqz9JX1sxBaZwCyp_7Ah6wxpv9WIyxjFbjt-Gr2SSe0ByRwZe5T6yZP21nYui3FLDf4UeV0UJIkAIlYUAoymJYy7w&u=aHR0cHMlM2ElMmYlMmZtYXJrZXRpbmcuYm9vbWkuY29tJTJmd2ViaW5hci1ob3ctdG8tYmVjb21lLUFJLXJlYWR5JTNmdXRtX3NvdXJjZSUzZGJpbmclMjZ1dG1fbWVkaXVtJTNkcGFpZHNlYXJjaCUyNmFkX3BsYXRmb3JtX2lkJTNkNDk0MjQzNzk1LTEyNTAxNDYwNTMwNTgyNjMtJTI2dXRtX2NhbXBhaWduJTNkQVBKXy1fQVVfLV9FTkdfLV9TZWFyY2hfLV9Ob24tQnJhbmRfLV9Cb29taV9BSSUyNnV0bV9rZXl3b3JkJTNkYXJ0aWZpY2lhbCUyNTIwaW50ZWxsaWdlbmNlJTI1MjBhcHBsaWNhdGlvbnMlMjUyMGFuZCUyNTIwaW5ub3ZhdGlvbnMlMjZfYnQlM2QlMjZfYmslM2RhcnRpZmljaWFsJTI1MjBpbnRlbGxpZ2VuY2UlMjUyMGFwcGxpY2F0aW9ucyUyNTIwYW5kJTI1MjBpbm5vdmF0aW9ucyUyNl9ibSUzZHAlMjZuZXR3b3JrJTNkbyUyNmFkZ3JvdXAlM2QxMjUwMTQ2MDUzMDU4MjYzJTI2bXNjbGtpZCUzZDhmYmI5ZjI3Yzg4ZjE1YjYxNWIyZjVkNjA3MjEwYjdk&rlid=8fbb9f27c88f15b615b2f5d607210b7d\n[5] 大模型选型与微调实战：从理论到生产的完整指南-CSDN博客 - https://blog.csdn.net/qq_21886255/article/details/151586316\n[6] 2026 主流大模型微调框架全解析：从选型到落地，新手也能快速上手一、... - https://juejin.cn/post/7602440800295272494\n[7] 模型微调 vs. RAG：AI技术如何选择？一文读懂两者的区别与应用场景 - https://zhuanlan.zhihu.com/p/28730147832",
+        "evidence_count": 7,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "大模型微调和 RAG 应该怎么选？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          },
+          {
+            "query": "大模型微调技术选型指南",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          },
+          {
+            "query": "RAG 架构与微调对比分析",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          }
+        ],
+        "latency_ms": 5174.4,
+        "prompt_tokens": 864,
+        "completion_tokens": 157,
+        "key_points": [
+          {
+            "point": "RAG 适合注入或频繁更新知识",
+            "covered": true
+          },
+          {
+            "point": "微调适合改变输出风格、格式或提升特定任务能力",
+            "covered": false
+          },
+          {
+            "point": "微调成本高，知识更新需要重新训练",
+            "covered": false
+          },
+          {
+            "point": "RAG 可以追溯答案来源",
+            "covered": false
+          },
+          {
+            "point": "两者可以组合使用",
+            "covered": true
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "大模型微调与 RAG 的核心区别在于：RAG 不修改模型权重，依赖外挂知识库检索；而微调直接调整模型参数 。",
+            "citations": [
+              1
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "选择依据包括数据动态性、专业性需求、可追溯性及成本响应速度等五大维度 。",
+            "citations": [
+              2
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "两者可互补使用，甚至采用 RAG+LoRA 混合架构 。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "决策需综合考量成本、工程复杂度及数据安全因素 。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "对于新手或无代码基础者，建议优先选择可视化框架（如 LLaMA-Factory）并先用小批量模型验证流程 。",
+            "citations": [
+              6
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "具体实施路径可从 RAG 起步逐步融合微调策略 。",
+            "citations": [
+              2
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "C03",
+        "type": "comparative",
+        "question": "PostgreSQL 和 MySQL 如何选型？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "PostgreSQL 和 MySQL 如何选型？",
+          "PostgreSQL 与 MySQL 选型对比",
+          "数据库选型指南 PostgreSQL vs MySQL"
+        ],
+        "report": "# PostgreSQL 和 MySQL 如何选型？\n\nPostgreSQL 适合企业级应用，支持复杂查询和地理空间数据 [1]；MySQL 轻量高效，适合 Web 应用 [1]。两者均开源且支持 SQL 标准，但 PostgreSQL 功能更丰富，MySQL 读取性能更优 [1]。选型需考虑项目规模、数据类型及性能需求 [1]。PostgreSQL 在窗口函数、CTE 等标准特性上支持较完整，而 MySQL 8.0 后虽补齐部分特性，但某些行为仍与标准有差异 [4]。最新对比显示，PostgreSQL 在数据类型（如 JSONB、数组、GIS）、SQL 标准兼容性、并发控制及扩展性方面优势明显 [5]；MySQL 则在简单查询性能和降低学习成本上仍有优势 [5]。\n\n## 参考来源\n\n[1] 如何选择合适的数据库？PostgreSQL与MySQL各项维度对比 - https://cloud.tencent.com/developer/article/2706952\n[2] MySQL 与 PostgreSQL，该怎么选_postsql mysql-CSDN博客 - https://blog.csdn.net/Sammyyyyy/article/details/154066000\n[3] MySQL与PostgreSQL选型对比及适用场景说明 - CSDN博客 - https://blog.csdn.net/weixin_55685021/article/details/156990565\n[4] MySQL 与 PostgreSQL 深入对比：架构、特性与选型指南 - cfanzp学习笔... - https://cfanzp008.github.io/mysql-vs-postgresql/\n[5] 数据库：MySQL vs PostgreSQL 详尽对比（2026版） - https://blog.csdn.net/snowball_li/article/details/161829229",
+        "evidence_count": 5,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "PostgreSQL 和 MySQL 如何选型？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          },
+          {
+            "query": "PostgreSQL 与 MySQL 选型对比",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          },
+          {
+            "query": "数据库选型指南 PostgreSQL vs MySQL",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          }
+        ],
+        "latency_ms": 6105.8,
+        "prompt_tokens": 717,
+        "completion_tokens": 184,
+        "key_points": [
+          {
+            "point": "PostgreSQL 功能更丰富，例如复杂查询、JSONB、扩展和 GIS",
+            "covered": true
+          },
+          {
+            "point": "MySQL 上手简单、生态广，常用于 Web 业务",
+            "covered": false
+          },
+          {
+            "point": "PostgreSQL 对 SQL 标准的遵循更严格",
+            "covered": false
+          },
+          {
+            "point": "两者都是开源数据库",
+            "covered": false
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "PostgreSQL 适合企业级应用，支持复杂查询和地理空间数据 ；MySQL 轻量高效，适合 Web 应用 。",
+            "citations": [
+              1
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "两者均开源且支持 SQL 标准，但 PostgreSQL 功能更丰富，MySQL 读取性能更优 。",
+            "citations": [
+              1
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "选型需考虑项目规模、数据类型及性能需求 。",
+            "citations": [
+              1
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "PostgreSQL 在窗口函数、CTE 等标准特性上支持较完整，而 MySQL 8.0 后虽补齐部分特性，但某些行为仍与标准有差异 。",
+            "citations": [
+              4
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "最新对比显示，PostgreSQL 在数据类型（如 JSONB、数组、GIS）、SQL 标准兼容性、并发控制及扩展性方面优势明显 ；MySQL 则在简单查询性能和降低学习成本上仍有优势 。",
+            "citations": [
+              5
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "C04",
+        "type": "comparative",
+        "question": "gRPC 和 REST 有什么区别？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "gRPC 和 REST 有什么区别？",
+          "gRPC 协议机制详解",
+          "REST API 架构特点对比"
+        ],
+        "report": "# gRPC 和 REST 有什么区别？\n\ngRPC 建立在 HTTP/2 之上，支持流式通信和双向通信，而 REST API 无法充分利用 HTTP/2 的优势 [1]。在 gRPC 中，客户端调用服务器中的特定函数；而在 REST 中，客户端请求或更新服务器上的数据，不直接调用函数 [2]。REST 仅支持单向请求，若需其他服务模式（如服务器发送事件），则需使用非\"RESTful\"的协议（如 WebSockets）[3]。gRPC 没有此类障碍，且遵循客户端 - 响应通信模型 [1]。\n\n## 参考来源\n\n[1] gRPC vs REST：两种API架构风格的对比 - InfoQ - https://www.infoq.cn/article/i71vnujcel09ebukak59\n[2] gRPC 与 REST - 应用程序设计之间的区别 - AWS - https://aws.amazon.com/cn/compare/the-difference-between-grpc-and-rest/\n[3] REST 与 gRPC 的详细比较 - 知乎 - https://zhuanlan.zhihu.com/p/718163761\n[4] API 架构选哪种？SOAP、REST、GraphQL 与 RPC 全方位对比分析-腾讯云... - https://cloud.tencent.com/developer/article/2586597\n[5] RESTful API 设计规范完全指南 — 10 条原则 + 实战示例 - https://devstoolbox.net/blog/restful-api-design\n[6] API架构选择指南：SOAP、REST、GraphQL与RPC深度对比 - https://developer.baidu.com/article/detail.html?id=3650525",
+        "evidence_count": 6,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "gRPC 和 REST 有什么区别？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          },
+          {
+            "query": "gRPC 协议机制详解",
+            "status": "timeout",
+            "result_count": 0,
+            "elapsed_ms": 40010
+          },
+          {
+            "query": "REST API 架构特点对比",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          }
+        ],
+        "latency_ms": 45592.3,
+        "prompt_tokens": 804,
+        "completion_tokens": 139,
+        "key_points": [
+          {
+            "point": "gRPC 基于 HTTP/2",
+            "covered": true
+          },
+          {
+            "point": "gRPC 使用 Protocol Buffers 二进制序列化",
+            "covered": false
+          },
+          {
+            "point": "REST 通常使用 JSON，可读性好",
+            "covered": false
+          },
+          {
+            "point": "gRPC 支持双向流式通信",
+            "covered": false
+          },
+          {
+            "point": "浏览器对 REST 的支持更好",
+            "covered": false
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "gRPC 建立在 HTTP/2 之上，支持流式通信和双向通信，而 REST API 无法充分利用 HTTP/2 的优势 。",
+            "citations": [
+              1
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "在 gRPC 中，客户端调用服务器中的特定函数；而在 REST 中，客户端请求或更新服务器上的数据，不直接调用函数 。",
+            "citations": [
+              2
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "REST 仅支持单向请求，若需其他服务模式（如服务器发送事件），则需使用非\"RESTful\"的协议（如 WebSockets）。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "gRPC 没有此类障碍，且遵循客户端 - 响应通信模型 。",
+            "citations": [
+              1
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "C05",
+        "type": "comparative",
+        "question": "Kafka 和 RabbitMQ 有什么区别？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "Kafka 和 RabbitMQ 有什么区别？",
+          "Kafka 消息队列原理与特性",
+          "RabbitMQ 消息队列架构对比"
+        ],
+        "report": "# Kafka 和 RabbitMQ 有什么区别？\n\nKafka 和 RabbitMQ 在设计目标、架构模型及适用场景上存在显著差异。Kafka 适用于高吞吐量和大数据处理场景，其设计基于文件系统，采用 pull 模型，通过主题和分区管理消息 [1][2][5]。RabbitMQ 则更适合实时、可靠的消息传递需求，在金融场景中表现出更高的严谨性和实时性 [2][3]。两者在开发语言支持、消息优先级、有序性及生态系统等方面也存在不同特点 [2][3]。\n\n## 参考来源\n\n[1] 还在纠结Kafka 和 RabbitMQ用哪个？一篇文章告诉你他们的区别 - https://zhuanlan.zhihu.com/p/453957145\n[2] RabbitMQ、Kafka对比（超详细），Kafka、RabbitMQ、RocketMQ的区别 - https://cloud.tencent.com/developer/article/2442460\n[3] kafka和rabbitmq对比 (超详细，从实战维度比较)_kafka和rabbitmq的区... - https://blog.csdn.net/myhes/article/details/83247108\n[4] Kafka基本原理详解（超详细！）_kafka工作原理-CSDN博客 - https://blog.csdn.net/weixin_45366499/article/details/106943229\n[5] 【消息队列】——Kafka入门一篇就够了！_kafka消息队列-CSDN博客 - https://blog.csdn.net/weixin_53580595/article/details/137044418\n[6] 人人都说kafka，何为kafka？？？三分钟kafka原理详解~ - 知乎 - https://zhuanlan.zhihu.com/p/1976637853099397655",
+        "evidence_count": 6,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "Kafka 和 RabbitMQ 有什么区别？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          },
+          {
+            "query": "Kafka 消息队列原理与特性",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          },
+          {
+            "query": "RabbitMQ 消息队列架构对比",
+            "status": "timeout",
+            "result_count": 0,
+            "elapsed_ms": 40017
+          }
+        ],
+        "latency_ms": 45009.0,
+        "prompt_tokens": 780,
+        "completion_tokens": 125,
+        "key_points": [
+          {
+            "point": "Kafka 是分布式日志，吞吐量高",
+            "covered": false
+          },
+          {
+            "point": "Kafka 消息持久化保存，可以重复消费回放",
+            "covered": false
+          },
+          {
+            "point": "RabbitMQ 是传统消息代理，基于 AMQP 协议",
+            "covered": false
+          },
+          {
+            "point": "RabbitMQ 通过交换机实现灵活路由",
+            "covered": false
+          },
+          {
+            "point": "Kafka 适合流处理和日志，RabbitMQ 适合任务队列",
+            "covered": true
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "Kafka 适用于高吞吐量和大数据处理场景，其设计基于文件系统，采用 pull 模型，通过主题和分区管理消息 。",
+            "citations": [
+              1,
+              2,
+              5
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "RabbitMQ 则更适合实时、可靠的消息传递需求，在金融场景中表现出更高的严谨性和实时性 。",
+            "citations": [
+              2,
+              3
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "两者在开发语言支持、消息优先级、有序性及生态系统等方面也存在不同特点 。",
+            "citations": [
+              2,
+              3
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "C06",
+        "type": "comparative",
+        "question": "向量检索和关键词检索（BM25）各有什么优缺点？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "向量检索和关键词检索（BM25）各有什么优缺点？",
+          "向量检索技术优缺点分析",
+          "BM25 算法优势与局限性"
+        ],
+        "report": "# 向量检索和关键词检索（BM25）各有什么优缺点？\n\n向量检索通过深度学习映射语义空间，适用于长文本和跨语言检索，但计算复杂 [1]；其原理是基于神经网络将文本转化为高维向量，并通过余弦相似度等度量进行匹配 [5]。关键词检索（BM25）基于词频统计和概率排名模型，利用逆文档频率和词频调整衡量相关性 [8][9]，计算高效且支持精确匹配，但无法处理语义且存在上下文无关的局限 [1][8]。两者在适用场景上截然不同：BM25适合关键词匹配和短文本检索，而向量检索适合语义扩展及以图搜图等场景 [1][5]。\n\n## 参考来源\n\n[1] AI Agent开发实战⑭｜检索策略深度对比：向量检索 vs BM25 vs 混合检索... - https://blog.csdn.net/chreehero/article/details/162010583\n[2] 知识库双路召回：BM25 关键词与语义向量 RRF 融合，附指标实测目录 为... - https://juejin.cn/post/7672900029128163338\n[3] BM25 和向量检索的区别 - ExplorerMan - 博客园 - https://www.cnblogs.com/ExMan/p/18762905\n[4] 程序员必备技能：大模型时代，一文搞懂向量检索原理与实战（建议收藏... - https://blog.csdn.net/2401_85375186/article/details/155969304\n[5] 一文纵览向量检索 - 知乎专栏全文检索、向量检索和混合检索的比较分析 - 知乎LLM 系列（十）：RAG 番外篇-向量检索-腾讯云开发者社区-腾讯云请从技术原理、优缺点和适用场景三个维度对比分析向量检索与全文检索...向量检索原理HNSW优化及阿里云OpenSearch技术选型-开发者社区-阿里云请从技术原理、优缺点和适用场景三个维度对比分析向量检索与全文检索... - https://zhuanlan.zhihu.com/p/260083265\n[6] 全文检索、向量检索和混合检索的比较分析 - 知乎 - https://zhuanlan.zhihu.com/p/694046148\n[7] BM25 算法详解：从原理到代码实现，掌握搜索与 RAG 的核心检索技术-CS... - https://blog.csdn.net/weixin_69500620/article/details/161751314\n[8] 深入理解信息检索之BM25算法 - CSDN博客 - https://blog.csdn.net/qq_45141261/article/details/139839244\n[9] BM25算法详解与实践总结BM25（Best Matching 25）是一种用于信息检索... - https://juejin.cn/post/7513557849248743436",
+        "evidence_count": 9,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "向量检索和关键词检索（BM25）各有什么优缺点？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          },
+          {
+            "query": "向量检索技术优缺点分析",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 13361
+          },
+          {
+            "query": "BM25 算法优势与局限性",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          }
+        ],
+        "latency_ms": 20321.1,
+        "prompt_tokens": 3037,
+        "completion_tokens": 154,
+        "key_points": [
+          {
+            "point": "向量检索擅长语义相似和同义表达",
+            "covered": true
+          },
+          {
+            "point": "关键词检索擅长精确匹配专有名词、编号",
+            "covered": false
+          },
+          {
+            "point": "向量检索依赖嵌入模型，计算成本更高",
+            "covered": false
+          },
+          {
+            "point": "混合检索可以结合两者的优点",
+            "covered": false
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "向量检索通过深度学习映射语义空间，适用于长文本和跨语言检索，但计算复杂 ；其原理是基于神经网络将文本转化为高维向量，并通过余弦相似度等度量进行匹配 。",
+            "citations": [
+              1,
+              5
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "关键词检索（BM25）基于词频统计和概率排名模型，利用逆文档频率和词频调整衡量相关性 ，计算高效且支持精确匹配，但无法处理语义且存在上下文无关的局限 。",
+            "citations": [
+              1,
+              8,
+              9
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "两者在适用场景上截然不同：BM25适合关键词匹配和短文本检索，而向量检索适合语义扩展及以图搜图等场景 。",
+            "citations": [
+              1,
+              5
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "C07",
+        "type": "comparative",
+        "question": "单体架构和微服务架构如何取舍？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "单体架构和微服务架构如何取舍？",
+          "单体与微服务架构对比分析",
+          "企业级软件架构选型决策指南"
+        ],
+        "report": "# 单体架构和微服务架构如何取舍？\n\n单体架构具备简洁部署优势，但存在扩展限制 [3]。微服务架构则提供解耦、独立部署及性能优势，适用于大型复杂项目或快速迭代场景 [3]。两者在核心定义、工程结构、数据库事务、部署运维、性能开销及团队协作等维度存在本质差异 [5]。选型时需区分“刚性需求”与“弹性需求”，确保方案满足刚性需求并按优先级排序弹性需求 [7]。\n\n## 参考来源\n\n[1] 【微服务】微服务 vs 单体架构 区别、服务拆分原则、DDD领域驱动设计-... - https://developer.aliyun.com/article/1729981\n[2] 单体架构与微服务架构 | IBM - https://www.ibm.com/cn-zh/think/topics/monolithic-vs-microservices\n[3] 详解单体架构和微服务（概念，优缺点和区别）_java后端单体和微服务-C... - https://blog.csdn.net/xjx666666/article/details/132413595\n[4] Prep AI Data in 3 minutes - Skip Manual Tagging & Taxonomy - https://www.bing.com/aclick?ld=e85nnjAWpGcQOhfGeXQNc-EzVUCUxawFSczOfcVAZEBuM3S0Z-iLrFdMcFjKNIkG5OIUkgfRngSiUA65f2iKkI48vrykUefVopkCthEGQutyLOXSY4O-e7G-CaCe4b3I7SFP0DwcKa01GrxLC9D5UXD29fYPFfhaOk87dxNFQC66gbNwJr9Jo9Lf1xvjugEP6ckom5-XnRbPFgn7r15BLg6XgnlQM&u=aHR0cHMlM2ElMmYlMmZ3d3cuY29sbGlicmEuY29tJTJmZGVtbyUzZnV0bV9zb3VyY2UlM2RiaW5nJTI2dXRtX21lZGl1bSUzZHBhaWQtc2VhcmNoJTI2dXRtX2NhbXBhaWduJTNkQ09MX0VNRUEtQUxMLUFMTF9EUS1MSU5FQUdFX0VOVEVSUFJJU0VfREVNX0FMV0FZU09OX0ctU0NSX05CUk5EX1JPSSUyNnV0bV9zb3VyY2UlM2RiaW5nJTI2dXRtX21lZGl1bSUzZHBhaWQtc2VhcmNoJTI2dXRtX2NhbXBhaWduJTNkQ09MX05BTUVSLUFMTC1BTExfQ09NUExJQU5DRV9FTlRFUlBSSVNFX0RFTV9BTFdBWVNPTl9HLVNDUl9OQlJORF9ST0klMjZtc2Nsa2lkJTNkNWQwN2UwZDliYjE3MWM3M2RjM2I4YTI4NmIyYjFmZDY&rlid=5d07e0d9bb171c73dc3b8a286b2b1fd6\n[5] SpringBoot：单体架构与微服务架构全景深度对比分析 - https://blog.csdn.net/snowball_li/article/details/163530642\n[6] 2026企业软件选型指南：架构、AI与数据资产化-CSDN博客 - https://blog.csdn.net/weixin_29057163/article/details/168203881\n[7] 企业级软件技术选型指南 - 百度文库 - https://wenku.baidu.com/view/1756d138b84cf7ec4afe04a1b0717fd5370cb233.html\n[8] 2026企业软件选型全景指南：六大类别头部厂商对比与AI原生、云边协同... - https://wenku.csdn.net/doc/8qvzofydkieh",
+        "evidence_count": 8,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "单体架构和微服务架构如何取舍？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          },
+          {
+            "query": "单体与微服务架构对比分析",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          },
+          {
+            "query": "企业级软件架构选型决策指南",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          }
+        ],
+        "latency_ms": 4031.6,
+        "prompt_tokens": 967,
+        "completion_tokens": 112,
+        "key_points": [
+          {
+            "point": "单体架构开发和部署简单",
+            "covered": false
+          },
+          {
+            "point": "微服务可以独立部署和独立扩展",
+            "covered": true
+          },
+          {
+            "point": "微服务带来分布式复杂度，如网络调用、数据一致性和运维",
+            "covered": false
+          },
+          {
+            "point": "应根据团队规模和业务复杂度选择",
+            "covered": false
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "单体架构具备简洁部署优势，但存在扩展限制 。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "微服务架构则提供解耦、独立部署及性能优势，适用于大型复杂项目或快速迭代场景 。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "两者在核心定义、工程结构、数据库事务、部署运维、性能开销及团队协作等维度存在本质差异 。",
+            "citations": [
+              5
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "选型时需区分“刚性需求”与“弹性需求”，确保方案满足刚性需求并按优先级排序弹性需求 。",
+            "citations": [
+              7
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "C08",
+        "type": "comparative",
+        "question": "SQL 和 NoSQL 数据库有什么区别？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "SQL 和 NoSQL 数据库有什么区别？",
+          "SQL 与 NoSQL 核心差异对比",
+          "NoSQL 数据库类型及适用场景分析"
+        ],
+        "report": "# SQL 和 NoSQL 数据库有什么区别？\n\nSQL 与 NoSQL 的主要区别在于：SQL 是关系型数据库，采用预定义架构和结构化数据模型，通过 ACID 特性确保即时一致性，适用于数据完整性和精确查询场景 [2][6]；NoSQL 是非关系型数据库，采用动态架构和非结构化数据类型，提供灵活性与可扩展性，适合处理大规模非结构化数据及多行事务 [2][3][6]。两者在扩展方式上分别为垂直与水平，查询能力、事务一致性（ACID vs BASE）及适用场景存在显著差异 [4]。\n\n## 参考来源\n\n[1] 干货 | SQL 与 NoSQL还在傻傻分不清？ - 知乎 - https://zhuanlan.zhihu.com/p/63371253\n[2] SQL 数据库与 NoSQL 数据库：有什么区别？ | IBM - https://www.ibm.com/cn-zh/think/topics/sql-vs-nosql\n[3] NoSQL和SQL的区别及使用场景 - CSDN博客 - https://blog.csdn.net/fesfsefgs/article/details/103109505\n[4] SQL与NoSQL数据库核心技术对比与选型指南-CSDN博客 - https://blog.csdn.net/weixin_33507732/article/details/169196766\n[5] SQL 与 NoSQL 本质差异完全指南：从数据模型到选型决策的深度剖析-CSD... - https://blog.csdn.net/2301_79239314/article/details/167890134\n[6] SQL 与 NoSQL 数据库：关键差异与实践洞见 | DataCamp - https://www.datacamp.com/zh/blog/sql-vs-nosql-databases",
+        "evidence_count": 6,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "SQL 和 NoSQL 数据库有什么区别？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          },
+          {
+            "query": "SQL 与 NoSQL 核心差异对比",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          },
+          {
+            "query": "NoSQL 数据库类型及适用场景分析",
+            "status": "timeout",
+            "result_count": 0,
+            "elapsed_ms": 40007
+          }
+        ],
+        "latency_ms": 45134.2,
+        "prompt_tokens": 721,
+        "completion_tokens": 140,
+        "key_points": [
+          {
+            "point": "SQL 数据库是关系型，使用固定的表结构",
+            "covered": true
+          },
+          {
+            "point": "SQL 数据库支持 ACID 事务和 JOIN",
+            "covered": false
+          },
+          {
+            "point": "NoSQL 结构灵活，有文档、键值、列族、图等类型",
+            "covered": true
+          },
+          {
+            "point": "NoSQL 通常更容易水平扩展",
+            "covered": true
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "SQL 与 NoSQL 的主要区别在于：SQL 是关系型数据库，采用预定义架构和结构化数据模型，通过 ACID 特性确保即时一致性，适用于数据完整性和精确查询场景 ；NoSQL 是非关系型数据库，采用动态架构和非结构化数据类型，提供灵活性与可扩展性，适合处理大规模非结构化数据及多行事务 。",
+            "citations": [
+              2,
+              3,
+              6
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "两者在扩展方式上分别为垂直与水平，查询能力、事务一致性（ACID vs BASE）及适用场景存在显著差异 。",
+            "citations": [
+              4
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "C09",
+        "type": "comparative",
+        "question": "Python 的 asyncio 和多线程有什么区别？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "Python 的 asyncio 和多线程有什么区别？",
+          "Python asyncio 与多线程对比",
+          "异步编程 vs 多线程机制差异"
+        ],
+        "report": "# Python 的 asyncio 和多线程有什么区别？\n\nPython 的 asyncio 基于单线程事件循环和非阻塞 I/O，适用于高并发 I/O 密集型场景 [3][4][5]。多线程则通过创建独立执行流实现真正的并行，适合 CPU 密集型任务以利用多核性能 [4][5][6]。两者核心区别在于：asyncio 发起操作后立即返回不等待结果，而多线程依赖操作系统调度在不同时间片切换执行 [7]。此外，多线程受限于 Python GIL，无法在单线程下提升 CPU 密集效率，而 asyncio 避免了上下文切换开销 [2][4]。\n\n## 参考来源\n\n[1] Python异步编程详解：asyncio和多线程 - CSDN博客 - https://blog.csdn.net/2301_79507619/article/details/138241093\n[2] 深度对比 Python 几种并发方案的优缺点 - CSDN博客并发迷思：深度解析 Python asyncio 与多线程/多进程的协作模式一文带您了解Python中的并发：异步 (Asyncio)和多线程 (Multithreadin...Python并发优化实战：多线程 vs 多进程 vs asyncio 性能对比python 的asyncio与multiporcess - iTech - 博客园Python 中的并发：多线程、多进程和Asyncio - 张志敏的技术专栏 - https://blog.csdn.net/m0_49189932/article/details/126278906\n[3] 并发迷思：深度解析 Python asyncio 与多线程/多进程的协作模式 - https://runebook.dev/zh/docs/python/library/asyncio-dev/concurrency-and-multithreading\n[4] Python 并发怎么选？多线程 / 多进程 / asyncio 真实性能对比（附实测... - https://blog.csdn.net/guwentian/article/details/162332259\n[5] Python 多进程 / 多线程 / Asyncio 异步全场景实战：并发模型选型、性... - https://blog.csdn.net/unegoist/article/details/162987698\n[6] 异步编程与多线程的核心差异与应用场景解析-CSDN博客 - https://blog.csdn.net/weixin_33507732/article/details/170110421\n[7] 一篇文章，搞懂异步和多线程的区别 - 知乎异步与多线程的区别 - 知乎专栏19、多线程与异步编程对比 - jessqiu - 博客园异步VS多线程 - #疆先绅# - 博客园一篇文章，搞懂异步和多线程的区别-腾讯云开发者社区-腾讯云 - https://zhuanlan.zhihu.com/p/350816301\n[8] 19、多线程与异步编程对比 - jessqiu - 博客园 - https://www.cnblogs.com/jessqiu/p/19060105",
+        "evidence_count": 8,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "Python 的 asyncio 和多线程有什么区别？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 4
+          },
+          {
+            "query": "Python asyncio 与多线程对比",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          },
+          {
+            "query": "异步编程 vs 多线程机制差异",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          }
+        ],
+        "latency_ms": 6520.0,
+        "prompt_tokens": 3681,
+        "completion_tokens": 140,
+        "key_points": [
+          {
+            "point": "asyncio 在单线程中用事件循环调度协程",
+            "covered": true
+          },
+          {
+            "point": "asyncio 是协作式调度，在 await 处主动让出",
+            "covered": false
+          },
+          {
+            "point": "多线程由操作系统抢占式调度",
+            "covered": false
+          },
+          {
+            "point": "受 GIL 限制，多线程不适合 CPU 密集任务",
+            "covered": true
+          },
+          {
+            "point": "两者都适合 IO 密集任务",
+            "covered": false
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "Python 的 asyncio 基于单线程事件循环和非阻塞 I/O，适用于高并发 I/O 密集型场景 。",
+            "citations": [
+              3,
+              4,
+              5
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "多线程则通过创建独立执行流实现真正的并行，适合 CPU 密集型任务以利用多核性能 。",
+            "citations": [
+              4,
+              5,
+              6
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "两者核心区别在于：asyncio 发起操作后立即返回不等待结果，而多线程依赖操作系统调度在不同时间片切换执行 。",
+            "citations": [
+              7
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "此外，多线程受限于 Python GIL，无法在单线程下提升 CPU 密集效率，而 asyncio 避免了上下文切换开销 。",
+            "citations": [
+              2,
+              4
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "C10",
+        "type": "comparative",
+        "question": "AI Agent 应该用单智能体还是多智能体架构？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "AI Agent 应该用单智能体还是多智能体架构？",
+          "单智能体 vs 多智能体 AI 架构对比",
+          "AI Agent 系统架构选型指南"
+        ],
+        "report": "# AI Agent 应该用单智能体还是多智能体架构？\n\nAI Agent 应优先采用多智能体架构。单智能体虽能处理简单对话与基础生成，但在跨领域决策、长链路业务及多角色协作时，会遭遇上下文窗口瓶颈、能力单一、容错性差及意图漂移等致命问题 [3]。相比之下，多智能体系统（Multi-Agent System）在解决复杂场景方面表现更优，企业级应用正全面从单智能体向多智能体跃迁 [3]。传统 RAG 采用静态检索方式，而基于 Multi Agent System 的 Deep Research 与 RAG 存在显著差异，这暗示了架构演进的重要性 [1]。2026 年的技术全景显示，主流框架正围绕核心架构、选型与未来趋势进行深度解析，印证了多智能体架构已成为演进方向 [2]。\n\n## 参考来源\n\n[1] Multi-Agent System，一篇就够了。 - 知乎 - https://zhuanlan.zhihu.com/p/1928636720796136414\n[2] 2026 年 AI Agent 技术全景：12 大主流框架深度解析与架构演进趋势 - https://zhuanlan.zhihu.com/p/2026254728342905724\n[3] 多智能体（Multi-Agent）架构深度拆解：协作模式、框架与落地建议 - https://www.woshipm.com/ai/1546717.html",
+        "evidence_count": 3,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "AI Agent 应该用单智能体还是多智能体架构？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          },
+          {
+            "query": "单智能体 vs 多智能体 AI 架构对比",
+            "status": "timeout",
+            "result_count": 0,
+            "elapsed_ms": 40007
+          },
+          {
+            "query": "AI Agent 系统架构选型指南",
+            "status": "timeout",
+            "result_count": 0,
+            "elapsed_ms": 40007
+          }
+        ],
+        "latency_ms": 86926.8,
+        "prompt_tokens": 544,
+        "completion_tokens": 197,
+        "key_points": [
+          {
+            "point": "多智能体可以按角色分工，各自专注",
+            "covered": true
+          },
+          {
+            "point": "多智能体带来更多通信开销、成本和延迟",
+            "covered": false
+          },
+          {
+            "point": "单智能体结构简单、更容易调试",
+            "covered": false
+          },
+          {
+            "point": "任务复杂或可并行时更适合多智能体",
+            "covered": true
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "单智能体虽能处理简单对话与基础生成，但在跨领域决策、长链路业务及多角色协作时，会遭遇上下文窗口瓶颈、能力单一、容错性差及意图漂移等致命问题 。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "相比之下，多智能体系统（Multi-Agent System）在解决复杂场景方面表现更优，企业级应用正全面从单智能体向多智能体跃迁 。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "传统 RAG 采用静态检索方式，而基于 Multi Agent System 的 Deep Research 与 RAG 存在显著差异，这暗示了架构演进的重要性 。",
+            "citations": [
+              1
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "2026 年的技术全景显示，主流框架正围绕核心架构、选型与未来趋势进行深度解析，印证了多智能体架构已成为演进方向 。",
+            "citations": [
+              2
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "U01",
+        "type": "unanswerable",
+        "question": "2030 年世界杯冠军是哪个国家？",
+        "status": "insufficient_evidence",
+        "refused": true,
+        "plan": [
+          "2030 年世界杯冠军是哪个国家？",
+          "2030 年世界杯预测冠军",
+          "2030 年世界杯夺冠概率分析"
+        ],
+        "report": "资料不足：提供的资料仅包含对 2030 年世界杯冠军的预测、赔率分析及历史规律讨论，未给出确定的最终结果或官方信息。",
+        "evidence_count": 3,
+        "citation_coverage": 0.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "2030 年世界杯冠军是哪个国家？",
+            "status": "timeout",
+            "result_count": 0,
+            "elapsed_ms": 40005
+          },
+          {
+            "query": "2030 年世界杯预测冠军",
+            "status": "timeout",
+            "result_count": 0,
+            "elapsed_ms": 40004
+          },
+          {
+            "query": "2030 年世界杯夺冠概率分析",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          }
+        ],
+        "latency_ms": 82779.4,
+        "prompt_tokens": 529,
+        "completion_tokens": 59,
+        "key_points": [],
+        "claims": []
+      },
+      {
+        "id": "U02",
+        "type": "unanswerable",
+        "question": "明天上证指数的收盘点位是多少？",
+        "status": "insufficient_evidence",
+        "refused": true,
+        "plan": [
+          "明天上证指数的收盘点位是多少？",
+          "上证指数明日收盘预测",
+          "上证指数晚间走势分析"
+        ],
+        "report": "资料不足：提供的预测数据包含美元单位且时间跨度为未来数月，未包含明日上证指数的具体收盘点位。",
+        "evidence_count": 5,
+        "citation_coverage": 0.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "明天上证指数的收盘点位是多少？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          },
+          {
+            "query": "上证指数明日收盘预测",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          },
+          {
+            "query": "上证指数晚间走势分析",
+            "status": "timeout",
+            "result_count": 0,
+            "elapsed_ms": 40006
+          }
+        ],
+        "latency_ms": 42101.6,
+        "prompt_tokens": 717,
+        "completion_tokens": 39,
+        "key_points": [],
+        "claims": []
+      },
+      {
+        "id": "U03",
+        "type": "unanswerable",
+        "question": "我们公司上个季度的内部销售额是多少？",
+        "status": "insufficient_evidence",
+        "refused": true,
+        "plan": [
+          "我们公司上个季度的内部销售额是多少？",
+          "公司上季度内部销售总额",
+          "企业 Q4 内部营收数据"
+        ],
+        "report": "资料不足：提供的资料仅包含查询销售额的方法（如 Excel 公式、年报、利润表），未提供该公司上个季度内部销售额的具体数值。",
+        "evidence_count": 3,
+        "citation_coverage": 0.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "我们公司上个季度的内部销售额是多少？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          },
+          {
+            "query": "公司上季度内部销售总额",
+            "status": "timeout",
+            "result_count": 0,
+            "elapsed_ms": 40005
+          },
+          {
+            "query": "企业 Q4 内部营收数据",
+            "status": "timeout",
+            "result_count": 0,
+            "elapsed_ms": 40010
+          }
+        ],
+        "latency_ms": 82403.4,
+        "prompt_tokens": 445,
+        "completion_tokens": 48,
+        "key_points": [],
+        "claims": []
+      },
+      {
+        "id": "U04",
+        "type": "unanswerable",
+        "question": "北京霁川云栈科技有限公司 2025 年的净利润是多少？",
+        "status": "insufficient_evidence",
+        "refused": true,
+        "plan": [
+          "北京霁川云栈科技有限公司 2025 年的净利润是多少？",
+          "北京霁川云栈科技 2025 年净利润",
+          "霁川云栈公司年度财务报表"
+        ],
+        "report": "资料不足：提供的资料中未包含北京霁川云栈科技有限公司 2025 年的净利润数据。",
+        "evidence_count": 8,
+        "citation_coverage": 0.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "北京霁川云栈科技有限公司 2025 年的净利润是多少？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 25102
+          },
+          {
+            "query": "北京霁川云栈科技 2025 年净利润",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          },
+          {
+            "query": "霁川云栈公司年度财务报表",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          }
+        ],
+        "latency_ms": 27970.5,
+        "prompt_tokens": 1017,
+        "completion_tokens": 52,
+        "key_points": [],
+        "claims": []
+      },
+      {
+        "id": "U05",
+        "type": "unanswerable",
+        "question": "2028 年诺贝尔物理学奖得主是谁？",
+        "status": "insufficient_evidence",
+        "refused": true,
+        "plan": [
+          "2028 年诺贝尔物理学奖得主是谁？",
+          "2028 年诺贝尔物理学奖预测名单",
+          "未来诺贝尔物理学奖获奖者趋势分析"
+        ],
+        "report": "资料不足：提供的资料仅包含截至 2026 年的诺贝尔物理学奖相关信息及未来预测，未提及 2028 年该奖项的得主名单或具体获奖者。",
+        "evidence_count": 8,
+        "citation_coverage": 0.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "2028 年诺贝尔物理学奖得主是谁？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          },
+          {
+            "query": "2028 年诺贝尔物理学奖预测名单",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          },
+          {
+            "query": "未来诺贝尔物理学奖获奖者趋势分析",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          }
+        ],
+        "latency_ms": 3130.2,
+        "prompt_tokens": 1785,
+        "completion_tokens": 65,
+        "key_points": [],
+        "claims": []
+      }
+    ],
+    "no_planner": [
+      {
+        "id": "F01",
+        "type": "factual",
+        "question": "PostgreSQL 的 MVCC 是如何实现的？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "PostgreSQL 的 MVCC 是如何实现的？"
+        ],
+        "report": "# PostgreSQL 的 MVCC 是如何实现的？\n\nPostgreSQL 通过多版本管理提升并发性能，利用事务 ID、版本链等核心组件实现高效控制 [1]。其底层基于堆表的版本存储结构，依赖 t_xmin/t_xmax 等系统字段发挥作用 [2]。在更新与删除操作中，会生成 tuple 版本链以维持数据状态 [2]。可见性判断遵循 Read Committed 和 Repeatable Read 隔离级别下的规则 [2]。PostgreSQL 内部仅实现三个隔离级别，其中 Read Uncommitted 与 Read Committed 类似 [3]。\n\n## 参考来源\n\n[1] 深入理解 PostgreSQL 中的 MVCC（多版本并发控制）机制 - https://cloud.tencent.com/developer/article/2405841\n[2] 面试官：PostgreSQL的MVCC是怎样实现的？ - CSDN博客 - https://blog.csdn.net/cxytony/article/details/167222544\n[3] 面试官：PostgreSQL的MVCC是怎样实现的？ - 知乎 - https://zhuanlan.zhihu.com/p/78990428554",
+        "evidence_count": 3,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "PostgreSQL 的 MVCC 是如何实现的？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          }
+        ],
+        "latency_ms": 4329.8,
+        "prompt_tokens": 412,
+        "completion_tokens": 118,
+        "key_points": [
+          {
+            "point": "每行元组记录创建和删除它的事务 ID（xmin/xmax）",
+            "covered": false
+          },
+          {
+            "point": "更新时写入新版本而不是原地覆盖旧数据",
+            "covered": false
+          },
+          {
+            "point": "通过事务快照判断哪些行版本可见",
+            "covered": false
+          },
+          {
+            "point": "需要 VACUUM 清理过期的死元组",
+            "covered": false
+          },
+          {
+            "point": "读操作不阻塞写操作",
+            "covered": false
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "PostgreSQL 通过多版本管理提升并发性能，利用事务 ID、版本链等核心组件实现高效控制 。",
+            "citations": [
+              1
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "其底层基于堆表的版本存储结构，依赖 t_xmin/t_xmax 等系统字段发挥作用 。",
+            "citations": [
+              2
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "在更新与删除操作中，会生成 tuple 版本链以维持数据状态 。",
+            "citations": [
+              2
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "可见性判断遵循 Read Committed 和 Repeatable Read 隔离级别下的规则 。",
+            "citations": [
+              2
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "PostgreSQL 内部仅实现三个隔离级别，其中 Read Uncommitted 与 Read Committed 类似 。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "F02",
+        "type": "factual",
+        "question": "Redis 的 RDB 和 AOF 持久化有什么区别？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "Redis 的 RDB 和 AOF 持久化有什么区别？"
+        ],
+        "report": "# Redis 的 RDB 和 AOF 持久化有什么区别？\n\nRedis 提供两种互补的持久化方案：RDB（Redis Database）和 AOF（Append Only File）。RDB 通过生成数据快照实现持久化，适用于需要快速恢复大量数据的场景 [2][3]。AOF 则记录所有写操作命令，更适合对数据安全性要求较高的情况 [2][3]。实际部署中往往需要根据业务特点进行组合配置 [2]。\n\n## 参考来源\n\n[1] Devs worldwide build on Redis - Cut latency with Redis caching - https://www.bing.com/aclick?ld=e8P9U8FI1FC5hzYmqE24HbXDVUCUwa51H7V3nVbqTzztfbYW11RdTW-VghEC2mANE2OCsI91UPw41y4mieHR7bnW-RK4R93cbQVQSdIPXZDERa9KZjTI05v4KSNXtAaP2MsvvQONqImywkVILSSDqmdroY9JDv4tRXop4a9AlBdjqJqUiNCgyji3KaSMsyvbn1W0lBBQ&u=aHR0cHMlM2ElMmYlMmZyZWRpcy5pbyUyZm1lZXRpbmclMmYlM2Z1dG1fY2FtcGFpZ24lM2RnZy1zX2RnX2FtZXJfc2VhcmNoX2JvZnVfZnJlZS10cmlhbC1ib29rLWEtbWVldGluZyUyNnV0bV9zb3VyY2UlM2RiaW5nJTI2dXRtX21lZGl1bSUzZGNwYyUyNnV0bV9jb250ZW50JTNkYW1lcl9yZWRpc19jYWNoZSUyNnV0bV90ZXJtJTNkJTI2ZGV2aWNlJTNkYyUyNm1hdGNodHlwZSUzZHAlMjZoc3RrX2NyZWF0aXZlJTNkJTI2aHN0a19jYW1wYWlnbiUzZDU4MTYyMTU3MSUyNmhzdGtfbmV0d29yayUzZGdvb2dsZUFkcyUyNm1zY2xraWQlM2Q0NmIxZGNjZTFkYzAxMWQ1ZDEyYWI2M2ZkM2M1NDFjMQ&rlid=46b1dcce1dc011d5d12ab63fd3c541c1\n[2] Redis持久化机制：RDB与AOF深度解析与优化实践-CSDN博客 - https://blog.csdn.net/weixin_29587015/article/details/170119137\n[3] Redis RDB 和 AOF 持久化的区别，如何选择？_redis rdb与aof对比-CSDN... - https://blog.csdn.net/m0_56653160/article/details/139754865",
+        "evidence_count": 3,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "Redis 的 RDB 和 AOF 持久化有什么区别？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          }
+        ],
+        "latency_ms": 2895.1,
+        "prompt_tokens": 430,
+        "completion_tokens": 85,
+        "key_points": [
+          {
+            "point": "RDB 定期把内存数据保存为快照文件",
+            "covered": true
+          },
+          {
+            "point": "AOF 以追加方式记录每条写命令",
+            "covered": true
+          },
+          {
+            "point": "AOF 丢失的数据更少（例如每秒同步一次）",
+            "covered": false
+          },
+          {
+            "point": "RDB 文件更紧凑、恢复速度更快",
+            "covered": false
+          },
+          {
+            "point": "AOF 可以通过重写压缩文件体积",
+            "covered": false
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "RDB 通过生成数据快照实现持久化，适用于需要快速恢复大量数据的场景 。",
+            "citations": [
+              2,
+              3
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "AOF 则记录所有写操作命令，更适合对数据安全性要求较高的情况 。",
+            "citations": [
+              2,
+              3
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "实际部署中往往需要根据业务特点进行组合配置 。",
+            "citations": [
+              2
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "F03",
+        "type": "factual",
+        "question": "Kafka 如何保证消息的顺序？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "Kafka 如何保证消息的顺序？"
+        ],
+        "report": "# Kafka 如何保证消息的顺序？\n\nKafka 通过分区机制保证消息顺序：同一 Key 的消息被路由到同一 Partition [3]。全局有序需将 Topic 设为单 Partition [3]；局部有序则通过指定 Partition Key 使同键消息落入同一分区 [3]。此外，消费端需使用单线程或确保消费顺序的线程模型以避免并发打乱顺序 [3]。同时，配置 `max.in.flight.requests.per.connection = 1` 可强化严格顺序消费 [3]。Kafka 仅能保证分区内有序，无法保证多 Partition 间的全局有序 [3]。\n\n## 参考来源\n\n[1] 阿里二面：Kafka中如何保证消息的顺序性？这周被问到两次了 - 码农Aca... - https://www.cnblogs.com/coderacademy/p/18082553\n[2] 面试官：如何保证 Kafka 消息的顺序消费？（4 种方案，从青铜到王者）... - https://blog.csdn.net/dandandeshangni/article/details/152464763\n[3] Kafka如何保证消息的消费顺序【全局有序、局部有序】、Kafka如何保证...Kafka 怎么保证消息的顺序性Kafka 怎么保证消息的顺序性 很多人在用 K...kafka顺序消费，重复消费，保证消息不丢失问题Kafka 消息队列的面试讲...深入解析：Kafka 如何保证顺序消费 - ljbguanli - 博客园Kafka消息是否有序？怎样保证有序？ - 知乎 - https://blog.csdn.net/weixin_45863010/article/details/136294454",
+        "evidence_count": 3,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "Kafka 如何保证消息的顺序？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          }
+        ],
+        "latency_ms": 4978.9,
+        "prompt_tokens": 1260,
+        "completion_tokens": 126,
+        "key_points": [
+          {
+            "point": "同一分区内的消息按 offset 顺序写入和消费",
+            "covered": true
+          },
+          {
+            "point": "只保证分区内有序，不保证跨分区有序",
+            "covered": true
+          },
+          {
+            "point": "相同 key 的消息会被发送到同一个分区",
+            "covered": true
+          },
+          {
+            "point": "重试可能导致乱序，可用幂等生产者或限制在途请求数解决",
+            "covered": false
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "Kafka 通过分区机制保证消息顺序：同一 Key 的消息被路由到同一 Partition 。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "全局有序需将 Topic 设为单 Partition ；局部有序则通过指定 Partition Key 使同键消息落入同一分区 。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "此外，消费端需使用单线程或确保消费顺序的线程模型以避免并发打乱顺序 。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "同时，配置 `max.in.flight.requests.per.connection = 1` 可强化严格顺序消费 。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "Kafka 仅能保证分区内有序，无法保证多 Partition 间的全局有序 。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "F04",
+        "type": "factual",
+        "question": "什么是 MCP（Model Context Protocol）？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "什么是 MCP（Model Context Protocol）？"
+        ],
+        "report": "# 什么是 MCP（Model Context Protocol）？\n\nMCP（Model Context Protocol）是 Anthropic 推动的一项开放标准 [1]。其目的是为大型语言模型应用提供标准化接口，使其能连接外部数据源和工具并交互 [2]。该协议目前被广泛支持，涵盖 AI 助手如 Claude 和 ChatGPT，以及开发工具如 Visual Studio Code、Cursor 等 [3]。\n\n## 参考来源\n\n[1] 模型上下文协议 - 维基百科，自由的百科全书 - https://zh.wikipedia.org/wiki/模型上下文协议\n[2] Model Context Protocol - Route MCP Protocol Traffic - https://www.bing.com/aclick?ld=e8esuN0OVsAkOhMvSGn4YWUjVUCUx2rUQeP0vGyhrB2oL3ASIVYjMV7hflEHYQ89aHT-oAnEtVm8JUo9ae0g6532e9RTUjsrEOr1y5Yj-VzAYEKI8O1atrxCPKsI7cmbPkI6pYrVl56pPNTQImDowYCtxQ-pqzxS5fHWQiPQxndwqyT4FkM5oH65-Kv0EYXMlnTOPZDZZlD0nCEH92u08wcOd70uw&u=aHR0cHMlM2ElMmYlMmZ3d3cuZ3Jhdml0ZWUuaW8lMmZwbGF0Zm9ybSUyZmFpLWFnZW50LW1hbmFnZW1lbnQlM2Z2ZWN0b3JfaWQlM2Q1NzA4OTM5MTYlMjZ2ZWN0b3Jfc291cmNlJTNkQklORyUyNnZlY3Rvcl9jYW1wYWlnbiUzZCUyNmhzdGtfY3JlYXRpdmUlM2QlMjZoc3RrX2NhbXBhaWduJTNkNTcwODkzOTE2JTI2aHN0a19uZXR3b3JrJTNkZ29vZ2xlQWRzJTI2dXRtX3Rlcm0lM2RtY3AlMjUyMHByb3RvY29sJTI2dXRtX2NhbXBhaWduJTNkJTI2dXRtX3NvdXJjZSUzZGJpbmclMjZ1dG1fbWVkaXVtJTNkcHBjJTI2dXRtX2lkJTNkNTcwODkzOTE2JTI2aHNhX2FjYyUzZDQwMDYyODQ3OTQlMjZoc2FfY2FtJTNkNTcwODkzOTE2JTI2aHNhX2dycCUzZDExODA4Nzc1OTYyMjMwMzIlMjZoc2FfYWQlM2QlMjZoc2Ffc3JjJTNkbyUyNmhzYV90Z3QlM2Rrd2QtNzM4MDUzOTA4MjA5MzklM2Fsb2MtMTY0JTI2aHNhX2t3JTNkbWNwJTI1MjBwcm90b2NvbCUyNmhzYV9tdCUzZGUlMjZoc2FfbmV0JTNkYWR3b3JkcyUyNmhzYV92ZXIlM2QzJTI2bXNjbGtpZCUzZDQ3ZjExMmY2NTBlYzFiOWFkYjY2NzgwNzllZDU0ZjgwJTI2dXRtX2NvbnRlbnQlM2RNQ1A&rlid=47f112f650ec1b9adb6678079ed54f80\n[3] What is the Model Context Protocol (MCP)? - https://modelcontextprotocol.io/docs/2026-07-28/getting-started/intro",
+        "evidence_count": 3,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "什么是 MCP（Model Context Protocol）？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          }
+        ],
+        "latency_ms": 2940.7,
+        "prompt_tokens": 380,
+        "completion_tokens": 78,
+        "key_points": [
+          {
+            "point": "由 Anthropic 在 2024 年 11 月提出并开源",
+            "covered": false
+          },
+          {
+            "point": "为 AI 应用连接外部工具和数据源提供统一的标准协议",
+            "covered": true
+          },
+          {
+            "point": "采用客户端-服务器架构",
+            "covered": false
+          },
+          {
+            "point": "服务器可以提供工具（tools）、资源（resources）和提示模板（prompts）",
+            "covered": false
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "MCP（Model Context Protocol）是 Anthropic 推动的一项开放标准 。",
+            "citations": [
+              1
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "其目的是为大型语言模型应用提供标准化接口，使其能连接外部数据源和工具并交互 。",
+            "citations": [
+              2
+            ],
+            "supported": false
+          },
+          {
+            "sentence": "该协议目前被广泛支持，涵盖 AI 助手如 Claude 和 ChatGPT，以及开发工具如 Visual Studio Code、Cursor 等 。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "F05",
+        "type": "factual",
+        "question": "LangGraph 的 checkpointer 有什么作用？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "LangGraph 的 checkpointer 有什么作用？"
+        ],
+        "report": "# LangGraph 的 checkpointer 有什么作用？\n\nLangGraph 的 Checkpoint 是内置的会话级状态快照持久化体系 [1]。它通过 BaseCheckpointSaver 接口实现状态的保存、读取、回溯与恢复 [1]。在执行图的每一步（super-step）保存状态，从而支持记忆、容错、时间旅行及人机协作等能力 [2]。作为核心组件，Checkpointer 确保状态图在多次交互中能够保存和加载状态，以支撑会话记忆、错误恢复和人工干预等功能 [3]。\n\n## 参考来源\n\n[1] LangGraph之CheckpointLangGraph Checkpoint 完整深度解析（原理、核... - https://juejin.cn/post/7663042240814235688\n[2] LangGraph 如何通过 Checkpoint 实现持久化LangGraph 的持久化通过 ch... - https://juejin.cn/post/7573597479981121572\n[3] 【LangGraph】什么是检查点（Checkpointer） - CSDN博客 - https://blog.csdn.net/u013172930/article/details/148036704",
+        "evidence_count": 3,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "LangGraph 的 checkpointer 有什么作用？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          }
+        ],
+        "latency_ms": 3398.8,
+        "prompt_tokens": 425,
+        "completion_tokens": 105,
+        "key_points": [
+          {
+            "point": "在图执行的每一步保存状态快照",
+            "covered": true
+          },
+          {
+            "point": "支持多轮对话记忆（按 thread 区分）",
+            "covered": true
+          },
+          {
+            "point": "支持中断后恢复和人工介入（human-in-the-loop）",
+            "covered": true
+          },
+          {
+            "point": "支持回放历史状态（时间旅行）",
+            "covered": true
+          },
+          {
+            "point": "有内存、SQLite、Postgres 等多种实现",
+            "covered": false
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "LangGraph 的 Checkpoint 是内置的会话级状态快照持久化体系 。",
+            "citations": [
+              1
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "它通过 BaseCheckpointSaver 接口实现状态的保存、读取、回溯与恢复 。",
+            "citations": [
+              1
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "在执行图的每一步（super-step）保存状态，从而支持记忆、容错、时间旅行及人机协作等能力 。",
+            "citations": [
+              2
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "作为核心组件，Checkpointer 确保状态图在多次交互中能够保存和加载状态，以支撑会话记忆、错误恢复和人工干预等功能 。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "F06",
+        "type": "factual",
+        "question": "BM25 算法的核心思想是什么？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "BM25 算法的核心思想是什么？"
+        ],
+        "report": "# BM25 算法的核心思想是什么？\n\nBM25（Best Matching 25）是一种用于信息检索的概率模型，常用于搜索引擎和问答系统 [1]。其核心思想是基于词频 (TF) 和逆文档频率 (IDF) 来计算文档与查询的相关性，并引入文档长度信息进行归一化 [3]。该算法是 Okapi TF-IDF 的改进版本，旨在解决原有算法在处理长文档时的不足 [3]。BM25 基于概率检索框架，由 Stephen Robertson 于 1994 年提出，是现代搜索引擎（如 Elasticsearch）的默认排序算法 [3]。其名称中的\"25\"意指该算法经过 25 次迭代调整得到 [3]。\n\n## 参考来源\n\n[1] BM25 算法详解：从原理到代码实现，掌握搜索与 RAG 的核心检索技术-CS... - https://blog.csdn.net/weixin_69500620/article/details/161751314\n[2] BM25算法的概念、定性理解+公式定量理解、举例说明、一文详解。 - Alp... - https://www.cnblogs.com/geekbruce/articles/19438527\n[3] RAG提效利器——BM25检索算法原理和Python实现BM25 算法详解：从原理到代码实现，掌握搜索与 RAG 的核心检索技术_ra...RAG 混合检索深度解析：BM25 + 向量检索 + RRF 算法，让 AI 真正\"找到...【算法科普】BM25：搜索引擎的核心排序算法详解 - 搜索客，搜索人自己...BM25算法详解与实践总结BM25（Best Matching 25）是一种用于信息检索... - https://zhuanlan.zhihu.com/p/670322092",
+        "evidence_count": 3,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "BM25 算法的核心思想是什么？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          }
+        ],
+        "latency_ms": 5628.3,
+        "prompt_tokens": 1301,
+        "completion_tokens": 149,
+        "key_points": [
+          {
+            "point": "考虑词频，且词频的贡献会逐渐饱和",
+            "covered": false
+          },
+          {
+            "point": "使用逆文档频率（IDF）降低常见词的权重",
+            "covered": true
+          },
+          {
+            "point": "对文档长度做归一化",
+            "covered": true
+          },
+          {
+            "point": "有 k1 和 b 两个可调参数",
+            "covered": false
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "BM25（Best Matching 25）是一种用于信息检索的概率模型，常用于搜索引擎和问答系统 。",
+            "citations": [
+              1
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "其核心思想是基于词频 (TF) 和逆文档频率 (IDF) 来计算文档与查询的相关性，并引入文档长度信息进行归一化 。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "该算法是 Okapi TF-IDF 的改进版本，旨在解决原有算法在处理长文档时的不足 。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "BM25 基于概率检索框架，由 Stephen Robertson 于 1994 年提出，是现代搜索引擎（如 Elasticsearch）的默认排序算法 。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "其名称中的\"25\"意指该算法经过 25 次迭代调整得到 。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "F07",
+        "type": "factual",
+        "question": "HNSW 向量索引的原理是什么？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "HNSW 向量索引的原理是什么？"
+        ],
+        "report": "# HNSW 向量索引的原理是什么？\n\nHNSW 是一种基于图的向量索引算法 [1]。该算法由 Yury Malkov 团队于 2016 年提出，属于近似最近邻（ANN）检索算法 [2]。其核心思想是利用“层次化图结构”模拟“小世界网络”特性 [2]。HNSW 全称是 Hierarchical Navigable Small World [3]。它通过多层图结构与分层跳跃搜索来加速高维向量检索 [1]。这种方法旨在在保证高召回率的同时，实现毫秒级的高维向量检索 [2]。\n\n## 参考来源\n\n[1] HNSW 原理详解：高维向量检索的图索引方法 - 千问AI平台 - https://www.qianwenai.com/discover/what-is-hnsw\n[2] 【向量检索与RAG全流程解析】HNSW原理、实践及阿里云灵积DashScope嵌... - https://www.cnblogs.com/gccbuaa/p/19265831\n[3] 【干货】HNSW算法详解：从基础到进阶，掌握大模型向量搜索核心技术！-... - https://blog.csdn.net/2401_85375151/article/details/154571998",
+        "evidence_count": 3,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "HNSW 向量索引的原理是什么？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 4
+          }
+        ],
+        "latency_ms": 4174.4,
+        "prompt_tokens": 455,
+        "completion_tokens": 120,
+        "key_points": [
+          {
+            "point": "基于分层的可导航小世界图",
+            "covered": true
+          },
+          {
+            "point": "上层图稀疏、下层图稠密",
+            "covered": false
+          },
+          {
+            "point": "搜索从顶层开始贪心查找并逐层向下",
+            "covered": false
+          },
+          {
+            "point": "是近似最近邻搜索，用少量召回损失换取速度",
+            "covered": true
+          },
+          {
+            "point": "主要参数有 M、efConstruction、efSearch",
+            "covered": false
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "HNSW 是一种基于图的向量索引算法 。",
+            "citations": [
+              1
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "该算法由 Yury Malkov 团队于 2016 年提出，属于近似最近邻（ANN）检索算法 。",
+            "citations": [
+              2
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "其核心思想是利用“层次化图结构”模拟“小世界网络”特性 。",
+            "citations": [
+              2
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "HNSW 全称是 Hierarchical Navigable Small World 。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "它通过多层图结构与分层跳跃搜索来加速高维向量检索 。",
+            "citations": [
+              1
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "这种方法旨在在保证高召回率的同时，实现毫秒级的高维向量检索 。",
+            "citations": [
+              2
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "F08",
+        "type": "factual",
+        "question": "Transformer 中自注意力的计算复杂度是多少，为什么？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "Transformer 中自注意力的计算复杂度是多少，为什么？"
+        ],
+        "report": "# Transformer 中自注意力的计算复杂度是多少，为什么？\n\nTransformer 中自注意力的计算复杂度为 O(N²)，其中 N 为输入序列长度 [3]。该复杂度的主要来源是自注意力机制的计算过程，具体涉及查询（Query）、键（Key）和值（Value）矩阵之间点积的运算 [3]。\n\n## 参考来源\n\n[1] Transformer 101 (一): 参数量和时间空间复杂度 - https://zhuanlan.zhihu.com/p/661804092\n[2] 从零吃透Transformer：Self-Attention机制与架构深度剖析 - https://blog.csdn.net/weixin_29048309/article/details/170215834\n[3] 为什么transformer的时间复杂度是N的平方，具体是里面的哪一个计算流... - https://blog.csdn.net/qq_39970492/article/details/143980109",
+        "evidence_count": 3,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "Transformer 中自注意力的计算复杂度是多少，为什么？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 1
+          }
+        ],
+        "latency_ms": 2290.4,
+        "prompt_tokens": 431,
+        "completion_tokens": 60,
+        "key_points": [
+          {
+            "point": "复杂度与序列长度的平方成正比，即 O(n²)",
+            "covered": true
+          },
+          {
+            "point": "每个 token 都要与所有 token 计算注意力分数",
+            "covered": true
+          },
+          {
+            "point": "注意力矩阵的大小是 n×n",
+            "covered": false
+          },
+          {
+            "point": "长上下文代价高，因此出现稀疏注意力、线性注意力、FlashAttention 等优化",
+            "covered": true
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "Transformer 中自注意力的计算复杂度为 O(N²)，其中 N 为输入序列长度 。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "该复杂度的主要来源是自注意力机制的计算过程，具体涉及查询（Query）、键（Key）和值（Value）矩阵之间点积的运算 。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "F09",
+        "type": "factual",
+        "question": "什么是 RAG（检索增强生成）？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "什么是 RAG（检索增强生成）？"
+        ],
+        "report": "# 什么是 RAG（检索增强生成）？\n\nRAG（检索增强生成）允许开发人员为生成模型提供最新的研究、统计数据或新闻 [1]。它使 LLM 能够直接连接到实时社交媒体提要、新闻网站或其他经常更新的信息来源，从而向用户提供最新信息 [1]。RAG 通过来源归属呈现准确信息，有助于增强用户信任度 [1]。该技术将 LLM 锚定在由真实、权威和最新数据支持的特定知识中，使其在外部数据的上下文中提供更准确的答案 [2]。与仅基于训练数据的生成模型相比，RAG 倾向于降低出现幻觉的风险，但无法使模型完全无误 [2]。在 RAG 中，通常使用搜索算法将输入查询与相关文本片段进行匹配，也可利用图数据库（如 Neo4J）来搜索相关信息 [3]。\n\n## 参考来源\n\n[1] 什么是 RAG？— 检索增强生成 AI 详解 — AWS - https://aws.amazon.com/cn/what-is/retrieval-augmented-generation/\n[2] 什么是 RAG（检索增强生成）？| IBM - https://www.ibm.com/cn-zh/think/topics/retrieval-augmented-generation\n[3] RAG详解：检索增强生成（Retrieval Augmented Generation） - https://zhuanlan.zhihu.com/p/1973784509318205455",
+        "evidence_count": 3,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "什么是 RAG（检索增强生成）？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          }
+        ],
+        "latency_ms": 5662.8,
+        "prompt_tokens": 413,
+        "completion_tokens": 169,
+        "key_points": [
+          {
+            "point": "生成前先从外部知识库检索相关内容",
+            "covered": true
+          },
+          {
+            "point": "把检索结果作为上下文提供给大模型",
+            "covered": true
+          },
+          {
+            "point": "可以减少幻觉并提供引用来源",
+            "covered": true
+          },
+          {
+            "point": "不需要重新训练模型就能更新知识",
+            "covered": true
+          },
+          {
+            "point": "由 Lewis 等人在 2020 年提出",
+            "covered": false
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "RAG（检索增强生成）允许开发人员为生成模型提供最新的研究、统计数据或新闻 。",
+            "citations": [
+              1
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "它使 LLM 能够直接连接到实时社交媒体提要、新闻网站或其他经常更新的信息来源，从而向用户提供最新信息 。",
+            "citations": [
+              1
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "RAG 通过来源归属呈现准确信息，有助于增强用户信任度 。",
+            "citations": [
+              1
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "该技术将 LLM 锚定在由真实、权威和最新数据支持的特定知识中，使其在外部数据的上下文中提供更准确的答案 。",
+            "citations": [
+              2
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "与仅基于训练数据的生成模型相比，RAG 倾向于降低出现幻觉的风险，但无法使模型完全无误 。",
+            "citations": [
+              2
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "在 RAG 中，通常使用搜索算法将输入查询与相关文本片段进行匹配，也可利用图数据库（如 Neo4J）来搜索相关信息 。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "F10",
+        "type": "factual",
+        "question": "Docker 容器和虚拟机有什么区别？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "Docker 容器和虚拟机有什么区别？"
+        ],
+        "report": "# Docker 容器和虚拟机有什么区别？\n\nDocker 仅虚拟应用层并复用宿主机 Linux 内核，因此镜像小且启动快 [1]。虚拟机则完整虚拟化包括内核在内的整个操作系统，资源开销大且启动慢 [1]。容器技术提供轻量级虚拟化以隔离进程和资源，而虚拟机通过硬件虚拟化提供强隔离但资源消耗更大 [2]。Docker 共享宿主机内核，相比虚拟机更便携和高效 [2]。由于无需硬件虚拟及运行完整操作系统，容器的系统资源利用率更高 [2]。Docker 容器基于镜像创建，是运行在主机上且资源受限的进程 [2]。两者各有优缺点，适用于不同场景：Docker 适合微服务和 DevOps，虚拟机适合高安全需求场景 [3]。\n\n## 参考来源\n\n[1] Docker vs 虚拟机：别再搞混了！一张表看懂容器和虚拟机的本质区别_do... - https://blog.csdn.net/KevinHuang2088/article/details/159616291\n[2] 容器、Docker、虚拟机，别再傻傻分不清 - 知乎Docker容器与虚拟机的区别 - CSDN博客docker容器与虚拟机有什么区别？ - 知乎docker和虚拟机有什么区别-腾讯云开发者社区-腾讯云【Docker】Docker容器与虚拟机的对比、三要素、架构和镜像加速器的详...虚拟机与容器的区别：核心概念与应用场景详解 - Docker 入门教程 | 现... - https://zhuanlan.zhihu.com/p/271846374\n[3] Docker容器与虚拟机的区别 - CSDN博客 - https://blog.csdn.net/m0_74091159/article/details/139157060",
+        "evidence_count": 3,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "Docker 容器和虚拟机有什么区别？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          }
+        ],
+        "latency_ms": 5905.8,
+        "prompt_tokens": 1300,
+        "completion_tokens": 158,
+        "key_points": [
+          {
+            "point": "容器共享宿主机内核，虚拟机运行独立的操作系统",
+            "covered": true
+          },
+          {
+            "point": "容器更轻量，启动更快",
+            "covered": true
+          },
+          {
+            "point": "虚拟机的隔离性更强",
+            "covered": false
+          },
+          {
+            "point": "容器依靠 Linux namespace 和 cgroups 实现隔离与资源限制",
+            "covered": false
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "Docker 仅虚拟应用层并复用宿主机 Linux 内核，因此镜像小且启动快 。",
+            "citations": [
+              1
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "虚拟机则完整虚拟化包括内核在内的整个操作系统，资源开销大且启动慢 。",
+            "citations": [
+              1
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "容器技术提供轻量级虚拟化以隔离进程和资源，而虚拟机通过硬件虚拟化提供强隔离但资源消耗更大 。",
+            "citations": [
+              2
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "Docker 共享宿主机内核，相比虚拟机更便携和高效 。",
+            "citations": [
+              2
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "由于无需硬件虚拟及运行完整操作系统，容器的系统资源利用率更高 。",
+            "citations": [
+              2
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "Docker 容器基于镜像创建，是运行在主机上且资源受限的进程 。",
+            "citations": [
+              2
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "两者各有优缺点，适用于不同场景：Docker 适合微服务和 DevOps，虚拟机适合高安全需求场景 。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "F11",
+        "type": "factual",
+        "question": "HTTP/2 相比 HTTP/1.1 有哪些主要改进？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "HTTP/2 相比 HTTP/1.1 有哪些主要改进？"
+        ],
+        "report": "# HTTP/2 相比 HTTP/1.1 有哪些主要改进？\n\nHTTP/2 相比 HTTP/1.1 的主要改进包括：多路复用解决队头阻塞 [1]；HPACK 头部压缩节省带宽 [1]；二进制协议提升解析效率 [1]；流优先级优化资源加载顺序 [1]；服务器推送减少延迟 [1]。这些特性（二进制帧、多路复用、头部压缩、服务器推送）极大提高了性能，并提升了页面加载速度和用户体验 [2][3]。\n\n## 参考来源\n\n[1] HTTP_2.0与HTTP_1.1相比有哪些主要改进？｜高频面试题｜计算机网络高... - https://notes.kamacoder.com/base/http2-improvements.html\n[2] 【计算机网络】HTTP2.0与HTTP1.1相比有哪些主要改进？-CSDN博客 - https://blog.csdn.net/weixin_72986432/article/details/149912608\n[3] HTTP2.0 相比 HTTP1.1 的主要改进 - CSDN博客 - https://blog.csdn.net/weixin_46053950/article/details/143996445",
+        "evidence_count": 3,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "HTTP/2 相比 HTTP/1.1 有哪些主要改进？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          }
+        ],
+        "latency_ms": 3286.4,
+        "prompt_tokens": 412,
+        "completion_tokens": 96,
+        "key_points": [
+          {
+            "point": "采用二进制分帧",
+            "covered": false
+          },
+          {
+            "point": "多路复用：一个连接上并发传输多个请求",
+            "covered": false
+          },
+          {
+            "point": "使用 HPACK 压缩请求头",
+            "covered": false
+          },
+          {
+            "point": "支持服务器推送",
+            "covered": false
+          },
+          {
+            "point": "支持请求优先级",
+            "covered": false
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "HTTP/2 相比 HTTP/1.1 的主要改进包括：多路复用解决队头阻塞 ；HPACK 头部压缩节省带宽 ；二进制协议提升解析效率 ；流优先级优化资源加载顺序 ；服务器推送减少延迟 。",
+            "citations": [
+              1
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "这些特性（二进制帧、多路复用、头部压缩、服务器推送）极大提高了性能，并提升了页面加载速度和用户体验 。",
+            "citations": [
+              2,
+              3
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "F12",
+        "type": "factual",
+        "question": "什么是 CAP 定理？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "什么是 CAP 定理？"
+        ],
+        "report": "# 什么是 CAP 定理？\n\nCAP 定理又称 Brewer 定理，由 Eric A. Brewer 教授于 2000 年首次提出 [1]。该定理指出，在分布式系统中最多只能同时满足一致性（Consistency）、可用性（Availability）和分区容错性（Partition tolerance）这三项中的两项，无法三者兼得 [2]。其中一致性指所有节点在同一时间看到相同数据 [2]；可用性指服务持续响应请求 [2]；分区容错性指系统在部分节点或网络故障时仍能运行 [2]。实际应用中需根据业务场景在 CA、CP 或 AP 之间进行权衡取舍 [2]。\n\n## 参考来源\n\n[1] 什么是 CAP 定理？| IBM - https://www.ibm.com/cn-zh/think/topics/cap-theorem\n[2] 分布式系统的CAP定理详解 - 知乎什么是CAP 定理，为什么CAP不能同时被满足？ - 知乎CAP 定理与 BASE 理论详解：一致性、可用性、分区容错与最终一致性 | ...什么是 CAP 定理？为什么 CAP 原则不能同时被满足，只能满足其中的两...CAP定理一文带你速解（通俗易懂，图文并茂）-CSDN博客一文看懂｜分布式系统之CAP理论-腾讯云开发者社区-腾讯云 - https://zhuanlan.zhihu.com/p/335617791\n[3] 什么是CAP 定理，为什么CAP不能同时被满足？ - 知乎 - https://zhuanlan.zhihu.com/p/396110426",
+        "evidence_count": 3,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "什么是 CAP 定理？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 1
+          }
+        ],
+        "latency_ms": 5591.5,
+        "prompt_tokens": 1967,
+        "completion_tokens": 135,
+        "key_points": [
+          {
+            "point": "一致性（Consistency）",
+            "covered": true
+          },
+          {
+            "point": "可用性（Availability）",
+            "covered": false
+          },
+          {
+            "point": "分区容错性（Partition tolerance）",
+            "covered": false
+          },
+          {
+            "point": "发生网络分区时只能在一致性和可用性之间取舍",
+            "covered": true
+          },
+          {
+            "point": "由 Eric Brewer 提出",
+            "covered": true
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "CAP 定理又称 Brewer 定理，由 Eric A. Brewer 教授于 2000 年首次提出 。",
+            "citations": [
+              1
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "该定理指出，在分布式系统中最多只能同时满足一致性（Consistency）、可用性（Availability）和分区容错性（Partition tolerance）这三项中的两项，无法三者兼得 。",
+            "citations": [
+              2
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "其中一致性指所有节点在同一时间看到相同数据 ；可用性指服务持续响应请求 ；分区容错性指系统在部分节点或网络故障时仍能运行 。",
+            "citations": [
+              2
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "实际应用中需根据业务场景在 CA、CP 或 AP 之间进行权衡取舍 。",
+            "citations": [
+              2
+            ],
+            "supported": false
+          }
+        ]
+      },
+      {
+        "id": "F13",
+        "type": "factual",
+        "question": "为什么数据库索引常用 B+ 树？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "为什么数据库索引常用 B+ 树？"
+        ],
+        "report": "# 为什么数据库索引常用 B+ 树？\n\n数据库索引常用 B+ 树，主要因其迎合了磁盘存储原理。首先，数据库文件通常位于硬盘上，磁盘寻道开销巨大且内存无法容纳全部数据 [3]。B+ 树非叶子节点仅存放索引而不存实际记录，相比同时存索引和记录的 B 树，相同数据量下 B+ 树能更“矮胖”，从而减少底层节点的磁盘 I/O 次数 [5]。其次，B+ 树所有关键字均出现在有序链表中的叶子节点，解决了范围查询效率低的问题，使相邻叶子节点可高效结合 [3]。此外，B+ 树继承了 B 树多路搜索特性，通过增加节点元素数量减少树的高度，进而降低 IO 操作次数 [3]。\n\n## 参考来源\n\n[1] MySQL 索引：索引为什么使用 B+树？（详解B树、B+树）_索引 b+树-CSDN... - https://blog.csdn.net/qq_44631615/article/details/150229782\n[2] 为什么B+树是数据库索引的首选？一个全面的解读_b+树为什么适合数据库... - https://blog.csdn.net/qq_44591181/article/details/138248433\n[3] 数据库索引：B树、B-树、B+树、B*树详解 - 知乎为什么 MySQL 采用 B+ 树作为索引？ | 小林coding深入理解mysql索引底层数据结构B+树索引 B树是一种多路搜索树，在数据...这篇 MySQL 索引和 B+Tree 讲得太通俗易懂 - 知乎B树与数据库索引理论（为什么DB选择B-Tree？） - https://zhuanlan.zhihu.com/p/134056266",
+        "evidence_count": 3,
+        "citation_coverage": 1.0,
+        "unknown_citations": [
+          5
+        ],
+        "tool_calls": [
+          {
+            "query": "为什么数据库索引常用 B+ 树？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 5
+          }
+        ],
+        "latency_ms": 6567.4,
+        "prompt_tokens": 1200,
+        "completion_tokens": 160,
+        "key_points": [
+          {
+            "point": "多路平衡树，树高低，磁盘 IO 次数少",
+            "covered": true
+          },
+          {
+            "point": "非叶子节点只存键，一个页能容纳更多键",
+            "covered": true
+          },
+          {
+            "point": "所有数据都存放在叶子节点",
+            "covered": false
+          },
+          {
+            "point": "叶子节点之间用链表相连，便于范围查询",
+            "covered": true
+          },
+          {
+            "point": "每次查询路径长度相同，性能稳定",
+            "covered": false
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "首先，数据库文件通常位于硬盘上，磁盘寻道开销巨大且内存无法容纳全部数据 。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "B+ 树非叶子节点仅存放索引而不存实际记录，相比同时存索引和记录的 B 树，相同数据量下 B+ 树能更“矮胖”，从而减少底层节点的磁盘 I/O 次数 。",
+            "citations": [
+              5
+            ],
+            "supported": false
+          },
+          {
+            "sentence": "其次，B+ 树所有关键字均出现在有序链表中的叶子节点，解决了范围查询效率低的问题，使相邻叶子节点可高效结合 。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "此外，B+ 树继承了 B 树多路搜索特性，通过增加节点元素数量减少树的高度，进而降低 IO 操作次数 。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "F14",
+        "type": "factual",
+        "question": "什么是 ReAct 智能体范式？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "什么是 ReAct 智能体范式？"
+        ],
+        "report": "# 什么是 ReAct 智能体范式？\n\nReAct 智能体是一种基于“推理与行动”框架的 AI 智能体，其核心是将思维链（CoT）推理与外部工具使用相结合 [1]。该范式的本质是 Reasoning（推理）+ Acting（行动），旨在让语言模型通过与外部工具和环境的动态交互来完成任务 [3]。它并非简单的“先想后做”，而是将推理过程与实际行动深度绑定，使智能体能在动态环境中持续迭代优化 [2]。通过增强大型语言模型在复杂任务处理和决策方面的能力，ReAct 框架显著提升了智能体的整体性能 [1]。\n\n## 参考来源\n\n[1] 什么是 ReAct 智能体？| IBM - https://www.ibm.com/cn-zh/think/topics/react-agent\n[2] 大模型入门指南——ReAct (Reasoning and Acting) 到底是什么？ - https://zhuanlan.zhihu.com/p/1931035639949817621\n[3] 【必学收藏】ReAct智能体架构详解：从理论到实践，构建大模型Agent开... - https://zhuanlan.zhihu.com/p/1999161023387680912",
+        "evidence_count": 3,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "什么是 ReAct 智能体范式？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 1
+          }
+        ],
+        "latency_ms": 4733.3,
+        "prompt_tokens": 390,
+        "completion_tokens": 127,
+        "key_points": [
+          {
+            "point": "让推理（Reasoning）与行动（Acting）交替进行",
+            "covered": true
+          },
+          {
+            "point": "按思考-行动-观察的循环执行",
+            "covered": true
+          },
+          {
+            "point": "行动可以调用搜索等外部工具",
+            "covered": true
+          },
+          {
+            "point": "由 Yao 等人在 2022 年提出",
+            "covered": false
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "ReAct 智能体是一种基于“推理与行动”框架的 AI 智能体，其核心是将思维链（CoT）推理与外部工具使用相结合 。",
+            "citations": [
+              1
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "该范式的本质是 Reasoning（推理）+ Acting（行动），旨在让语言模型通过与外部工具和环境的动态交互来完成任务 。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "它并非简单的“先想后做”，而是将推理过程与实际行动深度绑定，使智能体能在动态环境中持续迭代优化 。",
+            "citations": [
+              2
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "通过增强大型语言模型在复杂任务处理和决策方面的能力，ReAct 框架显著提升了智能体的整体性能 。",
+            "citations": [
+              1
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "F15",
+        "type": "factual",
+        "question": "RLHF 的主要训练步骤是什么？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "RLHF 的主要训练步骤是什么？"
+        ],
+        "report": "# RLHF 的主要训练步骤是什么？\n\nRLHF 训练过程分为三个阶段：监督微调（SFT）、奖励模型训练和基于人类反馈的强化学习。初始化阶段将 Actor 模型和 Ref 模型初始化为监督微调模型（sft_model）以防止崩溃 [2]。后续流程涉及利用 prompt、sft_model 和 reward_model 进行多阶段协作以实现模型对齐人类偏好 [1]。该过程通过人类反馈优化模型输出，并区别于 RL 与 PPO、GRPO 等算法 [3]。\n\n## 参考来源\n\n[1] RLHF训练过程 - 知乎 - 知乎专栏 - https://zhuanlan.zhihu.com/p/1925931798791185941\n[2] RLHF训练流程分步说明 - 知乎 - https://zhuanlan.zhihu.com/p/1892981270226641005\n[3] 一文搞懂大模型训练全流程：从预训练到RLHF的完整指南！-CSDN博客 - https://blog.csdn.net/m0_65555479/article/details/153780641",
+        "evidence_count": 3,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "RLHF 的主要训练步骤是什么？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          }
+        ],
+        "latency_ms": 3444.5,
+        "prompt_tokens": 395,
+        "completion_tokens": 104,
+        "key_points": [
+          {
+            "point": "先做监督微调（SFT）",
+            "covered": false
+          },
+          {
+            "point": "收集人类偏好比较数据训练奖励模型",
+            "covered": true
+          },
+          {
+            "point": "用强化学习（如 PPO）根据奖励模型优化策略模型",
+            "covered": false
+          },
+          {
+            "point": "加入 KL 惩罚，防止模型偏离原模型太远",
+            "covered": false
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "初始化阶段将 Actor 模型和 Ref 模型初始化为监督微调模型（sft_model）以防止崩溃 。",
+            "citations": [
+              2
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "后续流程涉及利用 prompt、sft_model 和 reward_model 进行多阶段协作以实现模型对齐人类偏好 。",
+            "citations": [
+              1
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "该过程通过人类反馈优化模型输出，并区别于 RL 与 PPO、GRPO 等算法 。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "C01",
+        "type": "comparative",
+        "question": "RAG 和长上下文窗口各自适合什么场景？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "RAG 和长上下文窗口各自适合什么场景？"
+        ],
+        "report": "# RAG 和长上下文窗口各自适合什么场景？\n\nRAG 适合用户意图强、需快速响应及离线处理的场景，因其具备高速度、低内存占用及可解释性优势 [2]。长上下文窗口则更适用于需要精确检索与全局推理的任务，尤其在 RAG 因单纯依赖大窗口导致成本高、延迟大或出现“中间迷失”问题时表现更佳 [1]。两者在 2026 年主流趋势中融合使用：RAG 负责粗筛与知识更新，长上下文用于精读与复杂推理 [1]。\n\n## 参考来源\n\n[1] RAG 还是长上下文（Long Context）？2026 年检索增强到底该怎么选_rag... - https://blog.csdn.net/m0_73614031/article/details/162066726\n[2] 笔记：浅聊一下 RAG 与长上下文之争 - 知乎 - https://zhuanlan.zhihu.com/p/8280024582\n[3] 长上下文时代，RAG 还有必要吗？— 从企业级实践出发的深度分析本文探... - https://juejin.cn/post/7666089320763523082",
+        "evidence_count": 3,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "RAG 和长上下文窗口各自适合什么场景？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          }
+        ],
+        "latency_ms": 3845.3,
+        "prompt_tokens": 466,
+        "completion_tokens": 111,
+        "key_points": [
+          {
+            "point": "长上下文可以直接放入全文，省去检索环节",
+            "covered": false
+          },
+          {
+            "point": "长上下文的成本和延迟随长度增加",
+            "covered": true
+          },
+          {
+            "point": "RAG 适合超大规模或经常更新的知识库",
+            "covered": false
+          },
+          {
+            "point": "RAG 便于引用来源",
+            "covered": false
+          },
+          {
+            "point": "两者可以结合使用",
+            "covered": true
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "RAG 适合用户意图强、需快速响应及离线处理的场景，因其具备高速度、低内存占用及可解释性优势 。",
+            "citations": [
+              2
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "长上下文窗口则更适用于需要精确检索与全局推理的任务，尤其在 RAG 因单纯依赖大窗口导致成本高、延迟大或出现“中间迷失”问题时表现更佳 。",
+            "citations": [
+              1
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "两者在 2026 年主流趋势中融合使用：RAG 负责粗筛与知识更新，长上下文用于精读与复杂推理 。",
+            "citations": [
+              1
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "C02",
+        "type": "comparative",
+        "question": "大模型微调和 RAG 应该怎么选？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "大模型微调和 RAG 应该怎么选？"
+        ],
+        "report": "# 大模型微调和 RAG 应该怎么选？\n\n大模型微调与 RAG 是两种主流的知识增强方案，核心区别在于 RAG 不修改模型权重而靠外挂知识库检索 [1]。选择需综合考量数据动态性、专业性需求、可追溯性、成本及响应速度五大维度 [2]。两者在成本、工程复杂度及安全方面存在差异，且可互补使用 [3]。建议根据实际需求单独选择或采用 RAG+LoRA 混合架构 [3]。\n\n## 参考来源\n\n[1] 大模型微调 & RAG：核心区别、优劣势全解析 - 知乎 - https://zhuanlan.zhihu.com/p/2029581851530916974\n[2] 收藏这篇就够了！RAG与微调的正确选择姿势，从场景、成本到效果全讲透... - https://blog.csdn.net/m0_59164520/article/details/156145710\n[3] 大模型落地企业场景：RAG与微调如何选择？这篇指南值得收藏-CSDN博客 - https://blog.csdn.net/2401_85325726/article/details/155696482",
+        "evidence_count": 3,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "大模型微调和 RAG 应该怎么选？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          }
+        ],
+        "latency_ms": 3215.6,
+        "prompt_tokens": 409,
+        "completion_tokens": 96,
+        "key_points": [
+          {
+            "point": "RAG 适合注入或频繁更新知识",
+            "covered": true
+          },
+          {
+            "point": "微调适合改变输出风格、格式或提升特定任务能力",
+            "covered": false
+          },
+          {
+            "point": "微调成本高，知识更新需要重新训练",
+            "covered": false
+          },
+          {
+            "point": "RAG 可以追溯答案来源",
+            "covered": true
+          },
+          {
+            "point": "两者可以组合使用",
+            "covered": true
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "大模型微调与 RAG 是两种主流的知识增强方案，核心区别在于 RAG 不修改模型权重而靠外挂知识库检索 。",
+            "citations": [
+              1
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "选择需综合考量数据动态性、专业性需求、可追溯性、成本及响应速度五大维度 。",
+            "citations": [
+              2
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "两者在成本、工程复杂度及安全方面存在差异，且可互补使用 。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "建议根据实际需求单独选择或采用 RAG+LoRA 混合架构 。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "C03",
+        "type": "comparative",
+        "question": "PostgreSQL 和 MySQL 如何选型？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "PostgreSQL 和 MySQL 如何选型？"
+        ],
+        "report": "# PostgreSQL 和 MySQL 如何选型？\n\nPostgreSQL 适合企业级应用，支持复杂查询和地理空间数据 [1]；MySQL 轻量高效，适合 Web 应用 [1]。两者均开源且支持 SQL 标准，但 PostgreSQL 功能更丰富，MySQL 读取性能更优 [1]。选型需考虑项目规模、数据类型及性能需求 [1]。具体差异涵盖设计哲学、数据类型、索引机制、扩展性、事务隔离、锁机制及分页优化等维度 [2][3]。\n\n## 参考来源\n\n[1] 如何选择合适的数据库？PostgreSQL与MySQL各项维度对比 - https://cloud.tencent.com/developer/article/2706952\n[2] MySQL 与 PostgreSQL，该怎么选_postsql mysql-CSDN博客 - https://blog.csdn.net/Sammyyyyy/article/details/154066000\n[3] MySQL与PostgreSQL选型对比及适用场景说明 - CSDN博客 - https://blog.csdn.net/weixin_55685021/article/details/156990565",
+        "evidence_count": 3,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "PostgreSQL 和 MySQL 如何选型？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 1
+          }
+        ],
+        "latency_ms": 3571.3,
+        "prompt_tokens": 417,
+        "completion_tokens": 102,
+        "key_points": [
+          {
+            "point": "PostgreSQL 功能更丰富，例如复杂查询、JSONB、扩展和 GIS",
+            "covered": true
+          },
+          {
+            "point": "MySQL 上手简单、生态广，常用于 Web 业务",
+            "covered": false
+          },
+          {
+            "point": "PostgreSQL 对 SQL 标准的遵循更严格",
+            "covered": false
+          },
+          {
+            "point": "两者都是开源数据库",
+            "covered": false
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "PostgreSQL 适合企业级应用，支持复杂查询和地理空间数据 ；MySQL 轻量高效，适合 Web 应用 。",
+            "citations": [
+              1
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "两者均开源且支持 SQL 标准，但 PostgreSQL 功能更丰富，MySQL 读取性能更优 。",
+            "citations": [
+              1
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "选型需考虑项目规模、数据类型及性能需求 。",
+            "citations": [
+              1
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "具体差异涵盖设计哲学、数据类型、索引机制、扩展性、事务隔离、锁机制及分页优化等维度 。",
+            "citations": [
+              2,
+              3
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "C04",
+        "type": "comparative",
+        "question": "gRPC 和 REST 有什么区别？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "gRPC 和 REST 有什么区别？"
+        ],
+        "report": "# gRPC 和 REST 有什么区别？\n\ngRPC 和 REST 是两种不同的 API 设计方式 [2]。REST API 基于请求 - 响应模型，无法充分利用 HTTP/2 的流式通信和双向支持优势 [1]；而 gRPC 建立在 HTTP/2 之上，支持流式通信和双向通信 [1]。在交互模式上，gRPC 允许客户端调用服务器中的特定函数 [2]，而 REST 仅请求或更新数据 [2]。此外，REST 通常仅支持单向请求，若需其他服务模式则需引入非纯\"RESTful\"的协议（如 WebSockets）[3]；相比之下，gRPC 在此方面具有显著优势 [3]。\n\n## 参考来源\n\n[1] gRPC vs REST：两种API架构风格的对比 - InfoQ - https://www.infoq.cn/article/i71vnujcel09ebukak59\n[2] gRPC 与 REST - 应用程序设计之间的区别 - AWS - https://aws.amazon.com/cn/compare/the-difference-between-grpc-and-rest/\n[3] REST 与 gRPC 的详细比较 - 知乎 - https://zhuanlan.zhihu.com/p/718163761",
+        "evidence_count": 3,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "gRPC 和 REST 有什么区别？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          }
+        ],
+        "latency_ms": 4611.8,
+        "prompt_tokens": 419,
+        "completion_tokens": 147,
+        "key_points": [
+          {
+            "point": "gRPC 基于 HTTP/2",
+            "covered": true
+          },
+          {
+            "point": "gRPC 使用 Protocol Buffers 二进制序列化",
+            "covered": false
+          },
+          {
+            "point": "REST 通常使用 JSON，可读性好",
+            "covered": false
+          },
+          {
+            "point": "gRPC 支持双向流式通信",
+            "covered": true
+          },
+          {
+            "point": "浏览器对 REST 的支持更好",
+            "covered": false
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "gRPC 和 REST 是两种不同的 API 设计方式 。",
+            "citations": [
+              2
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "REST API 基于请求 - 响应模型，无法充分利用 HTTP/2 的流式通信和双向支持优势 ；而 gRPC 建立在 HTTP/2 之上，支持流式通信和双向通信 。",
+            "citations": [
+              1
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "在交互模式上，gRPC 允许客户端调用服务器中的特定函数 ，而 REST 仅请求或更新数据 。",
+            "citations": [
+              2
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "此外，REST 通常仅支持单向请求，若需其他服务模式则需引入非纯\"RESTful\"的协议（如 WebSockets）；相比之下，gRPC 在此方面具有显著优势 。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "C05",
+        "type": "comparative",
+        "question": "Kafka 和 RabbitMQ 有什么区别？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "Kafka 和 RabbitMQ 有什么区别？"
+        ],
+        "report": "# Kafka 和 RabbitMQ 有什么区别？\n\nKafka 和 RabbitMQ 在设计目标、架构模型及适用场景上存在显著差异。Kafka 专注于高吞吐量与大数据处理，适用于此类场景 [2]；其特点包括高吞吐量和消息存储机制，适合处理海量数据流 [3]。RabbitMQ 则更侧重于实时且可靠的消息传递，在金融场景中表现出更高的严谨性与实时性 [2][3]。两者在开发语言支持、多租户能力、消息优先级及有序性等方面也存在不同表现 [3]。\n\n## 参考来源\n\n[1] 还在纠结Kafka 和 RabbitMQ用哪个？一篇文章告诉你他们的区别 - https://zhuanlan.zhihu.com/p/453957145\n[2] RabbitMQ、Kafka对比（超详细），Kafka、RabbitMQ、RocketMQ的区别 - https://cloud.tencent.com/developer/article/2442460\n[3] kafka和rabbitmq对比 (超详细，从实战维度比较)_kafka和rabbitmq的区... - https://blog.csdn.net/myhes/article/details/83247108",
+        "evidence_count": 3,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "Kafka 和 RabbitMQ 有什么区别？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          }
+        ],
+        "latency_ms": 3730.6,
+        "prompt_tokens": 416,
+        "completion_tokens": 107,
+        "key_points": [
+          {
+            "point": "Kafka 是分布式日志，吞吐量高",
+            "covered": false
+          },
+          {
+            "point": "Kafka 消息持久化保存，可以重复消费回放",
+            "covered": false
+          },
+          {
+            "point": "RabbitMQ 是传统消息代理，基于 AMQP 协议",
+            "covered": false
+          },
+          {
+            "point": "RabbitMQ 通过交换机实现灵活路由",
+            "covered": false
+          },
+          {
+            "point": "Kafka 适合流处理和日志，RabbitMQ 适合任务队列",
+            "covered": true
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "Kafka 专注于高吞吐量与大数据处理，适用于此类场景 ；其特点包括高吞吐量和消息存储机制，适合处理海量数据流 。",
+            "citations": [
+              2,
+              3
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "RabbitMQ 则更侧重于实时且可靠的消息传递，在金融场景中表现出更高的严谨性与实时性 。",
+            "citations": [
+              2,
+              3
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "两者在开发语言支持、多租户能力、消息优先级及有序性等方面也存在不同表现 。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "C06",
+        "type": "comparative",
+        "question": "向量检索和关键词检索（BM25）各有什么优缺点？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "向量检索和关键词检索（BM25）各有什么优缺点？"
+        ],
+        "report": "# 向量检索和关键词检索（BM25）各有什么优缺点？\n\nBM25 基于词频统计进行关键词匹配，计算高效但无法处理语义 [1]，其使用标准 Robertson IDF 公式且无额外偏移版本 [2]，适用于短文本检索 [1]。向量检索通过深度学习映射语义空间，适用于长文本和跨语言检索 [1]，但计算复杂 [1]，严格遵循 BGE 官方规范并添加检索前缀 [2]。两者在原理、效率及语义理解能力上存在显著区别，适用于不同场景 [3]。\n\n## 参考来源\n\n[1] AI Agent开发实战⑭｜检索策略深度对比：向量检索 vs BM25 vs 混合检索... - https://blog.csdn.net/chreehero/article/details/162010583\n[2] 知识库双路召回：BM25 关键词与语义向量 RRF 融合，附指标实测目录 为... - https://juejin.cn/post/7672900029128163338\n[3] BM25 和向量检索的区别 - ExplorerMan - 博客园 - https://www.cnblogs.com/ExMan/p/18762905",
+        "evidence_count": 3,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "向量检索和关键词检索（BM25）各有什么优缺点？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          }
+        ],
+        "latency_ms": 3932.4,
+        "prompt_tokens": 453,
+        "completion_tokens": 109,
+        "key_points": [
+          {
+            "point": "向量检索擅长语义相似和同义表达",
+            "covered": false
+          },
+          {
+            "point": "关键词检索擅长精确匹配专有名词、编号",
+            "covered": false
+          },
+          {
+            "point": "向量检索依赖嵌入模型，计算成本更高",
+            "covered": false
+          },
+          {
+            "point": "混合检索可以结合两者的优点",
+            "covered": false
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "BM25 基于词频统计进行关键词匹配，计算高效但无法处理语义 ，其使用标准 Robertson IDF 公式且无额外偏移版本 ，适用于短文本检索 。",
+            "citations": [
+              1,
+              2
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "向量检索通过深度学习映射语义空间，适用于长文本和跨语言检索 ，但计算复杂 ，严格遵循 BGE 官方规范并添加检索前缀 。",
+            "citations": [
+              1,
+              2
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "两者在原理、效率及语义理解能力上存在显著区别，适用于不同场景 。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "C07",
+        "type": "comparative",
+        "question": "单体架构和微服务架构如何取舍？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "单体架构和微服务架构如何取舍？"
+        ],
+        "report": "# 单体架构和微服务架构如何取舍？\n\n单体架构具备简洁部署的优势 [3]，但存在扩展限制 [3]；微服务架构则提供解耦、独立部署及性能优势 [3]。两者区别在于单体适合简单项目，而微服务适用于大型复杂项目及快速迭代场景 [3]。选择依据需结合具体用例：若项目规模大且需频繁迭代，应优先选择微服务架构 [3]；反之，单体架构可能更契合当前需求 [2]。\n\n## 参考来源\n\n[1] 【微服务】微服务 vs 单体架构 区别、服务拆分原则、DDD领域驱动设计-... - https://developer.aliyun.com/article/1729981\n[2] 单体架构与微服务架构 | IBM - https://www.ibm.com/cn-zh/think/topics/monolithic-vs-microservices\n[3] 详解单体架构和微服务（概念，优缺点和区别）_java后端单体和微服务-C... - https://blog.csdn.net/xjx666666/article/details/132413595",
+        "evidence_count": 3,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "单体架构和微服务架构如何取舍？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          }
+        ],
+        "latency_ms": 3261.3,
+        "prompt_tokens": 438,
+        "completion_tokens": 96,
+        "key_points": [
+          {
+            "point": "单体架构开发和部署简单",
+            "covered": false
+          },
+          {
+            "point": "微服务可以独立部署和独立扩展",
+            "covered": true
+          },
+          {
+            "point": "微服务带来分布式复杂度，如网络调用、数据一致性和运维",
+            "covered": false
+          },
+          {
+            "point": "应根据团队规模和业务复杂度选择",
+            "covered": true
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "单体架构具备简洁部署的优势 ，但存在扩展限制 ；微服务架构则提供解耦、独立部署及性能优势 。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "两者区别在于单体适合简单项目，而微服务适用于大型复杂项目及快速迭代场景 。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "选择依据需结合具体用例：若项目规模大且需频繁迭代，应优先选择微服务架构 ；反之，单体架构可能更契合当前需求 。",
+            "citations": [
+              2,
+              3
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "C08",
+        "type": "comparative",
+        "question": "SQL 和 NoSQL 数据库有什么区别？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "SQL 和 NoSQL 数据库有什么区别？"
+        ],
+        "report": "# SQL 和 NoSQL 数据库有什么区别？\n\nSQL 数据库是关系型数据库，而 NoSQL 是非关系型数据库 [1][2]。两者的架构不同：SQL 采用预定义架构，NoSQL 采用动态架构 [2]。在扩展方式上，两者存在差异 [2]。数据类型方面，SQL 处理结构化数据，NoSQL 适用于非结构化数据处理 [2]。事务支持上，SQL 更适用于多行事务，NoSQL 则侧重非结构化数据处理 [2]。此外，SQL 数据库在数据完整性和精确查询方面表现更佳，而 NoSQL 适合处理大规模、非结构化数据 [3]。\n\n## 参考来源\n\n[1] 干货 | SQL 与 NoSQL还在傻傻分不清？ - 知乎 - https://zhuanlan.zhihu.com/p/63371253\n[2] SQL 数据库与 NoSQL 数据库：有什么区别？ | IBM - https://www.ibm.com/cn-zh/think/topics/sql-vs-nosql\n[3] NoSQL和SQL的区别及使用场景 - CSDN博客 - https://blog.csdn.net/fesfsefgs/article/details/103109505",
+        "evidence_count": 3,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "SQL 和 NoSQL 数据库有什么区别？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          }
+        ],
+        "latency_ms": 4137.5,
+        "prompt_tokens": 369,
+        "completion_tokens": 129,
+        "key_points": [
+          {
+            "point": "SQL 数据库是关系型，使用固定的表结构",
+            "covered": true
+          },
+          {
+            "point": "SQL 数据库支持 ACID 事务和 JOIN",
+            "covered": false
+          },
+          {
+            "point": "NoSQL 结构灵活，有文档、键值、列族、图等类型",
+            "covered": false
+          },
+          {
+            "point": "NoSQL 通常更容易水平扩展",
+            "covered": false
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "SQL 数据库是关系型数据库，而 NoSQL 是非关系型数据库 。",
+            "citations": [
+              1,
+              2
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "两者的架构不同：SQL 采用预定义架构，NoSQL 采用动态架构 。",
+            "citations": [
+              2
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "在扩展方式上，两者存在差异 。",
+            "citations": [
+              2
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "数据类型方面，SQL 处理结构化数据，NoSQL 适用于非结构化数据处理 。",
+            "citations": [
+              2
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "事务支持上，SQL 更适用于多行事务，NoSQL 则侧重非结构化数据处理 。",
+            "citations": [
+              2
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "此外，SQL 数据库在数据完整性和精确查询方面表现更佳，而 NoSQL 适合处理大规模、非结构化数据 。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "C09",
+        "type": "comparative",
+        "question": "Python 的 asyncio 和多线程有什么区别？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "Python 的 asyncio 和多线程有什么区别？"
+        ],
+        "report": "# Python 的 asyncio 和多线程有什么区别？\n\nPython 的 asyncio 是多线程的一种高效替代方案，两者均用于并发处理。多线程指多个线程并行执行任务或在不同时间片上切换执行 [3]。asyncio 的主要优势在于避免上下文切换的高开销，适合 I/O 密集型任务 [3]。由于 Python 解释器存在 GIL，同一时间仅有一个线程可执行代码，多线程利用多核 CPU 或时间片切换提升效率 [2]。而 asyncio 基于事件驱动机制，在单进程单线程下不受 GIL 限制，通过 await 关键词实现调度 [2]。\n\n## 参考来源\n\n[1] Python异步编程详解：asyncio和多线程 - CSDN博客 - https://blog.csdn.net/2301_79507619/article/details/138241093\n[2] 深度对比 Python 几种并发方案的优缺点 - CSDN博客并发迷思：深度解析 Python asyncio 与多线程/多进程的协作模式一文带您了解Python中的并发：异步 (Asyncio)和多线程 (Multithreadin...Python并发优化实战：多线程 vs 多进程 vs asyncio 性能对比python 的asyncio与multiporcess - iTech - 博客园Python 中的并发：多线程、多进程和Asyncio - 张志敏的技术专栏 - https://blog.csdn.net/m0_49189932/article/details/126278906\n[3] 并发迷思：深度解析 Python asyncio 与多线程/多进程的协作模式 - https://runebook.dev/zh/docs/python/library/asyncio-dev/concurrency-and-multithreading",
+        "evidence_count": 3,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "Python 的 asyncio 和多线程有什么区别？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          }
+        ],
+        "latency_ms": 5917.9,
+        "prompt_tokens": 1470,
+        "completion_tokens": 122,
+        "key_points": [
+          {
+            "point": "asyncio 在单线程中用事件循环调度协程",
+            "covered": true
+          },
+          {
+            "point": "asyncio 是协作式调度，在 await 处主动让出",
+            "covered": true
+          },
+          {
+            "point": "多线程由操作系统抢占式调度",
+            "covered": false
+          },
+          {
+            "point": "受 GIL 限制，多线程不适合 CPU 密集任务",
+            "covered": false
+          },
+          {
+            "point": "两者都适合 IO 密集任务",
+            "covered": true
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "多线程指多个线程并行执行任务或在不同时间片上切换执行 。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "asyncio 的主要优势在于避免上下文切换的高开销，适合 I/O 密集型任务 。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "由于 Python 解释器存在 GIL，同一时间仅有一个线程可执行代码，多线程利用多核 CPU 或时间片切换提升效率 。",
+            "citations": [
+              2
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "而 asyncio 基于事件驱动机制，在单进程单线程下不受 GIL 限制，通过 await 关键词实现调度 。",
+            "citations": [
+              2
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "C10",
+        "type": "comparative",
+        "question": "AI Agent 应该用单智能体还是多智能体架构？",
+        "status": "completed",
+        "refused": false,
+        "plan": [
+          "AI Agent 应该用单智能体还是多智能体架构？"
+        ],
+        "report": "# AI Agent 应该用单智能体还是多智能体架构？\n\nAI Agent 应优先采用多智能体架构。单智能体虽能处理简单对话与基础生成，但在跨领域决策、长链路业务及多角色协作时，会遭遇上下文窗口瓶颈、能力单一、容错性差及意图漂移等致命问题 [3]。相比之下，多智能体系统（Multi-Agent System）在解决复杂任务方面表现更优，企业级应用正全面从单智能体向多智能体跃迁 [3]。传统 RAG 采用静态检索方式，而基于 Multi Agent System 的 Deep Research 与 RAG 存在显著差异，需深入架构细节理解 [1]。\n\n## 参考来源\n\n[1] Multi-Agent System，一篇就够了。 - 知乎 - https://zhuanlan.zhihu.com/p/1928636720796136414\n[2] 2026 年 AI Agent 技术全景：12 大主流框架深度解析与架构演进趋势 - https://zhuanlan.zhihu.com/p/2026254728342905724\n[3] 多智能体（Multi-Agent）架构深度拆解：协作模式、框架与落地建议 - https://www.woshipm.com/ai/1546717.html",
+        "evidence_count": 3,
+        "citation_coverage": 1.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "AI Agent 应该用单智能体还是多智能体架构？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 3
+          }
+        ],
+        "latency_ms": 4820.7,
+        "prompt_tokens": 456,
+        "completion_tokens": 135,
+        "key_points": [
+          {
+            "point": "多智能体可以按角色分工，各自专注",
+            "covered": true
+          },
+          {
+            "point": "多智能体带来更多通信开销、成本和延迟",
+            "covered": false
+          },
+          {
+            "point": "单智能体结构简单、更容易调试",
+            "covered": false
+          },
+          {
+            "point": "任务复杂或可并行时更适合多智能体",
+            "covered": true
+          }
+        ],
+        "claims": [
+          {
+            "sentence": "单智能体虽能处理简单对话与基础生成，但在跨领域决策、长链路业务及多角色协作时，会遭遇上下文窗口瓶颈、能力单一、容错性差及意图漂移等致命问题 。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "相比之下，多智能体系统（Multi-Agent System）在解决复杂任务方面表现更优，企业级应用正全面从单智能体向多智能体跃迁 。",
+            "citations": [
+              3
+            ],
+            "supported": true
+          },
+          {
+            "sentence": "传统 RAG 采用静态检索方式，而基于 Multi Agent System 的 Deep Research 与 RAG 存在显著差异，需深入架构细节理解 。",
+            "citations": [
+              1
+            ],
+            "supported": true
+          }
+        ]
+      },
+      {
+        "id": "U01",
+        "type": "unanswerable",
+        "question": "2030 年世界杯冠军是哪个国家？",
+        "status": "insufficient_evidence",
+        "refused": true,
+        "plan": [
+          "2030 年世界杯冠军是哪个国家？"
+        ],
+        "report": "资料不足：当前没有可核验来源，系统停止生成结论性报告。",
+        "evidence_count": 0,
+        "citation_coverage": 0.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "2030 年世界杯冠军是哪个国家？",
+            "status": "empty",
+            "result_count": 0,
+            "elapsed_ms": 0
+          }
+        ],
+        "latency_ms": 12.1,
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "key_points": [],
+        "claims": []
+      },
+      {
+        "id": "U02",
+        "type": "unanswerable",
+        "question": "明天上证指数的收盘点位是多少？",
+        "status": "insufficient_evidence",
+        "refused": true,
+        "plan": [
+          "明天上证指数的收盘点位是多少？"
+        ],
+        "report": "资料不足：提供的资料仅包含未来数月的预测数据（如 2026-2029 年），未包含“明天”的具体收盘点位信息。",
+        "evidence_count": 3,
+        "citation_coverage": 0.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "明天上证指数的收盘点位是多少？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          }
+        ],
+        "latency_ms": 1455.5,
+        "prompt_tokens": 425,
+        "completion_tokens": 37,
+        "key_points": [],
+        "claims": []
+      },
+      {
+        "id": "U03",
+        "type": "unanswerable",
+        "question": "我们公司上个季度的内部销售额是多少？",
+        "status": "insufficient_evidence",
+        "refused": true,
+        "plan": [
+          "我们公司上个季度的内部销售额是多少？"
+        ],
+        "report": "资料不足：提供的资料仅介绍如何查询销售额的方法（如 Excel 公式、年报、利润表），未包含任何具体公司的实际销售数据或内部季度数值。",
+        "evidence_count": 3,
+        "citation_coverage": 0.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "我们公司上个季度的内部销售额是多少？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          }
+        ],
+        "latency_ms": 1402.4,
+        "prompt_tokens": 364,
+        "completion_tokens": 35,
+        "key_points": [],
+        "claims": []
+      },
+      {
+        "id": "U04",
+        "type": "unanswerable",
+        "question": "北京霁川云栈科技有限公司 2025 年的净利润是多少？",
+        "status": "insufficient_evidence",
+        "refused": true,
+        "plan": [
+          "北京霁川云栈科技有限公司 2025 年的净利润是多少？"
+        ],
+        "report": "资料不足：提供的资料中未包含北京霁川云栈科技有限公司 2025 年的净利润信息。",
+        "evidence_count": 3,
+        "citation_coverage": 0.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "北京霁川云栈科技有限公司 2025 年的净利润是多少？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          }
+        ],
+        "latency_ms": 1232.6,
+        "prompt_tokens": 426,
+        "completion_tokens": 25,
+        "key_points": [],
+        "claims": []
+      },
+      {
+        "id": "U05",
+        "type": "unanswerable",
+        "question": "2028 年诺贝尔物理学奖得主是谁？",
+        "status": "insufficient_evidence",
+        "refused": true,
+        "plan": [
+          "2028 年诺贝尔物理学奖得主是谁？"
+        ],
+        "report": "资料不足：提供的资料仅包含截至 2026 年的获奖记录，未提及 2028 年诺贝尔物理学奖得主。",
+        "evidence_count": 3,
+        "citation_coverage": 0.0,
+        "unknown_citations": [],
+        "tool_calls": [
+          {
+            "query": "2028 年诺贝尔物理学奖得主是谁？",
+            "status": "success",
+            "result_count": 3,
+            "elapsed_ms": 0
+          }
+        ],
+        "latency_ms": 1531.4,
+        "prompt_tokens": 461,
+        "completion_tokens": 32,
+        "key_points": [],
+        "claims": []
+      }
+    ]
+  }
+}

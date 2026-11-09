@@ -185,3 +185,28 @@ def test_report_citing_unknown_source_is_not_completed() -> None:
 def test_chinese_tokens_match_partial_phrases() -> None:
     assert "证据" in tokens("RAG 证据链")
     assert tokens("完全未知主题").isdisjoint(tokens("RAG 证据链"))
+
+
+def test_writer_refusal_is_recorded_as_insufficient_evidence(tmp_path) -> None:
+    from research_agent.checkpoint import SQLiteCheckpointStore
+    from research_agent.llm import DemoResearchModel
+
+    class RefusingModel(DemoResearchModel):
+        def write_report(self, query, evidence):
+            return "资料不足：资料只介绍了赛事安排，没有比赛结果。"
+
+    agent = ResearchAgent(model=RefusingModel(), checkpoints=SQLiteCheckpointStore(str(tmp_path / "r.db")))
+    result = agent.run("LangGraph 工作流")
+    assert result["evidence"], "search found evidence, so the writer was reached"
+    assert result["status"] == "insufficient_evidence"
+    assert result["stopped_reason"] == "evidence_not_relevant"
+    assert result["evaluation"]["task_completed"] is False
+
+
+def test_json_list_parsing_is_tolerant() -> None:
+    from research_agent.llm import _json_list
+
+    assert _json_list('好的：["a", "b"]') == ["a", "b"]
+    assert _json_list("```json\n[\"x\"]\n```") == ["x"]
+    assert _json_list("没有数组") == []
+    assert _json_list("[不是 json]") == []

@@ -151,6 +151,65 @@ class WebSearchTool:
         ]
 
 
+class MetaSearchTool:
+    """Key-free web search through the `ddgs` metasearch package (Bing, DuckDuckGo and others).
+
+    Optional dependency: `pip install ddgs`. Snippets are short, so evidence is a search-result
+    summary rather than the full page; that is the same shape Tavily's basic search returns.
+    """
+
+    name = "web_search"
+
+    def __init__(
+        self, backends: tuple[str, ...] = ("bing", "auto"), rounds: int = 3, backoff_seconds: float = 2.0
+    ) -> None:
+        self.backends = backends
+        # Free backends sometimes answer "no results" for queries that do have results (soft rate
+        # limiting); in a 90-query eval run a quarter of queries came back empty without retries.
+        self.rounds = rounds
+        self.backoff_seconds = backoff_seconds
+        try:
+            from ddgs import DDGS  # noqa: F401
+            self.available = True
+        except ImportError:
+            self.available = False
+
+    def search(self, query: str, limit: int = 3) -> list[Evidence]:
+        import time
+
+        from ddgs import DDGS
+        from ddgs.exceptions import DDGSException, RatelimitException, TimeoutException
+
+        last_error: Exception | None = None
+        for round_index in range(self.rounds):
+            if round_index:
+                time.sleep(self.backoff_seconds * round_index)
+            for backend in self.backends:
+                try:
+                    results = DDGS(timeout=8).text(query, max_results=limit, backend=backend)
+                except (RatelimitException, TimeoutException) as exc:
+                    last_error = exc
+                    continue
+                except DDGSException:
+                    # "No results found" from one backend: try the next one before calling it empty.
+                    continue
+                evidence = [
+                    Evidence(
+                        title=item.get("title") or "网页资料",
+                        content=item.get("body") or "",
+                        source=item["href"],
+                        tool=self.name,
+                    )
+                    for item in results
+                    if item.get("href") and item.get("body")
+                ]
+                if evidence:
+                    return evidence[:limit]
+        if last_error is not None:
+            raise TransientToolError(f"网页搜索暂时不可用：{last_error}")
+        return []
+
+
 class MCPResearchTool:
     """Calls one tool on an MCP server; without a client it reports itself as not configured."""
 

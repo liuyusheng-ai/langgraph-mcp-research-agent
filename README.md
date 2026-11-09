@@ -22,6 +22,28 @@
 
 这些是确定性离线结果，用来证明控制逻辑正确；不代表接入真实网页搜索或大模型后的研究质量。
 
+### 真实模型 + 真实网页搜索
+
+`python eval/run_real_eval.py`：Planner / Writer 用本地 Ollama `qwen3.5:4b`，裁判用另一个模型家族的 `gemma3:4b`（避免自己给自己打分），均为 temperature 0；网页搜索用免 Key 的 `ddgs` 元搜索（中文走 Bing），结果按查询缓存，两组配置对同一查询看到相同结果。30 道题：15 道事实题、10 道对比题各附 3～5 个标准要点，另有 5 道不可回答题（未来、私人或不存在的信息）。完整明细见 [eval/real/RESULTS.md](eval/real/RESULTS.md)。
+
+| 指标 | Planner + Researcher + Writer | 去掉 Planner（只用原问题检索） |
+| --- | --- | --- |
+| 要点召回率（25 道可回答题） | **49.6%** | 44.2% |
+| 　事实题 / 对比题 | 60.3% / 33.3% | 48.5% / 37.8% |
+| 引用忠实度（被引资料支持该句，裁判判定） | 99.0%（101 句） | 97.0%（100 句） |
+| 出现不存在的引用编号 | 0 份 | 1 份 |
+| 不可回答题正确拒答 / 可回答题误拒答 | **5/5** / 0/25 | 5/5 / 0/25 |
+| 平均证据数 / 平均 token | 6.7 / 1396 | 2.9 / 708 |
+| 延迟 P50 / P95 | 19.2 s / 84.5 s | 3.8 s / 5.9 s |
+
+结论：
+
+- **Planner 对事实题有效**：拆出的子查询带回更多证据，事实题要点召回提升 11.8 个百分点；代价是 token 翻倍、延迟变长。
+- **对比题反而略降**（-4.5 个百分点）：开放式对比题拆出的子查询容易跑偏（如“RabbitMQ 消息队列架构对比”），稀释了 Writer 的注意力。下一步是让 Planner 按题型决定是否拆分。
+- **拒答靠 Writer 而不是“无证据”分支**：真实搜索几乎总有结果，5 道不可回答题都是 Writer 判断资料答不了后拒答的；原先的“无证据就停止”只能覆盖搜索为空的情况，因此新增了 `evidence_not_relevant` 停止原因。
+- **评测暴露的两个工程问题**：① 免费搜索会对有结果的查询偶发返回空，第一轮评测 90 次查询空了 25%，单查询配置因此误拒答 3 题；给搜索工具加了退避重试后降到约 9%，本表为重跑结果。② 工具内部的重试会叠加 Harness 的超时与重试，难搜的查询固定耗时 40 秒（14 次），拉高了 P95；应让工具内部重试服从 Harness 的总时限。
+- 裁判可信度：随机 20% 的裁判判断（96 条）导出在 [eval/real/spot_check.csv](eval/real/spot_check.csv)，人工填写 `human` 列后运行 `python eval/run_real_eval.py --agreement` 计算一致率。试跑时抽查到裁判把同义表达判为未覆盖的情况（如“恢复速度快”未算作“恢复更快”），召回率可能偏低，以人工一致率为准。
+
 ## 架构
 
 ```mermaid
@@ -68,7 +90,7 @@ python cli.py "MCP 服务的权限与脱敏怎么设计" --demo-mcp   # 同时�
 python cli.py "原问题" --run-id <RUN_ID> --resume            # 从检查点继续
 ```
 
-默认不需要任何 API Key。设置 `TAVILY_API_KEY` 后网页搜索走真实接口，Agent 主流程不变。
+默认不需要任何 API Key。设置 `TAVILY_API_KEY` 后网页搜索走 Tavily；也可以用免 Key 的 `MetaSearchTool`（`ddgs` 元搜索）。接入真实模型用 `OllamaResearchModel`，Agent 主流程不变。
 
 ## MCP 接入
 
@@ -87,8 +109,9 @@ toolbox = ResearchToolbox.default(mcp_client=client)
 ## 测试
 
 ```bash
-pytest -q                 # 18 项：Harness 各规则、断点恢复、评测口径、3 项真实 MCP 往返
-python eval/run_eval.py   # 15 个研究任务 + 8 个故障场景
+pytest -q                      # 20 项：Harness 各规则、断点恢复、评测口径、Writer 拒答、3 项真实 MCP 往返
+python eval/run_eval.py        # 离线：15 个研究任务 + 8 个故障场景
+python eval/run_real_eval.py   # 真实模型 + 网页搜索：30 题 × 2 组配置（需要 Ollama）
 ```
 
 CI 在 Python 3.10 / 3.11 / 3.12 上运行全部测试和评测。
@@ -98,11 +121,11 @@ CI 在 Python 3.10 / 3.11 / 3.12 上运行全部测试和评测。
 ```text
 research_agent/
   agent.py         LangGraph 图、入口路由、Researcher Harness
-  tools.py         Web / 本地 RAG / MCP 工具，统一 Evidence 输出
+  tools.py         Web（Tavily / 免 Key 元搜索）/ 本地 RAG / MCP 工具，统一 Evidence 输出
   mcp_client.py    官方 MCP SDK 客户端
   checkpoint.py    SQLite 检查点
   evaluation.py    任务完成、调用成功率、有效结果率、引用覆盖
-  llm.py           可替换的规划与写作模型（离线实现）
+  llm.py           规划与写作模型：离线实现 + Ollama 本地模型
 examples/demo_mcp_server.py   本地 stdio MCP 服务
 eval/                         评测场景、运行脚本与结果
 tests/                        自动化测试
@@ -111,6 +134,7 @@ cli.py                        命令行入口
 
 ## 局限
 
-- `llm.py` 是确定性的离线实现，用来让控制逻辑可测；接入真实模型只需替换 `plan` 和 `write_report`。
+- 真实评测用的是 4B 本地模型和免费搜索的摘要片段（每条一两百字），召回率受模型能力和片段长度限制；换更强的模型或抓取全文会有提升。
+- 工具内部重试与 Harness 超时会叠加（见上方评测结论），尚未修复。
 - 本地 RAG 是关键词（中文二元组）匹配的演示检索，不是向量检索。
 - 每次 MCP 调用都会新建一个 stdio 会话，简单可靠，但有几百毫秒的启动开销；高频调用应复用会话。
