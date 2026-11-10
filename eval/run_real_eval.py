@@ -22,7 +22,8 @@ Metrics (judge: a different model family from the agent, so the agent does not g
 - correct refusals on unanswerable questions and false refusals on answerable ones (rules)
 - latency and tokens of the agent (judge calls excluded)
 A random 20% of judge decisions go to spot_check.csv for a person to label; `--agreement`
-reports how often the judge agrees with that person.
+reports how often the judge agrees with that person (`--column reviewer_claude` compares with
+the review by a stronger model that is already filled in).
 """
 
 from __future__ import annotations
@@ -256,19 +257,23 @@ def render_markdown(meta: dict, summaries: dict[str, dict], rows: dict[str, list
     return "\n".join(lines)
 
 
-def agreement() -> int:
+def agreement(column: str = "human") -> int:
+    """Agreement between the judge and a reviewer column of spot_check.csv (`human` by default)."""
     path = OUT / "spot_check.csv"
     with path.open(encoding="utf-8-sig") as handle:
-        rows = [r for r in csv.DictReader(handle) if r["human"].strip() in {"是", "否"}]
+        rows = [r for r in csv.DictReader(handle) if (r.get(column) or "").strip() in {"是", "否"}]
     if not rows:
-        print(f"{path} 的 human 列还没有填写（填“是”或“否”）")
+        print(f"{path} 的 {column} 列还没有填写（填“是”或“否”）")
         return 1
-    agree = sum(r["human"].strip() == r["judge"] for r in rows)
-    print(f"裁判与人工一致：{agree}/{len(rows)} = {100 * agree / len(rows):.1f}%")
+    agree = sum(r[column].strip() == r["judge"] for r in rows)
+    print(f"裁判与 {column} 一致：{agree}/{len(rows)} = {100 * agree / len(rows):.1f}%")
     for kind in ("key_point", "claim"):
         part = [r for r in rows if r["kind"] == kind]
         if part:
-            print(f"  {kind}: {sum(r['human'].strip() == r['judge'] for r in part)}/{len(part)}")
+            strict = sum(r["judge"] == "否" and r[column].strip() == "是" for r in part)
+            lenient = sum(r["judge"] == "是" and r[column].strip() == "否" for r in part)
+            same = sum(r[column].strip() == r["judge"] for r in part)
+            print(f"  {kind}: {same}/{len(part)}（裁判判否而复核为是 {strict} 条，裁判判是而复核为否 {lenient} 条）")
     return 0
 
 
@@ -282,9 +287,10 @@ def main() -> int:
     parser.add_argument("--tool-timeout", type=float, default=20.0)
     parser.add_argument("--out", type=Path, default=OUT)
     parser.add_argument("--agreement", action="store_true")
+    parser.add_argument("--column", default="human", help="spot_check.csv column to compare with the judge")
     args = parser.parse_args()
     if args.agreement:
-        return agreement()
+        return agreement(args.column)
 
     questions = json.loads((OUT / "questions.json").read_text(encoding="utf-8"))["questions"]
     if args.limit:
